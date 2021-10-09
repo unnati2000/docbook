@@ -3,14 +3,7 @@ import { Popover, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 
-const navigation = [
-  { name: "Product", href: "#" },
-  { name: "Features", href: "#" },
-  { name: "Marketplace", href: "#" },
-  { name: "Company", href: "#" },
-];
-
-export default function Example() {
+export default function Landing() {
   return (
     <div className="bg-gray-50">
       <div className="relative overflow-hidden">
@@ -110,17 +103,7 @@ export default function Example() {
                         </div>
                       </div>
                     </div>
-                    <div className="hidden md:flex md:space-x-10">
-                      {navigation.map((item) => (
-                        <a
-                          key={item.name}
-                          href={item.href}
-                          className="font-medium text-gray-500 hover:text-gray-900"
-                        >
-                          {item.name}
-                        </a>
-                      ))}
-                    </div>
+
                     <div className="hidden md:absolute md:flex md:items-center md:justify-end md:inset-y-0 md:right-0">
                       <span className="inline-flex rounded-md shadow">
                         <p className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:text-blue-500">
@@ -162,17 +145,7 @@ export default function Example() {
                           </Popover.Button>
                         </div>
                       </div>
-                      <div className="px-2 pt-2 pb-3 space-y-1">
-                        {navigation.map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                          >
-                            {item.name}
-                          </a>
-                        ))}
-                      </div>
+                      <div className="px-2 pt-2 pb-3 space-y-1"></div>
                       <a
                         href="#"
                         className="block w-full px-5 py-3 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100 hover:text-indigo-700"
@@ -187,16 +160,25 @@ export default function Example() {
           </Popover>
 
           <div className="mt-16 mx-auto max-w-7xl px-4 sm:mt-24 sm:px-6">
-            <div className="text-center">
-              <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                <span className="block">Welcome to</span>
-                <span className="block text-blue-500">Doc Book</span>
-              </h1>
-              <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-                Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-                lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-                fugiat aliqua.
-              </p>
+            <div className="mt-16 mx-auto max-w-7xl px-4 sm:mt-24 sm:px-6">
+              <div className="text-center">
+                <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                  <span className="block xl:inline">Stay Healthy with</span>{" "}
+                  <span className="block text-blue-600 xl:inline">Docbook</span>
+                </h1>
+                <p className="my-6 text-lg text-gray-600">
+                  Search for the suitable doctors and book an appointment today!
+                  Wanna guide click on the Tour button fr the same
+                </p>
+                <div className="flex space-x-8 justify-center  max-w-md mx-auto text-base text-gray-600 sm:text-lg md:mt-12 md:text-xl md:max-w-3xl">
+                  <button className="py-2 px-8 w-1/4 bg-blue-600 text-white rounded">
+                    Search for doctors
+                  </button>
+                  <button className="py-2 px-8 w-1/4 bg-blue-100 text-blue-600 rounded">
+                    Take a Tour
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

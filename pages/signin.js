@@ -58,18 +58,14 @@ function SignUp() {
                       href="#"
                       className="font-medium text-blue-600 hover:text-blue-500"
                     >
-                      Forgot your password?
+                      Forgot password?
                     </a>
                   </div>
-                </div>
-                <div className="text-center">
-                  <p>
-                    Don't have account?{" "}
-                    <Link href="/signup" className="mx-1 text-blue-500">
-                      Sign Up
-                    </Link>
+                  <p className="mx-1 text-blue-500 font-semibold cursor:pointer">
+                    <Link href="/signup">SignUp here</Link>
                   </p>
                 </div>
+                <div className="text-center"></div>
                 <div>
                   <button
                     type="submit"
@@ -85,8 +81,8 @@ function SignUp() {
       </div>
       <div className="hidden lg:block relative w-0 flex-1">
         <img
-          className="absolute inset-0 h-full w-full object-cover"
-          src="https://images.unsplash.com/photo-1505904267569-f02eaeb45a4c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
+          className="absolute inset-0 h-full w-full object-cover --tw-gradient-from: blue-500;"
+          src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80"
           alt=""
         />
       </div>
