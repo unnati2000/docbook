@@ -1,8 +1,39 @@
+import { useState } from "react";
+import { registerUser } from "../utils/auth.utils";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+import { AiOutlineLoading } from "react-icons/ai";
 import Link from "next/link";
 
 function SignUp() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState("");
+
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    console.log(name, email, password, role);
+
+    if (password !== confirmPassword) {
+      toast.error("Password and confirm password must be same");
+    } else {
+      await registerUser(
+        { name, email, password, role },
+        setError,
+        setLoading,
+        toast
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white flex">
+      <ToastContainer />
       <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <div>
@@ -13,7 +44,7 @@ function SignUp() {
 
           <div className="mt-8">
             <div className="mt-6">
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={onSubmit}>
                 <div>
                   <label
                     htmlFor="email"
@@ -25,6 +56,8 @@ function SignUp() {
                     <input
                       id="name"
                       name="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                       type="text"
                       autoComplete="name"
                       required
@@ -44,7 +77,9 @@ function SignUp() {
                       <input
                         type="radio"
                         id="doctor"
+                        checked={role === "doctor"}
                         value="doctor"
+                        onClick={() => setRole("doctor")}
                         className="mr-1"
                       />
                       <label for="html">Doctor</label>
@@ -53,7 +88,9 @@ function SignUp() {
                       <input
                         type="radio"
                         id="patient"
+                        checked={role === "patient"}
                         value="patient"
+                        onClick={() => setRole("patient")}
                         className="mr-1"
                       />
                       <label for="patient">Patient</label>
@@ -72,6 +109,8 @@ function SignUp() {
                     <input
                       id="email"
                       name="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       type="email"
                       autoComplete="email"
                       required
@@ -91,6 +130,8 @@ function SignUp() {
                     <input
                       id="password"
                       name="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       type="password"
                       autoComplete="current-password"
                       required
@@ -109,7 +150,9 @@ function SignUp() {
                   <div className="mt-1">
                     <input
                       id="password"
-                      name="password"
+                      name="confirmPassword"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                       type="password"
                       autoComplete="current-password"
                       required
@@ -134,6 +177,11 @@ function SignUp() {
                     type="submit"
                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   >
+                    {loading && (
+                      <span className="absolute right-0 inset-y-0 flex items-center pr-3">
+                        <AiOutlineLoading />
+                      </span>
+                    )}
                     Sign Up
                   </button>
                 </div>
@@ -142,6 +190,7 @@ function SignUp() {
           </div>
         </div>
       </div>
+
       <div className="hidden lg:block relative w-0 flex-1">
         <img
           className="absolute inset-0 h-full w-full object-cover"

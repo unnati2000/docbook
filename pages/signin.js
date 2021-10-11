@@ -1,6 +1,10 @@
+import { useState } from "react";
 import Link from "next/link";
 
-function SignUp() {
+function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <div className="min-h-screen bg-white flex">
       <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
@@ -26,6 +30,8 @@ function SignUp() {
                       id="email"
                       name="email"
                       type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       autoComplete="email"
                       required
                       className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -44,6 +50,8 @@ function SignUp() {
                     <input
                       id="password"
                       name="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       type="password"
                       autoComplete="current-password"
                       required
@@ -90,4 +98,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignIn;

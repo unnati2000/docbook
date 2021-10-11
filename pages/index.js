@@ -1,11 +1,13 @@
 import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { ToastContainer } from "react-toastify";
 import Link from "next/link";
 
-export default function Landing() {
+function Landing() {
   return (
     <div className="bg-gray-50">
+      <ToastContainer />
       <div className="relative overflow-hidden">
         <div className="absolute inset-y-0 h-full w-full" aria-hidden="true">
           <div className="relative h-full">
@@ -205,3 +207,5 @@ export default function Landing() {
     </div>
   );
 }
+
+export default Landing;
