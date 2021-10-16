@@ -1,12 +1,23 @@
 import { useState } from "react";
+import { login } from "../utils/auth.utils";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 import Link from "next/link";
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    await login({ email, password }, setError, setLoading, toast);
+  };
 
   return (
     <div className="min-h-screen bg-white flex">
+      <ToastContainer />
       <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <div>
@@ -17,7 +28,7 @@ function SignIn() {
 
           <div className="mt-8">
             <div className="mt-6">
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={onSubmit}>
                 <div>
                   <label
                     htmlFor="email"

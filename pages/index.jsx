@@ -4,7 +4,7 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { ToastContainer } from "react-toastify";
 import Link from "next/link";
 
-function Landing() {
+function Landing({ user }) {
   return (
     <div className="bg-gray-50">
       <ToastContainer />
@@ -107,11 +107,13 @@ function Landing() {
                     </div>
 
                     <div className="hidden md:absolute md:flex md:items-center md:justify-end md:inset-y-0 md:right-0">
-                      <span className="inline-flex rounded-md shadow">
-                        <p className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:text-blue-500">
-                          <Link href="/signin"> Log in</Link>
-                        </p>
-                      </span>
+                      {!user && (
+                        <span className="inline-flex rounded-md shadow">
+                          <p className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:text-blue-500">
+                            <Link href="/signin"> Log in</Link>
+                          </p>
+                        </span>
+                      )}
                     </div>
                   </nav>
                 </div>
@@ -192,8 +194,8 @@ function Landing() {
           </div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <img
-              className="relative rounded-lg shadow-lg"
-              src="https://tailwindui.com/img/component-images/top-nav-with-multi-column-layout-screenshot.jpg"
+              className="relative w-full h-auto rounded-lg shadow-lg"
+              src="images/home-page-docbook.png"
               alt="App screenshot"
             />
           </div>
