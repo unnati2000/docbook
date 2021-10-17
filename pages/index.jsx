@@ -4,7 +4,7 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { ToastContainer } from "react-toastify";
 import Link from "next/link";
 
-function Landing({ user }) {
+function Landing() {
   return (
     <div className="bg-gray-50">
       <ToastContainer />
@@ -107,13 +107,11 @@ function Landing({ user }) {
                     </div>
 
                     <div className="hidden md:absolute md:flex md:items-center md:justify-end md:inset-y-0 md:right-0">
-                      {!user && (
-                        <span className="inline-flex rounded-md shadow">
-                          <p className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:text-blue-500">
-                            <Link href="/signin"> Log in</Link>
-                          </p>
-                        </span>
-                      )}
+                      <span className="inline-flex rounded-md shadow">
+                        <p className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:text-blue-500">
+                          <Link href="/signin"> Log in</Link>
+                        </p>
+                      </span>
                     </div>
                   </nav>
                 </div>

@@ -12,6 +12,7 @@ import "tailwindcss/tailwind.css";
 
 import baseURL from "../utils/baseURL";
 import { redirectUser } from "../utils/auth.utils";
+import "react-toastify/dist/ReactToastify.css";
 
 function MyApp({ Component, pageProps }) {
   const [queryClient] = useState(() => new QueryClient());
@@ -21,10 +22,10 @@ function MyApp({ Component, pageProps }) {
       <Hydrate state={pageProps.dehydratedState}>
         <Layout {...pageProps}>
           <ToastContainer />
-          <Head title={pageProps.title} />
+          <Head />
           <Component {...pageProps} />
-          <ReactQueryDevtools />
         </Layout>
+        <ReactQueryDevtools />
       </Hydrate>
     </QueryClientProvider>
   );
@@ -35,10 +36,8 @@ MyApp.getInitialProps = async ({ ctx }) => {
   let pageProps = {};
 
   const protectedRoutes = ctx.pathname === "/dashboard";
+  const availableForEveryone = ctx.pathname === "/home";
 
-  const availableForEveryone = ctx.pathname === "/";
-
-  // If user is not logged in
   if (!token) {
     destroyCookie(ctx, "token");
     // Redirect to login if user is trying to access protected routes
@@ -48,9 +47,11 @@ MyApp.getInitialProps = async ({ ctx }) => {
       const res = await axios.get(`${baseURL}/api/auth`, {
         headers: { Authorization: token },
       });
+
       const { user } = res.data;
+
       if (user && !availableForEveryone) {
-        !protectedRoutes && redirectUser(ctx, "/");
+        !protectedRoutes && redirectUser(ctx, "/home");
       }
       pageProps.user = user;
     } catch (err) {
@@ -58,7 +59,6 @@ MyApp.getInitialProps = async ({ ctx }) => {
       redirectUser(ctx, "/signin");
     }
   }
-
   return { pageProps };
 };
 

@@ -38,10 +38,13 @@ export const login = async (
 ) => {
   setLoading(true);
   try {
+    console.log(email, password);
     const res = await axios.post(`${baseURL}/api/auth`, { email, password });
+    console.log(res.data.token);
     cookie.set("token", res.data.token, { expires: 730 });
     Router.push("/");
   } catch (error) {
+    console.log(error);
     const errorMsg = catchErrors(error);
     setError(errorMsg);
     toast.error(errorMsg);
