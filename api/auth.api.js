@@ -105,7 +105,7 @@ router.post("/forgot-password", async (req, res) => {
   }
 });
 
-router.put("/reset-token/:token", async (req, res) => {
+router.put("/reset-password/:token", async (req, res) => {
   try {
     const resetPasswordToken = crypto
       .createHash("sha256")
@@ -116,9 +116,6 @@ router.put("/reset-token/:token", async (req, res) => {
       resetPasswordToken,
       resetPasswordExpire: { $gt: Date.now() },
     });
-
-    console.log(user);
-    console.log(req.body.password);
 
     if (!user) {
       return res.status(400).json({ msg: "Invalid or expired token" });
