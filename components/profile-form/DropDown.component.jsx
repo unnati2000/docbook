@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Menu, Transition } from "@headlessui/react";
 
-export default function ({
+function DropDown({
   proficiences,
   setProficiencies,
   addedproficiencies,
@@ -21,12 +20,6 @@ export default function ({
     );
   };
 
-  console.log(currentDegree);
-
-  console.log(proficiences);
-
-  console.log(addedproficiencies);
-
   return (
     <div className="flex items-center justify-center w-full p-12">
       <div className="relative inline-block text-left w-full">
@@ -43,3 +36,5 @@ export default function ({
     </div>
   );
 }
+
+export default DropDown;

@@ -1,16 +1,6 @@
 import { useState } from "react";
 import { ImCross } from "react-icons/im";
-import MyDropdown from "./DropDown.component";
-
-const daysOfWeek = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
+import Dropdown from "./DropDown.component";
 
 const DoctorProfileForm = () => {
   const [address, setAddress] = useState({
@@ -33,30 +23,25 @@ const DoctorProfileForm = () => {
 
   const [image, setImage] = useState(null);
 
-  const [workingHours, setWorkingHours] = useState({
-    monday: {
-      to: "",
-      from: "",
-      holiday: false,
-    },
-    tuesday: { to: "", from: "", holiday: false },
-    wednesday: { to: "", from: "", holiday: false },
-    thursday: { to: "", from: "", holiday: false },
-    friday: { to: "", from: "", holiday: false },
-    saturday: { to: "", from: "", holiday: false },
-    sunday: { to: "", from: "", holiday: false },
-  });
-
-  const onWorkingHoursChange = (e) => {
-    console.log(e);
-  };
-
   const [proficiences, setProficiencies] = useState([
-    "MD",
-    "Psychologist",
+    "Select your degree",
     "MBBS",
     "BDS",
-    "Cosmetics",
+    "BAMS",
+    "BUMS",
+    "BHMS",
+    "BYNS",
+    "MD Anaesthesiology",
+    "MD Dermatology",
+    "MD Family Medicine",
+    "MD General Medicine",
+    "MD Physiology",
+    "MS ENT",
+    "MS General Surgery",
+    "MS Ophthalmology",
+    "MS Orthopaedics",
+    "MS Obstetrics and Gynaecology",
+    "MS Dermatology, Venerology and Leprosy",
   ]);
 
   const [addedproficiencies, setAddedProficiencies] = useState([]);
@@ -72,7 +57,7 @@ const DoctorProfileForm = () => {
   };
 
   return (
-    <div class="grid grid-cols-3 py-16 space-x-6 px-6">
+    <div class="grid grid-cols-2 py-16 space-x-6 px-6">
       <div class="">
         <form action="#" method="POST">
           <div class="shadow overflow-hidden sm:rounded-md">
@@ -241,71 +226,11 @@ const DoctorProfileForm = () => {
           </div>
         </form>
       </div>
-      <div class="">
-        <form action="#" method="POST">
-          <div class="shadow overflow-hidden sm:rounded-md">
-            <div class="px-4 py-5 bg-white sm:p-6">
-              {/* Degree details */}
-              <div className="my-4">
-                <label
-                  for="postal-code"
-                  class="block text-lg font-medium text-gray-700"
-                >
-                  Working Hours
-                </label>
-
-                <div className="my-4">
-                  {daysOfWeek.map((day) => (
-                    <div className="my-2">
-                      <label
-                        for="postal-code"
-                        class="block text-sm font-medium text-gray-700"
-                      >
-                        {day}
-                      </label>
-                      <div className="grid grid-cols-3 items-center gap-2">
-                        <input
-                          type="text"
-                          name="from"
-                          value={workingHours[day].from}
-                          onChange={(e) => onWorkingHoursChange(e)}
-                          id="postal-code"
-                          autocomplete="postal-code"
-                          class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
-                        />
-                        <input
-                          type="text"
-                          name="to"
-                          value={workingHours[day].to}
-                          onChange={(e) => onWorkingHoursChange(e)}
-                          id="postal-code"
-                          autocomplete="postal-code"
-                          class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
-                        />
-                        <div>
-                          <input
-                            type="checkbox"
-                            name="holiday"
-                            checked={workingHours[day].holiday}
-                          />
-                          <label>Mark as holiday</label>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
 
       <div className="bg-white p-4 rounded shadow-sm">
         <h3 className="text-gray-700 text-center font-semibold text-lg">
           Select your proficiencies
         </h3>
-
-        {console.log(addedproficiencies)}
 
         <div className="flex flex-wrap justify-center space-x-2 mx-4 mt-6">
           {addedproficiencies?.length > 0 ? (
@@ -321,12 +246,27 @@ const DoctorProfileForm = () => {
             <h1>Please add degree</h1>
           )}
         </div>
-        <MyDropdown
+        <Dropdown
           proficiences={proficiences}
           setProficiencies={setProficiencies}
           addedproficiencies={addedproficiencies}
           setAddedProficiencies={setAddedProficiencies}
         />
+
+        <div className="my-4">
+          <h2 className="font-semibold text-xl my-2 text-gray-700">
+            Enter the following documents for verification
+          </h2>
+          <ol className="my-2">
+            <li className="font-semibold text-gray-600">Aadhar Card</li>
+            <li className="font-semibold text-gray-600">
+              Your respective degree
+            </li>
+            <li className="font-semibold text-gray-600">Practice License</li>
+          </ol>
+          <input type="file" className="my-2" />
+        </div>
+
         <button
           type="submit"
           className="bg-blue-600 w-full py-1 rounded shadow-md text-white font-semibold"

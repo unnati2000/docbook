@@ -9,7 +9,7 @@ const sendEmail = require("../utils-server/sendEmail");
 
 router.post("/", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     if (password.length < 6) {
       return res
@@ -27,6 +27,7 @@ router.post("/", async (req, res) => {
       name,
       email: email.toLowerCase(),
       password,
+      role,
     });
 
     user.password = await bcrypt.hash(password, 10);
@@ -37,9 +38,9 @@ router.post("/", async (req, res) => {
       .update(verificationToken)
       .digest("hex");
 
-    const verificationUrl = `${req.protocol}://${req.get(
-      "host"
-    )}/onboarding/${verificationToken}`;
+    const verificationUrl = `${req.protocol}://${req.get("host")}/onboarding/${
+      user.role
+    }/${verificationToken}`;
 
     try {
       await sendEmail({
