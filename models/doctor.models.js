@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const doctorSchema = new mongoose.Schema(
   {
     user: {
-      _id: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -13,7 +13,7 @@ const doctorSchema = new mongoose.Schema(
       state: String,
       pincode: String,
     },
-    degreeDetails: {
+    degree: {
       degreeName: String,
       from: String,
       to: String,
