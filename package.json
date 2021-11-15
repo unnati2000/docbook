@@ -8,13 +8,27 @@
   "dependencies": {
     "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.4",
+    "aws-sdk": "^2.1009.0",
+    "axios": "^0.22.0",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "handlebars": "^4.7.7",
+    "js-cookie": "^3.0.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.8",
+    "multer": "^1.4.3",
+    "multer-s3": "^2.10.0",
     "next": "latest",
+    "nodemailer": "^6.6.5",
+    "nodemailer-sendgrid-transport": "^0.2.0",
     "nodemon": "^2.0.13",
+    "nookies": "^2.5.2",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
+    "react-query": "^3.26.0",
+    "react-toastify": "^8.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.6",

@@ -1,8 +1,23 @@
+import { useState } from "react";
+import { login } from "../utils/auth.utils";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 import Link from "next/link";
 
-function SignUp() {
+function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    await login({ email, password }, setError, setLoading, toast);
+  };
+
   return (
     <div className="min-h-screen bg-white flex">
+      <ToastContainer />
       <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <div>
@@ -13,7 +28,7 @@ function SignUp() {
 
           <div className="mt-8">
             <div className="mt-6">
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={onSubmit}>
                 <div>
                   <label
                     htmlFor="email"
@@ -26,6 +41,8 @@ function SignUp() {
                       id="email"
                       name="email"
                       type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       autoComplete="email"
                       required
                       className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -44,6 +61,8 @@ function SignUp() {
                     <input
                       id="password"
                       name="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       type="password"
                       autoComplete="current-password"
                       required
@@ -55,7 +74,7 @@ function SignUp() {
                 <div className="flex items-center justify-between">
                   <div className="text-sm">
                     <a
-                      href="#"
+                      href="/forgot-password"
                       className="font-medium text-blue-600 hover:text-blue-500"
                     >
                       Forgot password?
@@ -90,4 +109,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignIn;
