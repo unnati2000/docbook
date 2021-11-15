@@ -81,7 +81,7 @@ function SignUp() {
                         onClick={() => setRole("doctor")}
                         className="mr-1"
                       />
-                      <label for="html">Doctor</label>
+                      <label htmlFor="html">Doctor</label>
                     </div>
                     <div>
                       <input
@@ -92,7 +92,7 @@ function SignUp() {
                         onClick={() => setRole("patient")}
                         className="mr-1"
                       />
-                      <label for="patient">Patient</label>
+                      <label htmlFor="patient">Patient</label>
                     </div>
                   </div>
                 </div>
