@@ -57,7 +57,6 @@ const DoctorProfileForm = () => {
   const [addedproficiencies, setAddedProficiencies] = useState([]);
 
   const removeProficiency = (value) => {
-    console.log(value);
     setProficiencies((proficiences) => [...proficiences, value]);
     setAddedProficiencies(
       addedproficiencies.filter(
@@ -95,9 +94,7 @@ const DoctorProfileForm = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(streetAdd);
-    console.log(addedproficiencies);
-    console.log(degree);
+
     const formdata = new FormData();
     formdata.append("image", image);
     formdata.append("degree", JSON.stringify(degree));
@@ -120,11 +117,12 @@ const DoctorProfileForm = () => {
       } else if (addedproficiencies.length === 0) {
         toast.error("Please select your proficiency");
       } else {
-        const res = await mutation.mutateAsync(formdata);
-        toast.success(res.data.msg);
-        router.push("/signup");
+        const data = await mutation.mutateAsync(formdata);
+        toast.success(data.msg);
+        router.push("/signin");
       }
     } catch (error) {
+      console.log(error);
       toast.error(
         error.response?.data?.msg || "There was an error. Try again later."
       );
@@ -292,7 +290,11 @@ const DoctorProfileForm = () => {
                   onChange={(e) => setImage(e.target.files[0])}
                 />
                 <img
-                  src="https://solangvalleyresorts.com/wp-content/uploads/2019/03/gravatar-60-grey.jpg"
+                  src={
+                    image
+                      ? URL.createObjectURL(image)
+                      : "https://solangvalleyresorts.com/wp-content/uploads/2019/03/gravatar-60-grey.jpg"
+                  }
                   className="h-28 w-28 rounded-full"
                 />
               </div>

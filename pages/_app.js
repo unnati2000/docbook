@@ -14,13 +14,13 @@ import baseURL from "../utils/baseURL";
 import { redirectUser } from "../utils/auth.utils";
 import "react-toastify/dist/ReactToastify.css";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, user }) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        <Layout {...pageProps}>
+        <Layout {...pageProps} user={pageProps?.user}>
           <ToastContainer />
           <Head />
           <Component {...pageProps} />
@@ -37,7 +37,9 @@ MyApp.getInitialProps = async ({ ctx }) => {
 
   const protectedRoutes = ctx.pathname === "/dashboard";
   const availableForEveryone =
-    ctx.pathname === "/home" || ctx.pathname === "/forgot-password";
+    ctx.pathname === "/home" ||
+    ctx.pathname === "/forgot-password" ||
+    ctx.pathname === "/test";
 
   if (!token) {
     destroyCookie(ctx, "token");

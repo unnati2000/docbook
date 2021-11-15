@@ -11,6 +11,8 @@ router.post("/:token", onboardingUpload, async (req, res) => {
   try {
     const { token } = req.params;
 
+    const { streetAdd, city, state, pincode } = JSON.parse(req.body.address);
+
     const verificationToken = crypto
       .createHash("sha256")
       .update(token)
@@ -21,15 +23,23 @@ router.post("/:token", onboardingUpload, async (req, res) => {
       return res.status(400).json({ msg: "Invalid or expired token" });
     }
 
+    if (req.files) {
+      user.profilePic = req.files.image[0].location;
+    }
+
+    user.address.streetAdd = streetAdd;
+    user.address.city = city;
+    user.address.state = state;
+    user.address.pincode = pincode;
+
     // Set user verified to true
     user.isVerified = true;
     user.verificationToken = undefined;
 
-    if (user.role === "doctor") {
-      const { streetAdd, city, state, pincode } = JSON.parse(req.body.address);
-      const { name, from, to, university } = JSON.parse(req.body.degree);
+    await user.save();
 
-      console.log(req.files);
+    if (user.role === "doctor") {
+      const { name, from, to, university } = JSON.parse(req.body.degree);
 
       if (req.files === undefined) {
         return res
@@ -39,12 +49,6 @@ router.post("/:token", onboardingUpload, async (req, res) => {
 
       const doctor = new Doctor({
         user: user._id,
-        address: {
-          streetAdd: streetAdd,
-          city: city,
-          state: state,
-          pincode: pincode,
-        },
         degree: {
           degreeName: name,
           from: from,
@@ -55,14 +59,7 @@ router.post("/:token", onboardingUpload, async (req, res) => {
         legalDocuments: req.files.document[0].location,
       });
 
-      user.profilePic = req.files.image[0].location;
-
-      await user.save();
-
-      console.log(doctor);
-
       await doctor.save();
-    } else {
     }
 
     res.status(200).json({ msg: "Onboarded successfully" });

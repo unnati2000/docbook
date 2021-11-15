@@ -1,9 +1,9 @@
 import Navbar from "./Navbar.component";
 
-const Layout = ({ children }) => {
+const Layout = ({ children, user }) => {
   return (
     <div>
-      <Navbar />
+      {user && <Navbar user={user} />}
       {children}
     </div>
   );

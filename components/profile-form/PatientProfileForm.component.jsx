@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import { useMutation } from "react-query";
+import baseURL from "../../utils/baseURL";
 import axios from "axios";
 
 const PatientProfileForm = () => {
@@ -9,12 +13,55 @@ const PatientProfileForm = () => {
     pincode: "",
   });
 
+  const handleAddress = (e) => {
+    setAddress((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const router = useRouter();
+  const { token } = router.query;
+
   const { streetAdd, city, state, pincode } = address;
 
   const [image, setImage] = useState(null);
 
-  const onSubmit = (e) => {
+  const mutation = useMutation(async (formdata) => {
+    const { data } = await axios.post(
+      `${baseURL}/api/onboarding/${token}`,
+      formdata,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return data;
+  });
+
+  const onSubmit = async (e) => {
     e.preventDefault();
+
+    console.log(address, image);
+
+    try {
+      if (streetAdd === "" || city === "" || state === "" || pincode === "") {
+        toast.error("Please enter all the fields");
+      } else {
+        const formdata = new FormData();
+        formdata.append("address", JSON.stringify(address));
+        formdata.append("image", image);
+
+        const res = await mutation.mutateAsync(formdata);
+        toast.success(res.data.msg);
+        router.push("/signin");
+      }
+    } catch (error) {
+      toast.error(
+        error.response?.data?.msg || "There was an error. Try again later."
+      );
+    }
   };
 
   return (
@@ -34,7 +81,7 @@ const PatientProfileForm = () => {
                   type="text"
                   name="streetAdd"
                   value={streetAdd}
-                  onChange={(e) => setAddress({ streetAdd: e.target.value })}
+                  onChange={handleAddress}
                   id="street-address"
                   autocomplete="street-address"
                   class="mt-1 p-2 block border w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -52,7 +99,7 @@ const PatientProfileForm = () => {
                       type="text"
                       name="city"
                       value={city}
-                      onChange={(e) => setAddress({ city: e.target.value })}
+                      onChange={handleAddress}
                       id="city"
                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
                     />
@@ -68,7 +115,7 @@ const PatientProfileForm = () => {
                       type="text"
                       name="state"
                       value={state}
-                      onChange={(e) => setAddress({ state: e.target.value })}
+                      onChange={handleAddress}
                       id="state"
                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
                     />
@@ -84,7 +131,7 @@ const PatientProfileForm = () => {
                       type="text"
                       name="pincode"
                       value={pincode}
-                      onChange={(e) => setAddress({ pincode: e.target.value })}
+                      onChange={handleAddress}
                       id="postal-code"
                       autocomplete="postal-code"
                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
@@ -98,7 +145,11 @@ const PatientProfileForm = () => {
                   onChange={(e) => setImage(e.target.files[0])}
                 />
                 <img
-                  src="https://solangvalleyresorts.com/wp-content/uploads/2019/03/gravatar-60-grey.jpg"
+                  src={
+                    image
+                      ? URL.createObjectURL(image)
+                      : "https://solangvalleyresorts.com/wp-content/uploads/2019/03/gravatar-60-grey.jpg"
+                  }
                   className="h-28 w-28 rounded-full"
                 />
               </div>

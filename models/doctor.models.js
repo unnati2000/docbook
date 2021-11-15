@@ -7,12 +7,6 @@ const doctorSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    address: {
-      streetAdd: String,
-      city: String,
-      state: String,
-      pincode: String,
-    },
     degree: {
       degreeName: String,
       from: String,

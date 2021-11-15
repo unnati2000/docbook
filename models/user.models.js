@@ -36,6 +36,12 @@ const userSchema = new mongoose.Schema(
     profilePic: {
       type: String,
     },
+    address: {
+      streetAdd: String,
+      city: String,
+      state: String,
+      pincode: String,
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
   },

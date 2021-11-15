@@ -48,7 +48,6 @@ router.post("/", async (req, res) => {
         subject: "Docbook - Account Verification",
         html: `<p>Click on this link to complete further process: ${verificationUrl} </p>`,
       });
-      console.log("Email send to", user.email);
     } catch (err) {
       console.log(err);
       user.verificationToken = undefined;

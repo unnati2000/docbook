@@ -17,7 +17,6 @@ function SignUp() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(name, email, password, role);
 
     if (password !== confirmPassword) {
       toast.error("Password and confirm password must be same");
