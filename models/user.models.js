@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema(
       state: String,
       pincode: String,
     },
+    doctor: {
+      type: String,
+      default: "",
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
   },

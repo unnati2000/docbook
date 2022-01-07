@@ -13,6 +13,8 @@ router.post("/:token", onboardingUpload, async (req, res) => {
 
     const { streetAdd, city, state, pincode } = JSON.parse(req.body.address);
 
+    console.log(req.body);
+
     const verificationToken = crypto
       .createHash("sha256")
       .update(token)
@@ -39,8 +41,6 @@ router.post("/:token", onboardingUpload, async (req, res) => {
     await user.save();
 
     if (user.role === "doctor") {
-      const { name, from, to, university } = JSON.parse(req.body.degree);
-
       if (req.files === undefined) {
         return res
           .status(401)
@@ -49,13 +49,9 @@ router.post("/:token", onboardingUpload, async (req, res) => {
 
       const doctor = new Doctor({
         user: user._id,
-        degree: {
-          degreeName: name,
-          from: from,
-          to: to,
-          university: university,
-        },
+        experience: parseInt(req.body.experience),
         proficiencies: JSON.parse(req.body.proficiencies),
+        speciality: req.body.speciality,
         legalDocuments: req.files.document[0].location,
       });
 

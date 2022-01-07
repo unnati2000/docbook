@@ -40,7 +40,7 @@ export const login = async (
   try {
     const res = await axios.post(`${baseURL}/api/auth`, { email, password });
     cookie.set("token", res.data.token, { expires: 730 });
-    Router.push("/");
+    Router.push("/doctor-details");
   } catch (error) {
     const errorMsg = catchErrors(error);
     setError(errorMsg);

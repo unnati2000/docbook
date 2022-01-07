@@ -1,23 +1,15 @@
 import { Fragment } from "react";
-import {
-  CogIcon,
-  CollectionIcon,
-  HomeIcon,
-  PhotographIcon,
-  UserGroupIcon,
-  ViewGridIcon,
-  XIcon,
-} from "@heroicons/react/outline";
-
-import { Dialog, Menu, Transition } from "@headlessui/react";
+import { CogIcon, HomeIcon, XIcon } from "@heroicons/react/outline";
+import { AiOutlineHistory, AiOutlineBarChart } from "react-icons/ai";
+import { MdOutlineMood } from "react-icons/md";
+import { Dialog, Transition } from "@headlessui/react";
 
 const sidebarNavigation = [
-  { name: "Home", href: "#", icon: HomeIcon, current: false },
-  { name: "All Files", href: "#", icon: ViewGridIcon, current: false },
-  { name: "Photos", href: "#", icon: PhotographIcon, current: true },
-  { name: "Shared", href: "#", icon: UserGroupIcon, current: false },
-  { name: "Albums", href: "#", icon: CollectionIcon, current: false },
-  { name: "Settings", href: "#", icon: CogIcon, current: false },
+  { name: "Home", href: "/home", icon: HomeIcon, current: false },
+  { name: "History", href: "/history", icon: AiOutlineHistory, current: false },
+  { name: "Charts", href: "/charts", icon: AiOutlineBarChart, current: false },
+  { name: "Outline", href: "#", icon: MdOutlineMood, current: false },
+  { name: "Settings", href: "/settings", icon: CogIcon, current: false },
 ];
 
 function classNames(...classes) {
@@ -27,7 +19,7 @@ function classNames(...classes) {
 const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
   return (
     <>
-      <div className="hidden w-28 bg-blue-700 overflow-y-auto md:block">
+      <div className="hidden min-h-screen w-28 bg-blue-700 overflow-y-auto md:block">
         <div className="w-full py-6 flex flex-col items-center">
           <div className="flex-shrink-0 flex items-center">
             <img

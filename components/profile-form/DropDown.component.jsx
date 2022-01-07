@@ -21,7 +21,7 @@ function DropDown({
   };
 
   return (
-    <div className="flex items-center justify-center w-full p-12">
+    <div className="flex items-center w-full">
       <div className="relative inline-block text-left w-full">
         <select
           onChange={onChangeCurrentDegree}

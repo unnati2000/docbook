@@ -1,12 +1,12 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Hydrate } from "react-query/hydration";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { ToastContainer } from "react-toastify";
+import { useQuery } from "react-query";
 import { parseCookies, destroyCookie } from "nookies";
 
-import Head from "../components/Head.component";
 import Layout from "../components/Layout.components";
 import "tailwindcss/tailwind.css";
 
@@ -17,12 +17,19 @@ import "react-toastify/dist/ReactToastify.css";
 function MyApp({ Component, pageProps, user }) {
   const [queryClient] = useState(() => new QueryClient());
 
+  useEffect(() => {
+    if (user?.role === "doctor") {
+      if (user?.doctor === "") {
+        Router.push("/doctor-details");
+      }
+    }
+  }, [user]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <Layout {...pageProps} user={pageProps?.user}>
           <ToastContainer />
-          <Head />
           <Component {...pageProps} />
         </Layout>
         <ReactQueryDevtools />
@@ -35,7 +42,14 @@ MyApp.getInitialProps = async ({ ctx }) => {
   const { token } = parseCookies(ctx);
   let pageProps = {};
 
-  const protectedRoutes = ctx.pathname === "/dashboard";
+  const protectedRoutes =
+    ctx.pathname === "/history" ||
+    ctx.pathname === "/doctors" ||
+    ctx.pathname === "/advanced-search" ||
+    ctx.pathname === "/doctor-details" ||
+    ctx.pathname === "/charts" ||
+    ctx.pathname === "/settings";
+
   const availableForEveryone =
     ctx.pathname === "/home" ||
     ctx.pathname === "/forgot-password" ||

@@ -1,19 +1,16 @@
 import { Fragment } from "react";
+import { useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
+import { BsFillChatFill } from "react-icons/bs";
+import { VscBellDot, VscBell } from "react-icons/vsc";
 import { MenuAlt2Icon } from "@heroicons/react/outline";
-
+import { logoutUser } from "../utils/auth.utils";
 import { SearchIcon } from "@heroicons/react/solid";
 
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Sign out", href: "#" },
-];
+const Searchbar = ({ user, setMobileMenuOpen }) => {
+  const [doctors, setDoctors] = useState([]);
+  const [search, setSearch] = useState("");
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
-const Searchbar = ({ setMobileMenuOpen }) => {
   return (
     <header className="w-full">
       <div className="relative z-10 flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
@@ -44,11 +41,16 @@ const Searchbar = ({ setMobileMenuOpen }) => {
                   className="h-full w-full border-transparent py-2 pl-8 pr-3 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent focus:placeholder-gray-400"
                   placeholder="Search"
                   type="search"
+                  name="search"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </form>
           </div>
           <div className="ml-2 flex items-center space-x-4 sm:ml-6 sm:space-x-6">
+            <VscBellDot className="h-6 w-6 text-gray-400" />
+            <BsFillChatFill className="h-6 w-6 text-gray-400" />
             <Menu as="div" className="relative flex-shrink-0">
               {({ open }) => (
                 <>
@@ -57,8 +59,8 @@ const Searchbar = ({ setMobileMenuOpen }) => {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80"
-                        alt=""
+                        src={user?.profilePic}
+                        alt={user?.name}
                       />
                     </Menu.Button>
                   </div>
@@ -76,21 +78,14 @@ const Searchbar = ({ setMobileMenuOpen }) => {
                       static
                       className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                     >
-                      {userNavigation.map((item) => (
-                        <Menu.Item key={item.name}>
-                          {({ active }) => (
-                            <a
-                              href={item.href}
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
-                              )}
-                            >
-                              {item.name}
-                            </a>
-                          )}
-                        </Menu.Item>
-                      ))}
+                      <Menu.Item>
+                        <a
+                          className="block px-4 py-2 text-sm text-gray-700"
+                          onClick={() => logoutUser()}
+                        >
+                          Log out
+                        </a>
+                      </Menu.Item>
                     </Menu.Items>
                   </Transition>
                 </>

@@ -7,6 +7,21 @@ import Dropdown from "./DropDown.component";
 import axios from "axios";
 import baseURL from "../../utils/baseURL";
 
+const specialities = [
+  "Dentist",
+  "Gynecologist",
+  "General Physician",
+  "Dermatologist",
+  "Ear-nose-throat (ent) Specialist",
+  "Homoepath",
+  "Ayurveda",
+  "Cardiologist",
+  "Neurologist",
+  "Orthopedic",
+  "Dietician",
+  "Physiotherapist",
+];
+
 const DoctorProfileForm = () => {
   const router = useRouter();
   const { token } = router.query;
@@ -18,16 +33,9 @@ const DoctorProfileForm = () => {
     pincode: "",
   });
 
-  const { streetAdd, city, state, pincode } = address;
+  const [experience, setExperience] = useState("");
 
-  const [degree, setDegree] = useState({
-    name: "",
-    from: "",
-    to: "",
-    university: "",
-  });
-
-  const { name, from, to, university } = degree;
+  const [speciality, setSpeciality] = useState(specialities[0]);
 
   const [image, setImage] = useState(null);
 
@@ -54,6 +62,8 @@ const DoctorProfileForm = () => {
     "MS Dermatology, Venerology and Leprosy",
   ]);
 
+  const { streetAdd, city, state, pincode } = address;
+
   const [addedproficiencies, setAddedProficiencies] = useState([]);
 
   const removeProficiency = (value) => {
@@ -67,13 +77,6 @@ const DoctorProfileForm = () => {
 
   const handleAddress = (e) => {
     setAddress((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleDegree = (e) => {
-    setDegree((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
@@ -97,7 +100,8 @@ const DoctorProfileForm = () => {
 
     const formdata = new FormData();
     formdata.append("image", image);
-    formdata.append("degree", JSON.stringify(degree));
+    formdata.append("experience", experience);
+    formdata.append("speciality", speciality);
     formdata.append("address", JSON.stringify(address));
     formdata.append("document", document);
     formdata.append("proficiencies", JSON.stringify(addedproficiencies));
@@ -108,10 +112,7 @@ const DoctorProfileForm = () => {
         city === "" ||
         state === "" ||
         pincode === "" ||
-        name === "" ||
-        to === "" ||
-        from === "" ||
-        university === ""
+        experience === ""
       ) {
         toast.error("Please enter all the details");
       } else if (addedproficiencies.length === 0) {
@@ -139,70 +140,78 @@ const DoctorProfileForm = () => {
           <div class="px-4 py-5 bg-white sm:p-6">
             <div class="col-span-6">
               <label
-                htmlFor="street-address"
-                class="block text-sm font-medium text-gray-700"
+                htmlFor="postal-code"
+                className="block text-lg my-2 font-medium text-gray-700"
               >
-                Street address
+                Clinic Address
               </label>
-              <input
-                type="text"
-                name="streetAdd"
-                value={streetAdd}
-                onChange={handleAddress}
-                id="street-address"
-                autoComplete="street-address"
-                class="mt-1 p-2 block border w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-              />
+              <div>
+                <label
+                  htmlFor="street-address"
+                  class="block text-sm font-medium text-gray-700"
+                >
+                  Street address
+                </label>
+                <input
+                  type="text"
+                  name="streetAdd"
+                  value={streetAdd}
+                  onChange={handleAddress}
+                  id="street-address"
+                  autoComplete="street-address"
+                  class="mt-1 p-2 block border w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                />
 
-              <div class="grid grid-cols-3 gap-3 my-4">
-                <div>
-                  <label
-                    htmlFor="city"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    City
-                  </label>
-                  <input
-                    type="text"
-                    name="city"
-                    value={city}
-                    onChange={handleAddress}
-                    id="city"
-                    className="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="state"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    State / Province
-                  </label>
-                  <input
-                    type="text"
-                    name="state"
-                    value={state}
-                    onChange={handleAddress}
-                    id="state"
-                    className="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="postal-code"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Pincode
-                  </label>
-                  <input
-                    type="text"
-                    name="pincode"
-                    value={pincode}
-                    onChange={handleAddress}
-                    id="postal-code"
-                    autoComplete="postal-code"
-                    className="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
-                  />
+                <div class="grid grid-cols-3 gap-3 my-4">
+                  <div>
+                    <label
+                      htmlFor="city"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      City
+                    </label>
+                    <input
+                      type="text"
+                      name="city"
+                      value={city}
+                      onChange={handleAddress}
+                      id="city"
+                      className="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="state"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      State / Province
+                    </label>
+                    <input
+                      type="text"
+                      name="state"
+                      value={state}
+                      onChange={handleAddress}
+                      id="state"
+                      className="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="postal-code"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Pincode
+                    </label>
+                    <input
+                      type="text"
+                      name="pincode"
+                      value={pincode}
+                      onChange={handleAddress}
+                      id="postal-code"
+                      autoComplete="postal-code"
+                      className="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -215,119 +224,68 @@ const DoctorProfileForm = () => {
                 Degree Details
               </label>
 
-              <div>
-                <div className="my-4">
-                  <label
-                    htmlFor="postal-code"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Degree Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={name}
-                    onChange={handleDegree}
-                    id="postal-code"
-                    autoComplete="postal-code"
-                    className="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-10">
-                  <div>
-                    <label
-                      htmlFor="postal-code"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      From
-                    </label>
-                    <input
-                      type="date"
-                      name="from"
-                      value={from}
-                      onChange={handleDegree}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="postal-code"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      To
-                    </label>
-                    <input
-                      type="date"
-                      name="to"
-                      value={to}
-                      onChange={handleDegree}
-                    />
-                  </div>
-                </div>
-                <div className="my-6">
-                  <label
-                    htmlFor="postal-code"
-                    class="block text-sm font-medium text-gray-700"
-                  >
-                    University
-                  </label>
-                  <input
-                    type="text"
-                    name="university"
-                    value={university}
-                    onChange={handleDegree}
-                    id="postal-code"
-                    autoComplete="postal-code"
-                    className="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
-                  />
-                </div>
+              <div className="flex flex-wrap  space-x-2 pb-2 mt-4">
+                {addedproficiencies?.length > 0 ? (
+                  addedproficiencies?.map((added) => (
+                    <div className="border flex my-2 justify-between items-center border-gray-500 rounded-full px-3 py-1 text-gray-500">
+                      {added}
+                      <button onClick={() => removeProficiency(added)}>
+                        <ImCross className="mx-2 font-sm" />
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <h1 className="text-md  py-2">Please add degree</h1>
+                )}
               </div>
-            </div>
+              <Dropdown
+                proficiences={proficiences}
+                setProficiencies={setProficiencies}
+                addedproficiencies={addedproficiencies}
+                setAddedProficiencies={setAddedProficiencies}
+              />
+              <div className="mt-4">
+                <label
+                  htmlFor="postal-code"
+                  className="block text-md font-medium text-gray-700"
+                >
+                  Years of Experience
+                </label>
 
-            <div className="">
-              <div className="flex justify-between my-3 items-center">
                 <input
-                  type="file"
-                  onChange={(e) => setImage(e.target.files[0])}
-                />
-                <img
-                  src={
-                    image
-                      ? URL.createObjectURL(image)
-                      : "https://solangvalleyresorts.com/wp-content/uploads/2019/03/gravatar-60-grey.jpg"
-                  }
-                  className="h-28 w-28 rounded-full"
+                  type="text"
+                  name="experience"
+                  value={experience}
+                  onChange={(e) => setExperience(e.target.value)}
+                  className="mt-2 p-2 block border w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded shadow-sm">
-          <h3 className="text-gray-700 text-center font-semibold text-lg">
-            Select your proficiencies
-          </h3>
+        <div className="px-4 py-5 bg-white sm:p-6 shadow rounded-md">
+          <label
+            htmlFor="postal-code"
+            className="block text-lg my-2 font-medium text-gray-700"
+          >
+            Select Speciality
+          </label>
 
-          <div className="flex flex-wrap justify-center space-x-2 mx-4 mt-6">
-            {addedproficiencies?.length > 0 ? (
-              addedproficiencies?.map((added) => (
-                <div className="border flex my-2 justify-between items-center border-gray-500 rounded-full px-3 py-1 text-gray-500">
-                  {added}
-                  <button onClick={() => removeProficiency(added)}>
-                    <ImCross className="mx-2 font-sm" />
-                  </button>
-                </div>
-              ))
-            ) : (
-              <h1>Please add degree</h1>
-            )}
+          <div className="">
+            <select
+              className="w-full py-2 rounded-md px-4 border border-gray-500 text-gray-500"
+              name="speciality"
+              value={speciality}
+              onChange={(e) => {
+                setSpeciality(e.target.value);
+              }}
+            >
+              {specialities?.map((specialityAv) => (
+                <option value={specialityAv}>{specialityAv}</option>
+              ))}
+            </select>
           </div>
-          <Dropdown
-            proficiences={proficiences}
-            setProficiencies={setProficiencies}
-            addedproficiencies={addedproficiencies}
-            setAddedProficiencies={setAddedProficiencies}
-          />
-
           <div className="my-4">
             <h2 className="font-semibold text-xl my-2 text-gray-700">
               Enter the following documents for verification
@@ -343,6 +301,18 @@ const DoctorProfileForm = () => {
               type="file"
               onChange={(e) => setDocument(e.target.files[0])}
               className="my-2"
+            />
+          </div>
+
+          <div className="flex justify-between my-3 items-center">
+            <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+            <img
+              src={
+                image
+                  ? URL.createObjectURL(image)
+                  : "https://solangvalleyresorts.com/wp-content/uploads/2019/03/gravatar-60-grey.jpg"
+              }
+              className="h-28 w-28 rounded-full"
             />
           </div>
 
