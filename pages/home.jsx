@@ -1,4 +1,5 @@
 import { XCircleIcon, VideoCameraIcon } from "@heroicons/react/solid";
+import Header from "../components/home/Header.component";
 
 const people = [
   {
@@ -43,26 +44,11 @@ const people = [
   },
 ];
 
-const Home = () => {
+const Home = ({ user }) => {
   return (
     <div>
-      <section className="bg-blue-50 py-12 flex justify-around items-center">
-        <div className="flex">
-          <input
-            type="text"
-            placeholder="Location"
-            className="p-2 border border-gray-400 rounded-sm"
-          />
-          <input
-            type="text"
-            placeholder="Search for doctor/specialist"
-            className="border border-gray-400 pl-2 pr-8 rounded-sm"
-          />
-          <button className="bg-blue-500 px-4 shadow-md text-white rounded-sm">
-            Search
-          </button>
-        </div>
-      </section>
+      {console.log(user)}
+      <Header />
 
       <div className="mx-12 my-8">
         <h2 className="text-blue-600 text-2xl mt-4 mb-6 font-semibold my-2">
@@ -70,10 +56,7 @@ const Home = () => {
         </h2>
         <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {people.map((person) => (
-            <li
-              key={person.email}
-              className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200"
-            >
+            <li className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200">
               <div className="w-full flex justify-between p-6 space-x-6">
                 <div className="flex-1 truncate">
                   <div className="flex items-center space-x-3">

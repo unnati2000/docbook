@@ -19,7 +19,7 @@ function classNames(...classes) {
 const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
   return (
     <>
-      <div className="hidden min-h-screen w-28 bg-blue-700 overflow-y-auto md:block">
+      <div className="hidden min-h-screen w-28  bg-blue-700 overflow-y-auto md:block">
         <div className="w-full py-6 flex flex-col items-center">
           <div className="flex-shrink-0 flex items-center">
             <img

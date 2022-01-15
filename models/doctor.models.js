@@ -99,6 +99,18 @@ const doctorSchema = new mongoose.Schema(
       },
     },
 
+    description: {
+      type: String,
+    },
+    timeSlots: {
+      monday: [String],
+      tuesday: [String],
+      wednesday: [String],
+      thursday: [String],
+      friday: [String],
+      saturday: [String],
+      sunday: [String],
+    },
     rating: {
       type: Number,
       min: 0,

@@ -17,6 +17,7 @@ nextApp.prepare().then(() => {
   app.use("/api/auth", require("./api/auth.api"));
   app.use("/api/onboarding", require("./api/onboarding.api"));
   app.use("/api/doctor", require("./api/doctor.api"));
+  app.use("/api/search", require("./api/search.api"));
   app.all("*", (req, res) => handle(req, res));
   server.listen(PORT, (err) => {
     if (err) {
