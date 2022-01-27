@@ -20,8 +20,6 @@ router.get("/:id", auth, async (req, res) => {
       return res.status(400).json({ msg: "Doctor not found" });
     }
 
-    console.log(doctor);
-
     return res.status(200).json(doctor);
   } catch (error) {
     console.error(error);
@@ -32,6 +30,8 @@ router.get("/:id", auth, async (req, res) => {
 router.post("/", auth, async (req, res) => {
   try {
     let doctor = await Doctor.findOne({ user: req.userId });
+
+    let minutes, hour;
 
     if (!doctor) {
       return res.status(400).json({
@@ -92,13 +92,6 @@ router.post("/", auth, async (req, res) => {
     doctor.timings.friday.to = req.body.friday.to;
     doctor.timings.friday.from = req.body.friday.from;
     doctor.timings.friday.markAsHoliday = req.body.friday.markAsHoliday;
-
-    console.log(
-      calculate_time_slot(
-        parseTime(req.body.friday.from),
-        parseTime(req.body.friday.to)
-      )
-    );
     doctor.timeSlots.friday =
       req.body.friday.markAsHoliday === false &&
       calculate_time_slot(

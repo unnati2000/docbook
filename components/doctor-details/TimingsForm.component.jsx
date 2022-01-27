@@ -2,6 +2,7 @@ const TimingsForm = ({ day, timing, changeTiming }) => {
   return (
     <div className="my-2">
       <h2>{day}</h2>
+
       <div className="flex justify-between items-center space-x-4">
         <input
           type="time"
