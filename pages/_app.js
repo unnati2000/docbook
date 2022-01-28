@@ -50,7 +50,8 @@ MyApp.getInitialProps = async ({ ctx }) => {
     ctx.pathname === "/charts" ||
     ctx.pathname === "/settings" ||
     ctx.pathname === "/search" ||
-    ctx.pathname === "/doctor/[id]";
+    ctx.pathname === "/doctor/[id]" ||
+    ctx.pathname === "/dashboard";
 
   const availableForEveryone =
     ctx.pathname === "/home" ||
@@ -59,7 +60,7 @@ MyApp.getInitialProps = async ({ ctx }) => {
 
   if (!token) {
     destroyCookie(ctx, "token");
-    // Redirect to login if user is trying to access protected routes
+
     protectedRoutes && redirectUser(ctx, "/signin");
   } else {
     try {

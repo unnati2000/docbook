@@ -23,6 +23,8 @@ const Doctor = () => {
 
   const { data } = useQuery(["doctors", id], () => getDoctorDetails(id));
 
+  console.log(data);
+
   return (
     <div className="bg-gray-100">
       <section className="grid my-12 mx-8 grid-cols-3 gap-4">

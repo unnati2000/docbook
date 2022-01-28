@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import cookie from "js-cookie";
 import baseURL from "../utils/baseURL";
 import axios from "axios";
-
 import TimingsForm from "../components/doctor-details/TimingsForm.component";
 
 const DoctorDetails = ({ user }) => {

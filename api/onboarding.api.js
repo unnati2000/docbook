@@ -13,8 +13,6 @@ router.post("/:token", onboardingUpload, async (req, res) => {
 
     const { streetAdd, city, state, pincode } = JSON.parse(req.body.address);
 
-    console.log(req.body);
-
     const verificationToken = crypto
       .createHash("sha256")
       .update(token)

@@ -26,22 +26,13 @@ const Address = ({ doctor }) => {
           <h2 className="text-blue-500 text-lg">From</h2>
         </section>
 
-        {/* {Object.entries(doctor?.timings).forEach(([key, value]) => (
-          <section className="flex  justify-center space-x-6">
-            {JSON.stringify(key, value)}
-            <h2 className="text-gray-500 ">{key}</h2>
-            <h2>{value.markAsHoliday ? "-" : value?.from}</h2>
-            <h2>{value.markAsHoliday ? "-" : value?.to}</h2>
-          </section>
-        ))} */}
-
-        {Object.entries(doctor.timings).map(([key, value]) => (
+        {/* {Object.entries(doctor.timings).map(([key, value]) => (
           <section className="flex  justify-start space-x-6">
             <h2 className="text-gray-500 ">{key}</h2>
             <h2>{value.markAsHoliday ? "-" : value?.from}</h2>
             <h2>{value.markAsHoliday ? "-" : value?.to}</h2>
           </section>
-        ))}
+        ))} */}
 
         {console.log(doctor)}
       </div>

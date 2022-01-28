@@ -13,7 +13,7 @@ const {
 router.get("/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
+
     const doctor = await Doctor.findOne({ user: id }).populate("user");
 
     if (!doctor) {
