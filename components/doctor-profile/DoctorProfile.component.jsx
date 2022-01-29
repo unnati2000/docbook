@@ -17,7 +17,7 @@ const DoctorProfile = ({ doctor }) => {
             </h1>
             <div>
               {doctor?.proficiencies?.map((proficiency) => (
-                <h3 className="text-sm text-gray-500">{proficiency}</h3>
+                <h3 className="text-sm text-gray-500" key={proficiency}>{proficiency}</h3>
               ))}
             </div>
 

@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const User = require("./models/user.models");
 const Doctor = require("./models/doctor.models");
+const Appointment = require("./models/appointment.models")
+
 
 dotenv.config({ path: "./config.env" });
 
@@ -278,6 +280,37 @@ const doctors = [
   },
 ];
 
+const appt = [{
+  doctor:"61f4e21bf5120e98633154d3",
+  user:"61f50effd3846cce5c7b1a5b",
+  date:"29-01-2022",
+  fee:200,
+  timeSlot:"18:17",
+  day:"saturday"
+}, {
+  doctor:"61f4e21bf5120e98633154d3",
+  user:"61f50effd3846cce5c7b1a5b",
+  date:"31-01-2022",
+  fee:200,
+  timeSlot:"11:47",
+  day:"monday"
+},  {
+  doctor:"61f4e21bf5120e98633154d3",
+  user:"61f50effd3846cce5c7b1a5b",
+  date:"01-02-2022",
+  fee:200,
+  timeSlot:"13:46",
+  day:"tuesday"
+},  {
+  doctor:"61f4e21bf5120e98633154d3",
+  user:"61f50effd3846cce5c7b1a5b",
+  date:"03-02-2022",
+  fee:200,
+  timeSlot:"10:45",
+  day:"thursday"
+}]
+
+
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -285,7 +318,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 const importData = async () => {
   try {
-    await Doctor.create(doctors);
+    await Appointment.create(appt);
     console.log("Data imported");
     process.exit();
   } catch (error) {
@@ -297,7 +330,7 @@ const deleteData = async () => {
   try {
     await User.deleteMany();
     process.exit();
-    console.log("deleted");
+   
   } catch (error) {
     console.log(error);
   }
