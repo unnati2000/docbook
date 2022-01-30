@@ -1,16 +1,16 @@
-import { useState } from "react";
-import { registerUser } from "../utils/auth.utils";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
-import { AiOutlineLoading } from "react-icons/ai";
-import Link from "next/link";
+import { useState } from 'react';
+import { registerUser } from '../utils/auth.utils';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import { AiOutlineLoading } from 'react-icons/ai';
+import Link from 'next/link';
 
 function SignUp() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState('');
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ function SignUp() {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      toast.error("Password and confirm password must be same");
+      toast.error('Password and confirm password must be same');
     } else {
       await registerUser(
         { name, email, password, role },
@@ -75,10 +75,11 @@ function SignUp() {
                     <div>
                       <input
                         type="radio"
+                        name="role"
                         id="doctor"
-                        checked={role === "doctor"}
+                        checked={role === 'doctor'}
                         value="doctor"
-                        onClick={() => setRole("doctor")}
+                        onChange={() => setRole('doctor')}
                         className="mr-1"
                       />
                       <label htmlFor="html">Doctor</label>
@@ -86,10 +87,11 @@ function SignUp() {
                     <div>
                       <input
                         type="radio"
+                        name="role"
                         id="patient"
-                        checked={role === "patient"}
+                        checked={role === 'patient'}
                         value="patient"
-                        onClick={() => setRole("patient")}
+                        onChange={() => setRole('patient')}
                         className="mr-1"
                       />
                       <label htmlFor="patient">Patient</label>
@@ -148,7 +150,7 @@ function SignUp() {
                   </label>
                   <div className="mt-1">
                     <input
-                      id="password"
+                      id="confirm-password"
                       name="confirmPassword"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
@@ -162,12 +164,11 @@ function SignUp() {
 
                 <div className="text-center">
                   <p className="flex justify-center">
-                    Already have an account?{" "}
+                    Already have an account?{' '}
                     <Link href="/signin" className="text-blue-500">
-                      <p className="text-blue-500 mx-2 font-semibold">
-                        {" "}
+                      <a className="text-blue-500 mx-2 font-semibold">
                         Sign In
-                      </p>
+                      </a>
                     </Link>
                   </p>
                 </div>

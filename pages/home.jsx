@@ -1,46 +1,50 @@
-import { XCircleIcon, VideoCameraIcon } from "@heroicons/react/solid";
-import Header from "../components/home/Header.component";
+import { XCircleIcon, VideoCameraIcon } from '@heroicons/react/solid';
+import Header from '../components/home/Header.component';
 
 const people = [
   {
-    name: "Jane Cooper",
-    title: "BDS",
-    time: "1:30PM-2:00PM",
-    day: "Sun 12/2/2022",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
+    id: 1,
+    name: 'Jane Cooper',
+    title: 'BDS',
+    time: '1:30PM-2:00PM',
+    day: 'Sun 12/2/2022',
+    email: 'janecooper@example.com',
+    telephone: '+1-202-555-0170',
     imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
   },
   {
-    name: "Jane Cooper",
-    title: "BDS",
-    time: "1:30PM-2:00PM",
-    day: "Sun 12/2/2022",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
+    id: 2,
+    name: 'Jane Cooper',
+    title: 'BDS',
+    time: '1:30PM-2:00PM',
+    day: 'Sun 12/2/2022',
+    email: 'janecooper@example.com',
+    telephone: '+1-202-555-0170',
     imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
   },
   {
-    name: "Jane Cooper",
-    title: "BDS",
-    time: "1:30PM-2:00PM",
-    day: "Sun 12/2/2022",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
+    id: 3,
+    name: 'Jane Cooper',
+    title: 'BDS',
+    time: '1:30PM-2:00PM',
+    day: 'Sun 12/2/2022',
+    email: 'janecooper@example.com',
+    telephone: '+1-202-555-0170',
     imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
   },
   {
-    name: "Jane Cooper",
-    title: "BDS",
-    time: "1:30PM-2:00PM",
-    day: "Sun 12/2/2022",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
+    id: 4,
+    name: 'Jane Cooper',
+    title: 'BDS',
+    time: '1:30PM-2:00PM',
+    day: 'Sun 12/2/2022',
+    email: 'janecooper@example.com',
+    telephone: '+1-202-555-0170',
     imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
   },
 ];
 
@@ -56,7 +60,10 @@ const Home = ({ user }) => {
         </h2>
         <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {people.map((person) => (
-            <li className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200">
+            <li
+              key={person.id}
+              className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200"
+            >
               <div className="w-full flex justify-between p-6 space-x-6">
                 <div className="flex-1 truncate">
                   <div className="flex items-center space-x-3">

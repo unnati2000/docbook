@@ -1,26 +1,26 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { Hydrate } from "react-query/hydration";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { ToastContainer } from "react-toastify";
-import { useQuery } from "react-query";
-import { parseCookies, destroyCookie } from "nookies";
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Hydrate } from 'react-query/hydration';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { ToastContainer } from 'react-toastify';
+import { useQuery } from 'react-query';
+import { parseCookies, destroyCookie } from 'nookies';
 
-import Layout from "../components/Layout.components";
-import "tailwindcss/tailwind.css";
+import Layout from '../components/Layout.components';
+import 'tailwindcss/tailwind.css';
 
-import baseURL from "../utils/baseURL";
-import { redirectUser } from "../utils/auth.utils";
-import "react-toastify/dist/ReactToastify.css";
+import baseURL from '../utils/baseURL';
+import { redirectUser } from '../utils/auth.utils';
+import 'react-toastify/dist/ReactToastify.css';
 
 function MyApp({ Component, pageProps, user }) {
   const [queryClient] = useState(() => new QueryClient());
 
   useEffect(() => {
-    if (user?.role === "doctor") {
-      if (user?.doctor === "") {
-        Router.push("/doctor-details");
+    if (user?.role === 'doctor') {
+      if (user?.doctor === '') {
+        Router.push('/doctor-details');
       }
     }
   }, [user]);
@@ -43,25 +43,25 @@ MyApp.getInitialProps = async ({ ctx }) => {
   let pageProps = {};
 
   const protectedRoutes =
-    ctx.pathname === "/history" ||
-    ctx.pathname === "/doctors" ||
-    ctx.pathname === "/advanced-search" ||
-    ctx.pathname === "/doctor-details" ||
-    ctx.pathname === "/charts" ||
-    ctx.pathname === "/settings" ||
-    ctx.pathname === "/search" ||
-    ctx.pathname === "/doctor/[id]" ||
-    ctx.pathname === "/dashboard";
+    ctx.pathname === '/history' ||
+    ctx.pathname === '/doctors' ||
+    ctx.pathname === '/advanced-search' ||
+    ctx.pathname === '/doctor-details' ||
+    ctx.pathname === '/charts' ||
+    ctx.pathname === '/settings' ||
+    ctx.pathname === '/search' ||
+    ctx.pathname === '/doctor/[id]' ||
+    ctx.pathname === '/dashboard';
 
   const availableForEveryone =
-    ctx.pathname === "/home" ||
-    ctx.pathname === "/forgot-password" ||
-    ctx.pathname === "/test";
+    ctx.pathname === '/home' ||
+    ctx.pathname === '/forgot-password' ||
+    ctx.pathname === '/test';
 
   if (!token) {
-    destroyCookie(ctx, "token");
+    destroyCookie(ctx, 'token');
 
-    protectedRoutes && redirectUser(ctx, "/signin");
+    protectedRoutes && redirectUser(ctx, '/signin');
   } else {
     try {
       console.log("token", token);
@@ -72,12 +72,12 @@ MyApp.getInitialProps = async ({ ctx }) => {
       const { user } = res.data;
 
       if (user && !availableForEveryone) {
-        !protectedRoutes && redirectUser(ctx, "/home");
+        !protectedRoutes && redirectUser(ctx, '/home');
       }
       pageProps.user = user;
     } catch (err) {
-      destroyCookie(ctx, "token");
-      redirectUser(ctx, "/signin");
+      destroyCookie(ctx, 'token');
+      redirectUser(ctx, '/signin');
     }
   }
   return { pageProps };

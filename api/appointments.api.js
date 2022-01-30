@@ -24,18 +24,4 @@ router.get("/:id", auth, async (req, res) => {
   }
 });
 
-router.post("/", auth, async (req, res) => {
-  try {
-    const user = await User.findById(req.body.doctor);
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
-    const appointment = await Appointment.create(req.body);
-    res.status(200).json(appointment);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ msg: "Server error" });
-  }
-});
-
 module.exports = router;
