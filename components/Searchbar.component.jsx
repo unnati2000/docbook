@@ -1,15 +1,15 @@
-import { Fragment } from "react";
-import { useState } from "react";
-import { Menu, Transition } from "@headlessui/react";
-import { BsFillChatFill } from "react-icons/bs";
-import { VscBellDot, VscBell } from "react-icons/vsc";
-import { MenuAlt2Icon } from "@heroicons/react/outline";
-import { logoutUser } from "../utils/auth.utils";
-import { SearchIcon } from "@heroicons/react/solid";
+import { Fragment } from 'react';
+import { useState } from 'react';
+import { Menu, Transition } from '@headlessui/react';
+import { BsFillChatFill } from 'react-icons/bs';
+import { VscBellDot, VscBell } from 'react-icons/vsc';
+import { MenuAlt2Icon } from '@heroicons/react/outline';
+import { logoutUser } from '../utils/auth.utils';
+import { SearchIcon } from '@heroicons/react/solid';
 
 const Searchbar = ({ user, setMobileMenuOpen }) => {
   const [doctors, setDoctors] = useState([]);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
   return (
     <header className="w-full">
@@ -58,7 +58,7 @@ const Searchbar = ({ user, setMobileMenuOpen }) => {
                     <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                       <span className="sr-only">Open user menu</span>
                       <img
-                        className="h-8 w-8 rounded-full"
+                        className="h-8 w-8 rounded-full object-cover"
                         src={user?.profilePic}
                         alt={user?.name}
                       />

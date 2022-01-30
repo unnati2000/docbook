@@ -1,74 +1,28 @@
-import axios from "axios";
-import Link from "next/link";
-import { memo } from "react";
-import { useQuery } from "react-query";
-import { useRouter } from "next/router";
-import { AiFillStar } from "react-icons/ai";
-import { FaStarHalf } from "react-icons/fa";
-import cookie from "js-cookie";
-import baseURL from "../utils/baseURL";
+import axios from 'axios';
+import Link from 'next/link';
+import { memo } from 'react';
+import { useQuery, QueryClient } from 'react-query';
+import { dehydrate } from 'react-query/hydration';
+import { useRouter } from 'next/router';
+import { AiFillStar } from 'react-icons/ai';
+import { FaStarHalf } from 'react-icons/fa';
+import baseURL from '../utils/baseURL';
 
-const docs = [
-  {
-    photo:
-      "https://media.istockphoto.com/photos/portrait-of-confident-young-medical-doctor-on-blue-background-picture-id1161336374?k=20&m=1161336374&s=612x612&w=0&h=ER2Gs06udn4kBPUy8SwLQR2su0GsRWe0kRHZvDbcQCc=",
-    name: "Dr Sharma",
-    degree: "MBBS",
-    initialFee: 400,
-    rating: 4,
-    location: "Chennai",
-  },
-  {
-    photo:
-      "https://media.istockphoto.com/photos/portrait-of-confident-young-medical-doctor-on-blue-background-picture-id1161336374?k=20&m=1161336374&s=612x612&w=0&h=ER2Gs06udn4kBPUy8SwLQR2su0GsRWe0kRHZvDbcQCc=",
-    name: "Dr Sharma",
-    degree: "MBBS",
-    initialFee: 400,
-    rating: 4,
-    location: "Chennai",
-  },
-  {
-    photo:
-      "https://media.istockphoto.com/photos/portrait-of-confident-young-medical-doctor-on-blue-background-picture-id1161336374?k=20&m=1161336374&s=612x612&w=0&h=ER2Gs06udn4kBPUy8SwLQR2su0GsRWe0kRHZvDbcQCc=",
-    name: "Dr Sharma",
-    degree: "MBBS",
-    initialFee: 400,
-    rating: 4,
-    location: "Chennai",
-  },
-  {
-    photo:
-      "https://media.istockphoto.com/photos/portrait-of-confident-young-medical-doctor-on-blue-background-picture-id1161336374?k=20&m=1161336374&s=612x612&w=0&h=ER2Gs06udn4kBPUy8SwLQR2su0GsRWe0kRHZvDbcQCc=",
-    name: "Dr Sharma",
-    degree: "MBBS",
-    initialFee: 400,
-    rating: 4,
-    location: "Chennai",
-  },
-
-  {
-    photo:
-      "https://media.istockphoto.com/photos/portrait-of-confident-young-medical-doctor-on-blue-background-picture-id1161336374?k=20&m=1161336374&s=612x612&w=0&h=ER2Gs06udn4kBPUy8SwLQR2su0GsRWe0kRHZvDbcQCc=",
-    name: "Dr Sharma",
-    degree: "MBBS",
-    initialFee: 400,
-    rating: 4,
-    location: "Chennai",
-  },
-];
+const getDoctorsFromSearch = async (location, speciality) => {
+  const data = await axios.get(
+    `${baseURL}/api/search/${location}/${speciality}`
+  );
+  return data.data;
+};
 
 const Doctors = () => {
   const router = useRouter();
   const { location, speciality } = router.query;
 
-  const { data, error, status } = useQuery("doctors", async () => {
-    const data = await axios.get(
-      `${baseURL}/api/search/${location}/${speciality}`,
-      { headers: { Authorization: cookie.get("token") } }
-    );
-    return data.data;
-  });
-  console.log(data);
+  const { data } = useQuery(['search', location, speciality], () =>
+    getDoctorsFromSearch(location, speciality)
+  );
+
   return (
     <div className="text-center my-8">
       <h2 className="text-blue-500 text-xl text-left mx-8">Search Results</h2>
@@ -76,7 +30,10 @@ const Doctors = () => {
         <h1>Loading!!!!</h1>
       ) : (
         data?.map((doc) => (
-          <div className="border bg-white rounded-md mx-8 my-4 p-8">
+          <div
+            key={doc._id}
+            className="border bg-white rounded-md mx-8 my-4 p-8"
+          >
             <div className="flex items-center justify-between">
               <div className="flex text-left">
                 <img
@@ -92,7 +49,7 @@ const Doctors = () => {
 
                   <h4 className="text-gray-500 text-md ">{doc?.speciality}</h4>
                   <p className="text-gray-500 text-md">
-                    Initial Fee:{" "}
+                    Initial Fee:{' '}
                     <span className="text-blue-500"> ₹{doc?.initialFee}</span>
                   </p>
                 </div>
@@ -117,5 +74,21 @@ const Doctors = () => {
     </div>
   );
 };
+
+export async function getServerSideProps(ctx) {
+  // Get location and speciality from params
+  const { location, speciality } = ctx.query;
+
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(['search', location, speciality], () =>
+    getDoctorsFromSearch(location, speciality)
+  );
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
 
 export default memo(Doctors);

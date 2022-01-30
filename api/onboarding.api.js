@@ -1,26 +1,26 @@
-const express = require("express");
-const crypto = require("crypto");
+const express = require('express');
+const crypto = require('crypto');
 const router = express.Router();
 
-const User = require("../models/user.models");
-const Doctor = require("../models/doctor.models");
+const User = require('../models/user.models');
+const Doctor = require('../models/doctor.models');
 
-const onboardingUpload = require("../middleware/upload.middleware");
+const onboardingUpload = require('../middleware/upload.middleware');
 
-router.post("/:token", onboardingUpload, async (req, res) => {
+router.post('/:token', onboardingUpload, async (req, res) => {
   try {
     const { token } = req.params;
 
     const { streetAdd, city, state, pincode } = JSON.parse(req.body.address);
 
     const verificationToken = crypto
-      .createHash("sha256")
+      .createHash('sha256')
       .update(token)
-      .digest("hex");
+      .digest('hex');
 
     const user = await User.findOne({ verificationToken });
     if (!user) {
-      return res.status(400).json({ msg: "Invalid or expired token" });
+      return res.status(400).json({ msg: 'Invalid or expired token' });
     }
 
     if (req.files) {
@@ -38,11 +38,11 @@ router.post("/:token", onboardingUpload, async (req, res) => {
 
     await user.save();
 
-    if (user.role === "doctor") {
-      if (req.files === undefined) {
+    if (user.role === 'doctor') {
+      if (!req.files) {
         return res
           .status(401)
-          .json({ msg: "Upload profile pic and required documents" });
+          .json({ msg: 'Upload profile pic and required documents' });
       }
 
       const doctor = new Doctor({
@@ -56,10 +56,10 @@ router.post("/:token", onboardingUpload, async (req, res) => {
       await doctor.save();
     }
 
-    res.status(200).json({ msg: "Onboarded successfully" });
+    res.status(200).json({ msg: 'Onboarded successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: "Server error" });
+    res.status(500).json({ msg: 'Server error' });
   }
 });
 

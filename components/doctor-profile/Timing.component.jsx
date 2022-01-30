@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import moment from "moment";
-import cookie from "js-cookie";
-import axios from "axios";
-import { useQuery, QueryClient } from "react-query";
-import { dehydrate } from "react-query/hydration";
-import baseURL from "../../utils/baseURL";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useState, useEffect } from 'react';
+import moment from 'moment';
+import cookie from 'js-cookie';
+import axios from 'axios';
+import { useQuery, QueryClient } from 'react-query';
+import { dehydrate } from 'react-query/hydration';
+import baseURL from '../../utils/baseURL';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 const Timing = ({ doctor }) => {
   const [date, setDate] = useState(moment());
@@ -14,10 +14,10 @@ const Timing = ({ doctor }) => {
   const getAppointments = async (id, date) => {
     const { data } = await axios.get(
       `${baseURL}/api/appointments/${id}?date=${moment(date).format(
-        "DD-MM-YYYY"
+        'DD-MM-YYYY'
       )}`,
       {
-        headers: { Authorization: cookie.get("token") },
+        headers: { Authorization: cookie.get('token') },
       }
     );
 
@@ -25,7 +25,7 @@ const Timing = ({ doctor }) => {
   };
 
   const { data, status } = useQuery(
-    ["appointments", doctor?.user?._id, date],
+    ['appointments', doctor?.user?._id, date],
     () => getAppointments(doctor?.user?._id, date),
     {
       enabled: !!doctor?.user?._id,
@@ -45,13 +45,13 @@ const Timing = ({ doctor }) => {
   }, [data]);
 
   const weekday = [
-    "sunday",
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
+    'sunday',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
   ];
 
   return (
@@ -65,17 +65,19 @@ const Timing = ({ doctor }) => {
         <div className="flex justify-evenly items-center">
           <p
             className={
-              moment(date).isBefore(moment()) && "invisible pointer-events-none"
+              moment(date).isBefore(moment())
+                ? 'invisible pointer-events-none'
+                : ''
             }
-            onClick={() => setDate(moment(date).subtract(1, "days"))}
+            onClick={() => setDate(moment(date).subtract(1, 'days'))}
           >
             <IoIosArrowBack className="text-xl text-blue-500 cursor-pointer" />
           </p>
           <h1 className="text-blue-500 my-4 font-semibold text-lg text-center">
-            {moment(date).format("DD-MM-YYYY")}
+            {moment(date).format('DD-MM-YYYY')}
           </h1>
 
-          <p onClick={() => setDate(moment(date).add(1, "days"))}>
+          <p onClick={() => setDate(moment(date).add(1, 'days'))}>
             <IoIosArrowForward className="text-xl text-blue-500 cursor-pointer" />
           </p>
         </div>
@@ -91,7 +93,7 @@ const Timing = ({ doctor }) => {
                         key={`${day}-${t}`}
                         className="rounded-md px-2 py-1 border border-gray-400 cursor-pointer"
                       >
-                        {t} {console.log(timings)}
+                        {t}
                       </div>
                     )
                 )
@@ -115,8 +117,8 @@ const Timing = ({ doctor }) => {
 export async function getServerSideProps(ctx) {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery(
-    ["appointments", doctor?.user?._id, date],
-    () => getAppointments(doctor?.user?._id, moment(date).format("DD-MM-YYYY")),
+    ['appointments', doctor?.user?._id, date],
+    () => getAppointments(doctor?.user?._id, moment(date).format('DD-MM-YYYY')),
     {
       enabled: !!doctor?.user?._id,
     }
