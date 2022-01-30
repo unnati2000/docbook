@@ -1,25 +1,25 @@
-import { useState } from 'react';
-import { ImCross } from 'react-icons/im';
-import { useRouter } from 'next/router';
-import { useMutation } from 'react-query';
-import { toast } from 'react-toastify';
-import Dropdown from './DropDown.component';
-import axios from 'axios';
-import baseURL from '../../utils/baseURL';
+import { useState } from "react";
+import { ImCross } from "react-icons/im";
+import { useRouter } from "next/router";
+import { useMutation } from "react-query";
+import { toast } from "react-toastify";
+import Dropdown from "./DropDown.component";
+import axios from "axios";
+import baseURL from "../../utils/baseURL";
 
 const specialities = [
-  'Dentist',
-  'Gynecologist',
-  'General Physician',
-  'Dermatologist',
-  'Ear-nose-throat (ent) Specialist',
-  'Homoepath',
-  'Ayurveda',
-  'Cardiologist',
-  'Neurologist',
-  'Orthopedic',
-  'Dietician',
-  'Physiotherapist',
+  "Dentist",
+  "Gynecologist",
+  "General Physician",
+  "Dermatologist",
+  "Ear-nose-throat (ent) Specialist",
+  "Homoepath",
+  "Ayurveda",
+  "Cardiologist",
+  "Neurologist",
+  "Orthopedic",
+  "Dietician",
+  "Physiotherapist",
 ];
 
 const DoctorProfileForm = () => {
@@ -27,13 +27,13 @@ const DoctorProfileForm = () => {
   const { token } = router.query;
 
   const [address, setAddress] = useState({
-    streetAdd: '',
-    city: '',
-    state: '',
-    pincode: '',
+    streetAdd: "",
+    city: "",
+    state: "",
+    pincode: "",
   });
 
-  const [experience, setExperience] = useState('');
+  const [experience, setExperience] = useState("");
 
   const [speciality, setSpeciality] = useState(specialities[0]);
 
@@ -42,24 +42,24 @@ const DoctorProfileForm = () => {
   const [document, setDocument] = useState(null);
 
   const [proficiences, setProficiencies] = useState([
-    'Select your degree',
-    'MBBS',
-    'BDS',
-    'BAMS',
-    'BUMS',
-    'BHMS',
-    'BYNS',
-    'MD Anaesthesiology',
-    'MD Dermatology',
-    'MD Family Medicine',
-    'MD General Medicine',
-    'MD Physiology',
-    'MS ENT',
-    'MS General Surgery',
-    'MS Ophthalmology',
-    'MS Orthopaedics',
-    'MS Obstetrics and Gynaecology',
-    'MS Dermatology, Venerology and Leprosy',
+    "Select your degree",
+    "MBBS",
+    "BDS",
+    "BAMS",
+    "BUMS",
+    "BHMS",
+    "BYNS",
+    "MD Anaesthesiology",
+    "MD Dermatology",
+    "MD Family Medicine",
+    "MD General Medicine",
+    "MD Physiology",
+    "MS ENT",
+    "MS General Surgery",
+    "MS Ophthalmology",
+    "MS Orthopaedics",
+    "MS Obstetrics and Gynaecology",
+    "MS Dermatology, Venerology and Leprosy",
   ]);
 
   const { streetAdd, city, state, pincode } = address;
@@ -88,7 +88,7 @@ const DoctorProfileForm = () => {
       formdata,
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       }
     );
@@ -99,33 +99,34 @@ const DoctorProfileForm = () => {
     e.preventDefault();
 
     const formdata = new FormData();
-    formdata.append('image', image);
-    formdata.append('experience', experience);
-    formdata.append('speciality', speciality);
-    formdata.append('address', JSON.stringify(address));
-    formdata.append('document', document);
-    formdata.append('proficiencies', JSON.stringify(addedproficiencies));
+    formdata.append("image", image);
+    formdata.append("experience", experience);
+    formdata.append("speciality", speciality);
+    formdata.append("address", JSON.stringify(address));
+    formdata.append("document", document);
+    formdata.append("proficiencies", JSON.stringify(addedproficiencies));
 
     try {
       if (
-        streetAdd === '' ||
-        city === '' ||
-        state === '' ||
-        pincode === '' ||
-        experience === ''
+        streetAdd === "" ||
+        city === "" ||
+        state === "" ||
+        pincode === "" ||
+        experience === ""
       ) {
-        toast.error('Please enter all the details');
+        toast.error("Please enter all the details");
       } else if (addedproficiencies.length === 0) {
-        toast.error('Please select your proficiency');
+        toast.error("Please select your proficiency");
       } else {
         const data = await mutation.mutateAsync(formdata);
+
         toast.success(data.msg);
-        router.push('/signin');
+        router.push("/signin");
       }
     } catch (error) {
       console.log(error);
       toast.error(
-        error.response?.data?.msg || 'There was an error. Try again later.'
+        error.response?.data?.msg || "There was an error. Try again later."
       );
     }
   };
@@ -315,7 +316,7 @@ const DoctorProfileForm = () => {
               src={
                 image
                   ? URL.createObjectURL(image)
-                  : 'https://solangvalleyresorts.com/wp-content/uploads/2019/03/gravatar-60-grey.jpg'
+                  : "https://solangvalleyresorts.com/wp-content/uploads/2019/03/gravatar-60-grey.jpg"
               }
               className="h-28 w-28 rounded-full object-cover"
             />

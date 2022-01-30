@@ -24,4 +24,25 @@ router.get("/:id", auth, async (req, res) => {
   }
 });
 
+router.post("/", auth, async (req, res) => {
+  try {
+    const appointment = new Appointment({
+      doctor: req.body.doctor,
+      user: req.body.user,
+      date: req.body.date,
+      timeSlot: req.body.timeSlot,
+      fee: req.body.fee,
+      day: req.body.day,
+    });
+
+    const newAppointment = await appointment.save();
+    res
+      .status(201)
+      .json({ newAppointment, msg: "Appointment created successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
 module.exports = router;

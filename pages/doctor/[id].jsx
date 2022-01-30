@@ -17,7 +17,7 @@ const getDoctorDetails = async (id) => {
   return data;
 };
 
-const Doctor = () => {
+const Doctor = ({ user }) => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -30,7 +30,7 @@ const Doctor = () => {
           <DoctorProfile doctor={data} />
         </div>
         <div className="bg-white col-span-1 rounded-md shadow-sm">
-          <Timing doctor={data} />
+          <Timing doctor={data} user={user} />
         </div>
       </section>
 

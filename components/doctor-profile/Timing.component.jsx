@@ -6,11 +6,13 @@ import { useQuery, QueryClient } from "react-query";
 import { dehydrate } from "react-query/hydration";
 import baseURL from "../../utils/baseURL";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import Modal from "../modal/Modal.component";
 
-const Timing = ({ doctor }) => {
+const Timing = ({ doctor, user }) => {
   const [date, setDate] = useState(moment());
   const [timings, setTimings] = useState([]);
   const [time, setTime] = useState("");
+  const [open, setOpen] = useState(false);
 
   const getAppointments = async (id, date) => {
     const { data } = await axios.get(
@@ -25,7 +27,7 @@ const Timing = ({ doctor }) => {
     return data;
   };
 
-  const { data, status } = useQuery(
+  const { data } = useQuery(
     ["appointments", doctor?.user?._id, date],
     () => getAppointments(doctor?.user?._id, date),
     {
@@ -91,7 +93,7 @@ const Timing = ({ doctor }) => {
                       key={`${day}-${t}`}
                       className={
                         t === time
-                          ? "bg-blue-500 text-white rounded-md px-2 py-1 cursor-pointer"
+                          ? "bg-blue-500 text-white font-semibold rounded-md px-2 py-1 cursor-pointer"
                           : "rounded-md px-2 py-1 border border-gray-400 cursor-pointer"
                       }
                     >
@@ -106,8 +108,20 @@ const Timing = ({ doctor }) => {
         })}
       </div>
 
+      <Modal
+        open={open}
+        user={user}
+        doctor={doctor}
+        time={time}
+        date={date.format("DD-MM-YYYY")}
+        day={weekday[date.isoWeekday()]}
+        setOpen={setOpen}
+      />
       <div className="px-4 mt-4">
-        <button className="bg-blue-500 w-full rounded-md py-1 text-white shadow-md my-2">
+        <button
+          onClick={() => setOpen(true)}
+          className="bg-blue-500 w-full rounded-md py-1 text-white shadow-md my-2"
+        >
           Appointment
         </button>
       </div>
