@@ -64,6 +64,7 @@ MyApp.getInitialProps = async ({ ctx }) => {
     protectedRoutes && redirectUser(ctx, "/signin");
   } else {
     try {
+      console.log("token", token);
       const res = await axios.get(`${baseURL}/api/auth`, {
         headers: { Authorization: token },
       });
