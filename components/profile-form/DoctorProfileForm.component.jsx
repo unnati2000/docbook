@@ -112,7 +112,8 @@ const DoctorProfileForm = () => {
         city === "" ||
         state === "" ||
         pincode === "" ||
-        experience === ""
+        experience === "" ||
+        image === null
       ) {
         toast.error("Please enter all the details");
       } else if (addedproficiencies.length === 0) {
@@ -297,11 +298,9 @@ const DoctorProfileForm = () => {
               Enter the following documents for verification
             </h2>
             <ol className="my-2">
-              <li className="font-semibold text-gray-600">Aadhar Card</li>
-              <li className="font-semibold text-gray-600">
-                Your respective degree
-              </li>
-              <li className="font-semibold text-gray-600">Practice License</li>
+              <li className="text-gray-500">1) Aadhar Card</li>
+              <li className="text-gray-500">2) Your respective degree</li>
+              <li className="text-gray-500">3) Practice License</li>
             </ol>
             <input
               type="file"
@@ -311,7 +310,15 @@ const DoctorProfileForm = () => {
           </div>
 
           <div className="flex justify-between my-3 items-center">
-            <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+            <div>
+              <h1 className="my-2 text-lg text-gray-700 font-semibold">
+                Upload profile pic
+              </h1>
+              <input
+                type="file"
+                onChange={(e) => setImage(e.target.files[0])}
+              />
+            </div>
             <img
               src={
                 image
@@ -324,7 +331,7 @@ const DoctorProfileForm = () => {
 
           <button
             type="submit"
-            className="bg-blue-600 w-full py-1 rounded shadow-md text-white font-semibold"
+            className="bg-blue-600 w-full py-1 my-8 rounded shadow-md text-white font-semibold"
           >
             Submit
           </button>

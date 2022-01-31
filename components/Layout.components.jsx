@@ -3,7 +3,13 @@ import { useRouter } from "next/router";
 import Navbar from "./Navbar.component";
 import Searchbar from "./Searchbar.component";
 
-const routesArray = ["/signup", "/signin", "/", "/onboarding/[role]/[token]"];
+const routesArray = [
+  "/signup",
+  "/signin",
+  "/",
+  "/onboarding/[role]/[token]",
+  "/forgot-password",
+];
 
 const Layout = ({ user, children }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

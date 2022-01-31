@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { ToastContainer } from "react-toastify";
+import Footer from "../components/footer/Footer.component";
 import Link from "next/link";
 
 function Landing() {
@@ -172,14 +173,6 @@ function Landing() {
                   Search for the suitable doctors and book an appointment today!
                   Wanna guide click on the Tour button fr the same
                 </p>
-                <div className="flex space-x-8 justify-center  max-w-md mx-auto text-base text-gray-600 sm:text-lg md:mt-12 md:text-xl md:max-w-3xl">
-                  <button className="py-2 px-8 w-1/4 bg-blue-600 text-white rounded">
-                    Search for doctors
-                  </button>
-                  <button className="py-2 px-8 w-1/4 bg-blue-100 text-blue-600 rounded">
-                    Take a Tour
-                  </button>
-                </div>
               </div>
             </div>
           </div>
@@ -200,9 +193,7 @@ function Landing() {
         </div>
       </div>
       <div className="bg-gray-800">
-        <h1 className="text-center text-3xl font-semibold text-gray-100 py-5">
-          Docbook
-        </h1>
+        <Footer />
       </div>
     </div>
   );
