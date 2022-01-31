@@ -39,7 +39,7 @@ router.get("/today", auth, async (req, res) => {
     const appointments = await Appointment.find({
       doctor: req.userId,
       date: moment().format("DD-MM-YYYY"),
-    });
+    }).populate("user");
 
     console.log("today", appointments);
 
@@ -61,7 +61,7 @@ router.get("/unchecked", auth, async (req, res) => {
     const appointments = await Appointment.find({
       doctor: req.userId,
       confirmed: false,
-    });
+    }).populate("user");
 
     console.log("unchecked", appointments);
 
@@ -69,6 +69,34 @@ router.get("/unchecked", auth, async (req, res) => {
   } catch (error) {
     console.log(error);
 
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+router.put("/", auth, async (req, res) => {
+  try {
+    console.log("idhar hi hu");
+    const user = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    const appointment = await Appointment.findById(req.body.id);
+
+    if (req.body.status === "confirm") {
+      appointment.confirmed = true;
+    } else if (req.body.status === "cancel") {
+      appointment.cancelled = true;
+    }
+
+    const updatedAppointment = await appointment.save();
+
+    res
+      .status(200)
+      .json({ updatedAppointment, msg: "Appointment updated successfully" });
+  } catch (error) {
+    console.log(error);
     res.status(500).json({ msg: "Server error" });
   }
 });
