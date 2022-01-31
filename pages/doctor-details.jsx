@@ -128,7 +128,6 @@ const DoctorDetails = ({ user }) => {
     if (saturday.markAsHoliday === true) {
       setSaturday({ ...saturday, from: "", to: "" });
     }
-    console.log(sunday, monday, tuesday, wednesday, thursday, friday, saturday);
     const data = await mutation.mutateAsync({
       sunday,
       monday,

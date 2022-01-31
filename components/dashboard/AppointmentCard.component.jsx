@@ -20,7 +20,6 @@ const AppointmentCard = ({ data }) => {
 
   const updateAppointmentStatus = async (id, status) => {
     try {
-      console.log(status);
       const data = await mutation.mutateAsync({ id, status });
 
       toast.success(data?.msg);

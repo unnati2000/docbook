@@ -43,8 +43,6 @@ const PatientProfileForm = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(address, image);
-
     try {
       if (streetAdd === "" || city === "" || state === "" || pincode === "") {
         toast.error("Please enter all the fields");

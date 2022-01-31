@@ -41,8 +41,6 @@ router.get("/today", auth, async (req, res) => {
       date: moment().format("DD-MM-YYYY"),
     }).populate("user");
 
-    console.log("today", appointments);
-
     res.status(200).json(appointments);
   } catch (error) {
     console.log(error);
@@ -63,8 +61,6 @@ router.get("/unchecked", auth, async (req, res) => {
       confirmed: false,
     }).populate("user");
 
-    console.log("unchecked", appointments);
-
     res.status(200).json(appointments);
   } catch (error) {
     console.log(error);
@@ -75,7 +71,6 @@ router.get("/unchecked", auth, async (req, res) => {
 
 router.put("/", auth, async (req, res) => {
   try {
-    console.log("idhar hi hu");
     const user = await User.findById(req.userId);
 
     if (!user) {
