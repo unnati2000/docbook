@@ -33,6 +33,7 @@ const appointmentSchema = new mongoose.Schema(
     },
     confirmed: {
       type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

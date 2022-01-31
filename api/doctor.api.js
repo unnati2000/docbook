@@ -1,39 +1,39 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const auth = require('../middleware/auth.middleware');
+const auth = require("../middleware/auth.middleware");
 
-const User = require('../models/user.models');
-const Doctor = require('../models/doctor.models');
+const User = require("../models/user.models");
+const Doctor = require("../models/doctor.models");
 
 const {
   calculate_time_slot,
   parseTime,
-} = require('../utils-server/time-slots');
+} = require("../utils-server/time-slots");
 
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const doctor = await Doctor.findOne({ user: id }).populate('user');
+    const doctor = await Doctor.findOne({ user: id }).populate("user");
 
     if (!doctor) {
-      return res.status(400).json({ msg: 'Doctor not found' });
+      return res.status(400).json({ msg: "Doctor not found" });
     }
 
     res.status(200).json(doctor);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: 'Server error' });
+    res.status(500).json({ msg: "Server error" });
   }
 });
 
-router.post('/', auth, async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
     let doctor = await Doctor.findOne({ user: req.userId });
 
     if (!doctor) {
       return res.status(400).json({
-        msg: 'Doctor profile does not exist',
+        msg: "Doctor profile does not exist",
       });
     }
 
@@ -112,10 +112,10 @@ router.post('/', auth, async (req, res) => {
 
     await doctor.save();
 
-    res.status(200).json({ msg: 'Doctor details added successfully' });
+    res.status(200).json({ msg: "Doctor details added successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: 'Server error' });
+    res.status(500).json({ msg: "Server error" });
   }
 });
 

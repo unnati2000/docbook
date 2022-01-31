@@ -1,11 +1,28 @@
 import React, { useState } from "react";
+import { useQuery, QueryClient } from "react-query";
+import { dehydrate } from "react-query/hydration";
+import axios from "axios";
+import cookie from "js-cookie";
+import baseURL from "../utils/baseURL";
 import { BsCalendar2Check } from "react-icons/bs";
 import { MdCalendarToday } from "react-icons/md";
-import { TiTick } from "react-icons/ti";
-import { ImCancelCircle } from "react-icons/im";
+import AppointmentCard from "../components/dashboard/AppointmentCard.component";
 
-const DoctorDashboard = () => {
-  const [tab, setTab] = useState("Unchecked");
+const getAppointments = async (tab) => {
+  const data = await axios.get(`${baseURL}/api/appointments/${tab}/`, {
+    headers: {
+      Authorization: cookie.get("token"),
+    },
+  });
+
+  return data.data;
+};
+
+const DoctorDashboard = ({ user }) => {
+  const [tab, setTab] = useState("unchecked");
+
+  const { data } = useQuery(["appointments", tab], () => getAppointments(tab));
+
   return (
     <div className="grid grid-cols-12 min-h-screen">
       <aside className="bg-white col-span-3 border-r border-gray-300">
@@ -15,16 +32,18 @@ const DoctorDashboard = () => {
             className="h-12 w-12 rounded-full"
           />
           <div>
-            <h1 className="text-blue-500 font-semibold text-lg">Doctor Name</h1>
+            <h1 className="text-blue-500 font-semibold text-lg">
+              {user?.name}
+            </h1>
             <p className="text-gray-500 ">Speciality, Speciality</p>
           </div>
         </div>
 
         <div className="mt-6">
           <div
-            onClick={() => setTab("Unchecked")}
+            onClick={() => setTab("unchecked")}
             className={
-              tab === "Unchecked"
+              tab === "unchecked"
                 ? "text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
                 : "text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
             }
@@ -35,9 +54,9 @@ const DoctorDashboard = () => {
             </p>
           </div>
           <div
-            onClick={() => setTab("Today")}
+            onClick={() => setTab("today")}
             className={
-              tab === "Today"
+              tab === "today"
                 ? "text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
                 : "text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
             }
@@ -53,30 +72,7 @@ const DoctorDashboard = () => {
         <div className="border-b border-gray-300 py-8 px-4">
           <h2 className="text-gray-500 text-xl">Unchecked Appointments</h2>
         </div>
-
-        <div className="border-b border-gray-300">
-          <div className="flex space-x-4 p-6">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDkvFCLSMbUU6Bqb1m-0y3LPAQ7_Gcs-PNZw&usqp=CAU"
-              className="h-8 w-8 rounded-full"
-            />
-            <div>
-              <h3 className="text-lg text-blue-500">Name</h3>
-              <p className="text-gray-500">
-                lorem lorem lorem lorem lorem lorem lorem lorem lorem
-              </p>
-            </div>
-          </div>
-          <div className="flex space-x-4 pb-4 ml-8">
-            <button className="bg-green-100 flex items-center text-green-600 px-8 py-2 rounded-sm">
-              <TiTick className="text-lg" />
-              Accept
-            </button>
-            <button className="bg-red-100 flex items-center text-red-600 px-8 py-2 rounded-sm">
-              <ImCancelCircle className="text-lg mr-2" /> Reject
-            </button>
-          </div>
-        </div>
+        <AppointmentCard data={data} />
       </section>
       <aside className="col-span-3 bg-white">
         <div className="border-b border-gray-300 py-6 px-4">
@@ -102,5 +98,18 @@ const DoctorDashboard = () => {
     </div>
   );
 };
+
+// export async function getServerSideProps() {
+//   const queryClient = new QueryClient();
+//   await queryClient.prefetchQuery(["appointments", tab], () =>
+//     getAppointments(tab)
+//   );
+
+//   return {
+//     props: {
+//       dehydratedState: dehydrate(queryClient),
+//     },
+//   };
+// }
 
 export default DoctorDashboard;
