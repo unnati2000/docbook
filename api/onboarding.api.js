@@ -54,6 +54,9 @@ router.post("/:token", onboardingUpload, async (req, res) => {
       });
 
       await doctor.save();
+
+      user.doctor = doctor._id;
+      await user.save();
     }
 
     res.status(200).json({ msg: "Onboarded successfully" });

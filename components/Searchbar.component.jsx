@@ -1,15 +1,15 @@
-import { Fragment } from 'react';
-import { useState } from 'react';
-import { Menu, Transition } from '@headlessui/react';
-import { BsFillChatFill } from 'react-icons/bs';
-import { VscBellDot, VscBell } from 'react-icons/vsc';
-import { MenuAlt2Icon } from '@heroicons/react/outline';
-import { logoutUser } from '../utils/auth.utils';
-import { SearchIcon } from '@heroicons/react/solid';
+import { Fragment } from "react";
+import { useState } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { BsFillChatFill } from "react-icons/bs";
+import { VscBellDot, VscBell } from "react-icons/vsc";
+import { MenuAlt2Icon } from "@heroicons/react/outline";
+import { logoutUser } from "../utils/auth.utils";
+import { SearchIcon } from "@heroicons/react/solid";
 
 const Searchbar = ({ user, setMobileMenuOpen }) => {
   const [doctors, setDoctors] = useState([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   return (
     <header className="w-full">
@@ -76,7 +76,7 @@ const Searchbar = ({ user, setMobileMenuOpen }) => {
                   >
                     <Menu.Items
                       static
-                      className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                      className="origin-top-right cursor-pointer absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                     >
                       <Menu.Item>
                         <a

@@ -8,7 +8,12 @@ const TimingsForm = ({ day, timing, changeTiming }) => {
           type="time"
           placeholder="From"
           name="from"
-          className="bg-gray-50 border p-1 my-2 rounded-md border-blue-500"
+          disabled={timing.markAsHoliday ? true : false}
+          className={
+            timing.markAsHoliday
+              ? "border-gray-500 bg-gray-50 border p-1 my-2 rounded-md "
+              : "bg-gray-50 border p-1 my-2 rounded-md border-blue-500"
+          }
           value={timing.from}
           onChange={(e) => changeTiming({ ...timing, from: e.target.value })}
         />
@@ -16,7 +21,12 @@ const TimingsForm = ({ day, timing, changeTiming }) => {
           type="time"
           placeholder="To"
           name="to"
-          className="bg-gray-50 border p-1 my-2 rounded-md border-blue-500"
+          disabled={timing.markAsHoliday ? true : false}
+          className={
+            timing.markAsHoliday
+              ? "border-gray-500 bg-gray-50 border p-1 my-2 rounded-md "
+              : "bg-gray-50 border p-1 my-2 rounded-md border-blue-500"
+          }
           value={timing.to}
           onChange={(e) => changeTiming({ ...timing, to: e.target.value })}
         />
