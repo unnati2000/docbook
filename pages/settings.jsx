@@ -15,11 +15,6 @@ function classNames(...classes) {
 
 function Settings({ user }) {
   const [activeTab, setactiveTab] = useState("General");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [automaticTimezoneEnabled, setAutomaticTimezoneEnabled] =
-    useState(true);
-  const [autoUpdateApplicantDataEnabled, setAutoUpdateApplicantDataEnabled] =
-    useState(false);
 
   return (
     <div className="relative h-screen bg-white overflow-hidden flex">
@@ -74,18 +69,18 @@ function Settings({ user }) {
                   <div className="mt-10 divide-y divide-gray-200">
                     {activeTab === "General" && (
                       <div>
-                        <General />
+                        <General user={user} />
                       </div>
                     )}
                     {activeTab === "Password" && (
                       <div>
-                        <Password />
+                        <Password user={user} />
                       </div>
                     )}
 
                     {user?.role === "doctor" && activeTab === "Doctor Details" && (
                       <div>
-                        <DoctorDetails />
+                        <DoctorDetails user={user} />
                       </div>
                     )}
                   </div>

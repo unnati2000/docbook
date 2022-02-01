@@ -1,56 +1,57 @@
+import axios from "axios";
 import { useState } from "react";
 import { useMutation } from "react-query";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import baseURL from "../../utils/baseURL";
-import axios from "axios";
-
 import TimingsForm from "../doctor-details/TimingsForm.component";
 
 const DoctorDetails = ({ user }) => {
   const router = useRouter();
 
-  const [initialFee, setInitialFee] = useState("");
+  const [initialFee, setInitialFee] = useState(user?.doctor?.initialFee);
+
+  const [description, setDescriptipn] = useState(user?.doctor?.description);
 
   const [monday, setMonday] = useState({
-    from: "",
-    to: "",
-    markAsHoliday: false,
+    from: user?.doctor?.timings?.monday?.from,
+    to: user?.doctor?.timings?.monday?.from,
+    markAsHoliday: user?.doctor?.timings?.monday?.markAsHoliday,
   });
 
   const [tuesday, setTuesday] = useState({
-    from: "",
-    to: "",
-    markAsHoliday: false,
+    from: user?.doctor?.timings?.tuesday?.from,
+    to: user?.doctor?.timings?.tuesday?.to,
+    markAsHoliday: user?.doctor?.timings?.tuesday?.markAsHoliday,
   });
 
   const [wednesday, setWednesday] = useState({
-    from: "",
-    to: "",
-    markAsHoliday: false,
+    from: user?.doctor?.timings?.wednesday?.from,
+    to: user?.doctor?.timings?.wednesday?.to,
+    markAsHoliday: user?.doctor?.timings?.wednesday?.markAsHoliday,
   });
 
   const [thursday, setThursday] = useState({
-    from: "",
-    to: "",
-    markAsHoliday: false,
+    from: user?.doctor?.timings?.thursday?.from,
+    to: user?.doctor?.timings?.thursday?.to,
+    markAsHoliday: user?.doctor?.timings?.thursday?.markAsHoliday,
   });
 
   const [friday, setFriday] = useState({
-    from: "",
-    to: "",
-    markAsHoliday: false,
+    from: user?.doctor?.timings?.friday?.from,
+    to: user?.doctor?.timings?.friday?.to,
+    markAsHoliday: user?.doctor?.timings?.friday?.markAsHoliday,
   });
 
   const [saturday, setSaturday] = useState({
-    from: "",
-    to: "",
+    from: user?.doctor?.timings?.saturday?.from,
+    to: user?.doctor?.timings?.saturday?.to,
     markAsHoliday: false,
   });
 
   const [sunday, setSunday] = useState({
-    from: "",
-    to: "",
+    from: user?.doctor?.timings?.sunday?.from,
+    to: user?.doctor?.timings?.sunday?.to,
     markAsHoliday: false,
   });
 
@@ -134,6 +135,14 @@ const DoctorDetails = ({ user }) => {
               className="bg-gray-50 w-full border p-1 mt-6 mb-2 rounded-md border-blue-500"
             />
           </div>
+          <textarea
+            type="text"
+            name="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Description"
+            className="bg-gray-50 w-full border p-1 mt-4 mb-2 rounded-md border-blue-500"
+          />
           <div>
             <h2 className="text-blue-500 text-xl mt-4 mb-2">Timings</h2>
           </div>
@@ -161,13 +170,11 @@ const DoctorDetails = ({ user }) => {
             changeTiming={setSaturday}
           />
           <TimingsForm day="Sunday" timing={sunday} changeTiming={setSunday} />
-
-          <div className=""></div>
         </div>
 
         <button
           type="submit"
-          className="bg-blue-600 text-white rounded-md shadow-md py-2 px-6 mt-8"
+          className="bg-blue-600 text-white rounded-md shadow-md py-2 px-4 mt-8"
         >
           Submit
         </button>
