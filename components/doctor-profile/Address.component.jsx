@@ -1,12 +1,3 @@
-const weeks = [
-  "Monday",
-  "Monday",
-  "Monday",
-  "Monday",
-  "Monday",
-  "Monday",
-  "Monday",
-];
 const Address = ({ doctor }) => {
   return (
     <div className="grid grid-cols-2 space-x-4 p-4">
@@ -20,19 +11,63 @@ const Address = ({ doctor }) => {
       </div>
 
       <div>
-        <section className="flex justify-start space-x-6">
-          <h2 className="text-blue-500 text-lg">Day of week</h2>
-          <h2 className="text-blue-500 text-lg">To</h2>
-          <h2 className="text-blue-500 text-lg">From</h2>
-        </section>
-
-        {/* {Object.entries(doctor?.timings).map(([key, value]) => (
-          <section className="flex  justify-start space-x-6">
-            <h2 className="text-gray-500 ">{key}</h2>
-            <h2>{value?.markAsHoliday === true ? "-" : value?.from}</h2>
-            <h2>{value?.markAsHoliday === true ? "-" : value?.to}</h2>
-          </section>
-        ))} */}
+        {/* table using tailwind css */}
+        <table className="table-auto">
+          <tbody>
+            <tr>
+              <td className="px-6 py-2">
+                <p className="text-blue-500">
+                  <span className="font-semibold">Day</span>
+                </p>
+              </td>
+              <td className="px-6 py-2">
+                <p className="text-blue-500">
+                  <span className="font-semibold">From</span>
+                </p>
+              </td>
+              <td className="px-6 py-2">
+                <p className="text-blue-500">
+                  <span className="font-semibold">To</span>
+                </p>
+              </td>
+            </tr>
+            {Object.entries(doctor?.timings).map(([key, value]) => (
+              <tr>
+                <td className="px-6 py-2">
+                  <p className="text-gray-500">
+                    {key.charAt(0).toUpperCase() + key.slice(1)}
+                  </p>
+                </td>
+                <td className="px-6 py-2">
+                  <p className="text-gray-500">
+                    {value?.markAsHoliday
+                      ? "-"
+                      : value?.from.split(":")[0] == 12
+                      ? `${value?.from} PM`
+                      : value?.from.split(":")[0] > 12
+                      ? `${parseInt(value.from.split("0")) - 12}:${
+                          value?.from.split(":")[1]
+                        } PM`
+                      : `${value?.from} AM`}
+                  </p>
+                </td>
+                <td className="px-6 py-2">
+                  <p className="text-gray-500">
+                    {value?.markAsHoliday
+                      ? "-"
+                      : value?.to.split(":")[0] == 12
+                      ? `${value?.to} PM`
+                      : value?.to.split(":")[0] > 12
+                      ? `${parseInt(value.to.split("0")) - 12}:${
+                          value?.to.split(":")[1]
+                        } PM`
+                      : `${value?.to} AM`}
+                  </p>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
