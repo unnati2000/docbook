@@ -16,7 +16,7 @@ const DoctorDetails = ({ user }) => {
 
   const [monday, setMonday] = useState({
     from: user?.doctor?.timings?.monday?.from,
-    to: user?.doctor?.timings?.monday?.from,
+    to: user?.doctor?.timings?.monday?.to,
     markAsHoliday: user?.doctor?.timings?.monday?.markAsHoliday,
   });
 
@@ -47,13 +47,13 @@ const DoctorDetails = ({ user }) => {
   const [saturday, setSaturday] = useState({
     from: user?.doctor?.timings?.saturday?.from,
     to: user?.doctor?.timings?.saturday?.to,
-    markAsHoliday: false,
+    markAsHoliday: user?.doctor?.timings?.saturday?.markAsHoliday,
   });
 
   const [sunday, setSunday] = useState({
     from: user?.doctor?.timings?.sunday?.from,
     to: user?.doctor?.timings?.sunday?.to,
-    markAsHoliday: false,
+    markAsHoliday: user?.doctor?.timings?.sunday?.markAsHoliday,
   });
 
   const mutation = useMutation(

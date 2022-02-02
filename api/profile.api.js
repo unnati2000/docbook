@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
 const auth = require("../middleware/auth.middleware");
+const upload = require("../middleware/upload.middleware");
 const User = require("../models/user.models");
 
 router.put("/update", auth, async (req, res) => {
@@ -37,10 +38,44 @@ router.put("/update", auth, async (req, res) => {
   }
 });
 
-router.put("/", auth, async (req, res) => {
+router.put("/", auth, upload, async (req, res) => {
   try {
+    const { name, email } = req.body;
+
+    const { streetAdd, city, state, pincode } = JSON.parse(req.body.address);
+
     let user = await User.findById(req.userId);
-  } catch (error) {}
+
+    if (!user) {
+      return res.status(401).json({ msg: "Unauthorized to access this route" });
+    }
+
+    if (req.file) {
+      user.profilePic = req.files.image[0].location;
+    }
+
+    user = await User.findOneAndUpdate(
+      { _id: req.userId },
+      {
+        name,
+        email,
+        address: {
+          streetAdd,
+          city,
+          state,
+          pincode,
+        },
+      },
+      { new: true }
+    );
+
+    await user.save();
+
+    res.status(200).json({ msg: "Profile updated" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Server error" });
+  }
 });
 
 module.exports = router;

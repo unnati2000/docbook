@@ -1,10 +1,18 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import baseURL from "../../utils/baseURL";
+import { useMutation } from "react-query";
+import cookie from "js-cookie";
+import axios from "axios";
 
 const General = ({ user }) => {
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
   const [image, setImage] = useState(user?.profilePic);
   const [file, setFile] = useState(null);
+
+  const router = useRouter();
 
   const [address, setAddress] = useState({
     streetAdd: user?.address?.streetAdd,
@@ -13,10 +21,33 @@ const General = ({ user }) => {
     pincode: user?.address?.pincode,
   });
 
-  console.log(user);
+  const mutation = useMutation(async (formdata) => {
+    const { data } = await axios.put(`${baseURL}/api/profile`, formdata, {
+      headers: {
+        Authorization: cookie.get("token"),
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return data;
+  });
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("profilePic", file);
+    formData.append("address", JSON.stringify(address));
+
+    try {
+      console.log(name, email, address);
+      const data = await mutation.mutateAsync(formData);
+      toast.success(data?.msg);
+      router.push("/home");
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response?.data?.msg || "Please recheck your inputs");
+    }
   };
 
   return (
