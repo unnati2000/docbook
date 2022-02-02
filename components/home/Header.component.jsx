@@ -1,8 +1,4 @@
-import { useState, useEffect } from "react";
-import baseURL from "../../utils/baseURL";
-import cookie from "js-cookie";
-import axios from "axios";
-import { useDebounce } from "use-debounce";
+import { useState } from "react";
 import Link from "next/link";
 import Select from "react-select/creatable";
 
