@@ -84,7 +84,7 @@ const Timing = ({ doctor, user }) => {
 
       <div className="flex flex-wrap justify-center my-2 mx-2 gap-4">
         {weekday.map((day, ind) => {
-          if (date.isoWeekday() === ind) {
+          if (date.isoWeekday() === ind + 1) {
             return doctor?.timeSlots?.[day]?.length > 0 ? (
               doctor?.timeSlots?.[day]?.map(
                 (t) =>

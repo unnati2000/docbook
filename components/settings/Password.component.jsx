@@ -14,7 +14,6 @@ const Password = () => {
   const router = useRouter();
 
   const mutation = useMutation(async ({ password, newPassword }) => {
-    console.log(password, newPassword);
     const { data } = await axios.put(
       `${baseURL}/api/profile/update`,
       {

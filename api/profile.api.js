@@ -7,7 +7,6 @@ const User = require("../models/user.models");
 
 router.put("/update", auth, async (req, res) => {
   try {
-    console.log(req.body);
     const { password, newPassword } = req.body;
 
     let user = await User.findById(req.userId).select("+password");

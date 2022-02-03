@@ -10,9 +10,7 @@ import Review from "../../components/doctor-profile/Review.component";
 import Timing from "../../components/doctor-profile/Timing.component";
 
 const getDoctorDetails = async (id) => {
-  const { data } = await axios.get(`${baseURL}/api/doctor/${id}`, {
-    headers: { Authorization: cookie.get("token") },
-  });
+  const { data } = await axios.get(`${baseURL}/api/doctor/${id}`);
 
   return data;
 };
@@ -50,7 +48,9 @@ export async function getServerSideProps(ctx) {
   const { id } = ctx.params;
 
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(["doctors", id], () => getDoctorDetails(id));
+  await queryClient.prefetchQuery(["doctors", id], () => getDoctorDetails(id), {
+    enabled: !!id,
+  });
 
   return {
     props: {

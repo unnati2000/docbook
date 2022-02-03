@@ -40,7 +40,6 @@ const General = ({ user }) => {
     formData.append("address", JSON.stringify(address));
 
     try {
-      console.log(name, email, address);
       const data = await mutation.mutateAsync(formData);
       toast.success(data?.msg);
       router.push("/home");

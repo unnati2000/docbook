@@ -10,8 +10,6 @@ import TimingsForm from "../components/doctor-details/TimingsForm.component";
 const DoctorDetails = ({ user }) => {
   const router = useRouter();
 
-  console.log(user);
-
   useEffect(() => {
     if (user?.doctor?.initialFee !== 0) {
       router.push("/home");

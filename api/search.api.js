@@ -11,7 +11,7 @@ router.get("/:search", async (req, res) => {
     const users = await User.find({
       $or: [
         { name: { $regex: search, $options: "i" } },
-        { "address.city": { $regex: search, $options: "i" } },
+        { address: { city: { $regex: search, $options: "i" } } },
       ],
     }).populate("doctor");
 
