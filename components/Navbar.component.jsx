@@ -1,20 +1,24 @@
-import { Fragment } from "react";
-import { CogIcon, HomeIcon, ViewGridIcon } from "@heroicons/react/outline";
-import { AiOutlineHistory, AiOutlineBarChart } from "react-icons/ai";
-import { MdOutlineMood } from "react-icons/md";
-import { Dialog, Transition } from "@headlessui/react";
+import { Fragment } from 'react';
+import { CogIcon, HomeIcon, ViewGridIcon } from '@heroicons/react/outline';
+import {
+  AiOutlineHistory,
+  AiOutlineBarChart,
+  AiFillMedicineBox,
+} from 'react-icons/ai';
+import { MdOutlineMood } from 'react-icons/md';
+import { Dialog, Transition } from '@headlessui/react';
 
 const sidebarNavigation = [
-  { name: "Home", href: "/home", icon: HomeIcon, current: false },
-  { name: "Dashboard", href: "/dashboard", icon: ViewGridIcon, current: false },
-  { name: "History", href: "/history", icon: AiOutlineHistory, current: false },
-  { name: "Charts", href: "/charts", icon: AiOutlineBarChart, current: false },
-  { name: "Outline", href: "#", icon: MdOutlineMood, current: false },
-  { name: "Settings", href: "/settings", icon: CogIcon, current: false },
+  { name: 'Home', href: '/home', icon: HomeIcon, current: false },
+  { name: 'Dashboard', href: '/dashboard', icon: ViewGridIcon, current: false },
+  { name: 'History', href: '/history', icon: AiOutlineHistory, current: false },
+  { name: 'Charts', href: '/charts', icon: AiOutlineBarChart, current: false },
+  { name: 'Outline', href: '#', icon: MdOutlineMood, current: false },
+  { name: 'Settings', href: '/settings', icon: CogIcon, current: false },
 ];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
@@ -22,12 +26,9 @@ const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
     <>
       <div className="hidden min-h-screen w-28  bg-blue-700 overflow-y-auto md:block">
         <div className="w-full py-6 flex flex-col items-center">
-          <div className="flex-shrink-0 flex items-center">
-            <img
-              className="h-8 w-auto object-cover"
-              src="https://tailwindui.com/img/logos/workflow-mark.svg?color=white"
-              alt="Workflow"
-            />
+          <div className="flex flex-col flex-shrink-0 flex items-center">
+            <AiFillMedicineBox className="h-10 w-10 mb-1 text-white" />
+            <p className="text-white font-semibold">DocBook</p>
           </div>
           <div className="flex-1 mt-6 w-full px-2 space-y-1">
             {sidebarNavigation.map((item) => (
@@ -36,18 +37,18 @@ const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
                 href={item.href}
                 className={classNames(
                   item.current
-                    ? "bg-blue-800 text-white"
-                    : "text-indigo-100 hover:bg-blue-800 hover:text-white",
-                  "group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium"
+                    ? 'bg-blue-800 text-white'
+                    : 'text-indigo-100 hover:bg-blue-800 hover:text-white',
+                  'group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium'
                 )}
-                aria-current={item.current ? "page" : undefined}
+                aria-current={item.current ? 'page' : undefined}
               >
                 <item.icon
                   className={classNames(
                     item.current
-                      ? "text-white"
-                      : "text-indigo-300 group-hover:text-white",
-                    "h-6 w-6"
+                      ? 'text-white'
+                      : 'text-indigo-300 group-hover:text-white',
+                    'h-6 w-6'
                   )}
                   aria-hidden="true"
                 />
@@ -113,11 +114,7 @@ const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
                   </div>
                 </Transition.Child>
                 <div className="flex-shrink-0 px-4 flex items-center">
-                  <img
-                    className="h-8 w-auto object-cover"
-                    src="https://tailwindui.com/img/logos/workflow-mark.svg?color=white"
-                    alt="Workflow"
-                  />
+                  <AiFillMedicineBox className="h-10 w-10 mb-1 text-white" />
                 </div>
                 <div className="mt-5 flex-1 h-0 px-2 overflow-y-auto">
                   <nav className="h-full flex flex-col">
@@ -128,18 +125,18 @@ const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
                           href={item.href}
                           className={classNames(
                             item.current
-                              ? "bg-indigo-800 text-white"
-                              : "text-indigo-100 hover:bg-indigo-800 hover:text-white",
-                            "group py-2 px-3 rounded-md flex items-center text-sm font-medium"
+                              ? 'bg-indigo-800 text-white'
+                              : 'text-indigo-100 hover:bg-indigo-800 hover:text-white',
+                            'group py-2 px-3 rounded-md flex items-center text-sm font-medium'
                           )}
-                          aria-current={item.current ? "page" : undefined}
+                          aria-current={item.current ? 'page' : undefined}
                         >
                           <item.icon
                             className={classNames(
                               item.current
-                                ? "text-white"
-                                : "text-indigo-300 group-hover:text-white",
-                              "mr-3 h-6 w-6"
+                                ? 'text-white'
+                                : 'text-indigo-300 group-hover:text-white',
+                              'mr-3 h-6 w-6'
                             )}
                             aria-hidden="true"
                           />

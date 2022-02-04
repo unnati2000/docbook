@@ -1,8 +1,10 @@
-import { Fragment } from "react";
-import { Popover, Transition } from "@headlessui/react";
-import { MenuIcon, XIcon } from "@heroicons/react/outline";
-import { ToastContainer } from "react-toastify";
-import Link from "next/link";
+import { Fragment } from 'react';
+import { AiFillMedicineBox } from 'react-icons/ai';
+import { Popover, Transition } from '@headlessui/react';
+import { MenuIcon, XIcon } from '@heroicons/react/outline';
+import { ToastContainer } from 'react-toastify';
+import Footer from '../components/footer/Footer.component';
+import Link from 'next/link';
 
 function Landing() {
   return (
@@ -90,12 +92,7 @@ function Landing() {
                     <div className="flex items-center flex-1 md:absolute md:inset-y-0 md:left-0">
                       <div className="flex items-center justify-between w-full md:w-auto">
                         <a href="#">
-                          <span className="sr-only">Workflow</span>
-                          <img
-                            className="h-8 w-auto sm:h-10"
-                            src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-                            alt=""
-                          />
+                          <AiFillMedicineBox className="h-12 w-12 mb-1 text-blue-600" />
                         </a>
                         <div className="-mr-2 flex items-center md:hidden">
                           <Popover.Button className="bg-gray-50 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
@@ -165,21 +162,13 @@ function Landing() {
             <div className="mt-16 mx-auto max-w-7xl px-4 sm:mt-24 sm:px-6">
               <div className="text-center">
                 <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                  <span className="block xl:inline">Stay Healthy with</span>{" "}
+                  <span className="block xl:inline">Stay Healthy with</span>{' '}
                   <span className="block text-blue-600 xl:inline">Docbook</span>
                 </h1>
                 <p className="my-6 text-lg text-gray-600">
                   Search for the suitable doctors and book an appointment today!
                   Wanna guide click on the Tour button fr the same
                 </p>
-                <div className="flex space-x-8 justify-center  max-w-md mx-auto text-base text-gray-600 sm:text-lg md:mt-12 md:text-xl md:max-w-3xl">
-                  <button className="py-2 px-8 w-1/4 bg-blue-600 text-white rounded">
-                    Search for doctors
-                  </button>
-                  <button className="py-2 px-8 w-1/4 bg-blue-100 text-blue-600 rounded">
-                    Take a Tour
-                  </button>
-                </div>
               </div>
             </div>
           </div>
@@ -200,9 +189,7 @@ function Landing() {
         </div>
       </div>
       <div className="bg-gray-800">
-        <h1 className="text-center text-3xl font-semibold text-gray-100 py-5">
-          Docbook
-        </h1>
+        <Footer />
       </div>
     </div>
   );

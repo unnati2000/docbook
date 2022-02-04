@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { useQuery, QueryClient } from "react-query";
-import { dehydrate } from "react-query/hydration";
-import axios from "axios";
-import cookie from "js-cookie";
-import baseURL from "../utils/baseURL";
-import { BsCalendar2Check } from "react-icons/bs";
-import { MdCalendarToday } from "react-icons/md";
-import AppointmentCard from "../components/dashboard/AppointmentCard.component";
+import React, { useState } from 'react';
+import { useQuery, QueryClient } from 'react-query';
+import { dehydrate } from 'react-query/hydration';
+import axios from 'axios';
+import cookie from 'js-cookie';
+import baseURL from '../utils/baseURL';
+import { BsCalendar2Check } from 'react-icons/bs';
+import { MdCalendarToday } from 'react-icons/md';
+import AppointmentCard from '../components/dashboard/AppointmentCard.component';
 
 const getAppointments = async (tab) => {
   const data = await axios.get(`${baseURL}/api/appointments/${tab}/`, {
     headers: {
-      Authorization: cookie.get("token"),
+      Authorization: cookie.get('token'),
     },
   });
 
@@ -19,9 +19,9 @@ const getAppointments = async (tab) => {
 };
 
 const DoctorDashboard = ({ user }) => {
-  const [tab, setTab] = useState("unchecked");
+  const [tab, setTab] = useState('unchecked');
 
-  const { data } = useQuery(["appointments", tab], () => getAppointments(tab));
+  const { data } = useQuery(['appointments', tab], () => getAppointments(tab));
 
   return (
     <div className="grid grid-cols-12 min-h-screen">
@@ -35,17 +35,17 @@ const DoctorDashboard = ({ user }) => {
             <h1 className="text-blue-500 font-semibold text-lg">
               {user?.name}
             </h1>
-            <p className="text-gray-500 ">Speciality, Speciality</p>
+            <p className="text-gray-500 ">{user?.doctor?.speciality}</p>
           </div>
         </div>
 
         <div className="mt-6">
           <div
-            onClick={() => setTab("unchecked")}
+            onClick={() => setTab('unchecked')}
             className={
-              tab === "unchecked"
-                ? "text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
-                : "text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
+              tab === 'unchecked'
+                ? 'text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
+                : 'text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
             }
           >
             <BsCalendar2Check />
@@ -54,11 +54,11 @@ const DoctorDashboard = ({ user }) => {
             </p>
           </div>
           <div
-            onClick={() => setTab("today")}
+            onClick={() => setTab('today')}
             className={
-              tab === "today"
-                ? "text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
-                : "text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
+              tab === 'today'
+                ? 'text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
+                : 'text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
             }
           >
             <MdCalendarToday />
@@ -72,7 +72,7 @@ const DoctorDashboard = ({ user }) => {
         <div className="border-b border-gray-300 py-8 px-4">
           <h2 className="text-gray-500 text-xl">Unchecked Appointments</h2>
         </div>
-        <AppointmentCard data={data} />
+        <AppointmentCard data={data} tab={tab} />
       </section>
       <aside className="col-span-3 bg-white">
         <div className="border-b border-gray-300 py-6 px-4">
@@ -87,9 +87,6 @@ const DoctorDashboard = ({ user }) => {
             />
             <div>
               <h3 className="text-lg text-blue-500">Name</h3>
-              <p className="text-gray-500 text-sm">
-                lorem lorem lorem lorem lorem lorem lorem lorem lorem
-              </p>
               <p className="py-2">Time: 3:45 PM</p>
             </div>
           </div>

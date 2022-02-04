@@ -37,77 +37,35 @@ router.post("/", auth, async (req, res) => {
       });
     }
 
-    doctor.timings.sunday.from = req.body.sunday.from;
-    doctor.timings.sunday.to = req.body.sunday.to;
-    doctor.timings.sunday.markAsHoliday = req.body.sunday.markAsHoliday;
-    doctor.timeSlots.sunday =
-      req.body.sunday.markAsHoliday === false &&
-      calculate_time_slot(
-        parseTime(req.body.sunday.from),
-        parseTime(req.body.sunday.to)
-      );
+    const days = [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday",
+    ];
 
-    doctor.timings.monday.to = req.body.monday.to;
-    doctor.timings.monday.from = req.body.monday.from;
-    doctor.timings.monday.markAsHoliday = req.body.monday.markAsHoliday;
-    doctor.timeSlots.monday =
-      req.body.monday.markAsHoliday === false &&
-      calculate_time_slot(
-        parseTime(req.body.monday.from),
-        parseTime(req.body.monday.to)
-      );
+    for (let i = 0; i < days.length; i++) {
+      const day = days[i];
+      const { from, to, markAsHoliday } = req.body[day];
 
-    doctor.timings.tuesday.to = req.body.tuesday.to;
-    doctor.timings.tuesday.from = req.body.tuesday.from;
-    doctor.timings.tuesday.markAsHoliday = req.body.tuesday.markAsHoliday;
-    doctor.timeSlots.tuesday =
-      req.body.tuesday.markAsHoliday === false &&
-      calculate_time_slot(
-        parseTime(req.body.tuesday.from),
-        parseTime(req.body.tuesday.to)
-      );
+      doctor.timings[day].from = from;
+      doctor.timings[day].to = to;
+      doctor.timings[day].markAsHoliday = markAsHoliday;
 
-    doctor.timings.wednesday.to = req.body.wednesday.to;
-    doctor.timings.wednesday.from = req.body.wednesday.from;
-    doctor.timings.wednesday.markAsHoliday = req.body.wednesday.markAsHoliday;
-    doctor.timeSlots.wednesday =
-      req.body.wednesday.markAsHoliday === false &&
-      calculate_time_slot(
-        parseTime(req.body.wednesday.from),
-        parseTime(req.body.wednesday.to)
-      );
+      if (markAsHoliday === false) {
+        doctor.timeSlots[day] = calculate_time_slot(
+          parseTime(from),
+          parseTime(to)
+        );
+      } else {
+        doctor.timeSlots[day] = [];
+      }
+    }
 
-    doctor.timings.thursday.to = req.body.thursday.to;
-    doctor.timings.thursday.from = req.body.thursday.from;
-    doctor.timings.thursday.markAsHoliday =
-      req.body.thursday.markAsHoliday === false &&
-      req.body.thursday.markAsHoliday;
-    doctor.timeSlots.thursday = calculate_time_slot(
-      parseTime(req.body.thursday.from),
-      parseTime(req.body.thursday.to)
-    );
-
-    doctor.timings.friday.to = req.body.friday.to;
-    doctor.timings.friday.from = req.body.friday.from;
-    doctor.timings.friday.markAsHoliday = req.body.friday.markAsHoliday;
-    doctor.timeSlots.friday =
-      req.body.friday.markAsHoliday === false &&
-      calculate_time_slot(
-        parseTime(req.body.friday.from),
-        parseTime(req.body.friday.to)
-      );
-
-    doctor.timings.saturday.to = req.body.saturday.to;
-    doctor.timings.saturday.from = req.body.saturday.from;
-    doctor.timings.saturday.markAsHoliday = req.body.saturday.markAsHoliday;
-    doctor.timeSlots.saturday =
-      req.body.saturday.markAsHoliday === false &&
-      calculate_time_slot(
-        parseTime(req.body.saturday.from),
-        parseTime(req.body.saturday.to)
-      );
-
-    doctor.experience = parseInt(req.body.initialFee);
+    doctor.initialFee = parseInt(req.body.initialFee);
     doctor.description = req.body.description;
 
     await doctor.save();

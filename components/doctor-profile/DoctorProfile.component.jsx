@@ -4,7 +4,7 @@ import { FaStarHalf } from "react-icons/fa";
 const DoctorProfile = ({ doctor }) => {
   return (
     <>
-      <div className="flex items-center space-x-4">
+      <div className="flex  space-x-4">
         <img
           src={doctor?.user?.profilePic}
           className="h-16 w-16 rounded-full"
@@ -17,7 +17,9 @@ const DoctorProfile = ({ doctor }) => {
             </h1>
             <div>
               {doctor?.proficiencies?.map((proficiency) => (
-                <h3 className="text-sm text-gray-500" key={proficiency}>{proficiency}</h3>
+                <h3 className="text-sm text-gray-500" key={proficiency}>
+                  {proficiency}
+                </h3>
               ))}
             </div>
 
@@ -33,12 +35,7 @@ const DoctorProfile = ({ doctor }) => {
         </div>
       </div>
 
-      <p className="pt-8">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Optio
-        corporis, minus temporibus praesentium nam consequatur provident animi
-        maxime velit nostrum iusto perspiciatis earum eum sit quos magni tempora
-        quisquam quis?
-      </p>
+      <p className="pt-8">{doctor?.description}</p>
     </>
   );
 };

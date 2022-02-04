@@ -16,16 +16,14 @@ function pad(str, max) {
 }
 
 const calculate_time_slot = function timeSlot(start_time, end_time) {
-  console.log("start time", start_time, "end time", end_time);
   var i, formatted_time;
   var time_slots = new Array();
   for (var i = start_time; i <= end_time; i = i + 30) {
     formatted_time = convertHours(i);
-    console.log("formartted time", formatted_time);
+
     time_slots.push(formatted_time);
   }
 
-  console.log("time slots", time_slots);
   return time_slots;
 };
 

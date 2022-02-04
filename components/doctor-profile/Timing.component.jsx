@@ -58,7 +58,7 @@ const Timing = ({ doctor, user }) => {
     <>
       <div className="flex justify-between p-4 border border-b">
         <h1 className="text-lg text-gray-500">Consultation</h1>
-        <h1 className="text-blue-500 text-lg font-semibold">$200</h1>
+        <h1 className="text-blue-500 text-lg font-semibold">₹200</h1>
       </div>
 
       <div className="flex justify-evenly items-center">
@@ -72,18 +72,19 @@ const Timing = ({ doctor, user }) => {
         >
           <IoIosArrowBack className="text-xl text-blue-500 cursor-pointer" />
         </p>
-        <h1 className="text-blue-500 my-4 font-semibold text-lg text-center">
-          {moment(date).format("DD-MM-YYYY")}
-        </h1>
-
+        <div>
+          <h1 className="text-blue-500 my-4 font-semibold text-lg text-center">
+            {moment(date).format("DD-MM-YYYY")}
+          </h1>
+        </div>
         <p onClick={() => setDate(moment(date).add(1, "days"))}>
           <IoIosArrowForward className="text-xl text-blue-500 cursor-pointer" />
         </p>
       </div>
 
-      <div className="flex flex-wrap justify-center my-2 gap-4">
+      <div className="flex flex-wrap justify-center my-2 mx-2 gap-4">
         {weekday.map((day, ind) => {
-          if (date.isoWeekday() === ind) {
+          if (date.isoWeekday() === ind + 1) {
             return doctor?.timeSlots?.[day]?.length > 0 ? (
               doctor?.timeSlots?.[day]?.map(
                 (t) =>
@@ -97,7 +98,13 @@ const Timing = ({ doctor, user }) => {
                           : "rounded-md px-2 py-1 border border-gray-400 cursor-pointer"
                       }
                     >
-                      {t}
+                      {t?.split(":")[0] == 12
+                        ? `${t} PM`
+                        : t?.split(":")[0] > 12
+                        ? `${parseInt(t?.split(":")[0] - 12)}:${
+                            t?.split(":")[1]
+                          } PM`
+                        : `${t} AM`}
                     </div>
                   )
               )
@@ -117,10 +124,10 @@ const Timing = ({ doctor, user }) => {
         day={weekday[date.isoWeekday()]}
         setOpen={setOpen}
       />
-      <div className="px-4 mt-4">
+      <div className="px-4 my-4">
         <button
           onClick={() => setOpen(true)}
-          className="bg-blue-500 w-full rounded-md py-1 text-white shadow-md my-2"
+          className="bg-blue-500 w-full rounded-md py-1 text-white shadow-md"
         >
           Appointment
         </button>
