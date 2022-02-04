@@ -1,28 +1,28 @@
-import { useState } from "react";
-import Link from "next/link";
-import Select from "react-select/creatable";
+import { useState } from 'react';
+import Link from 'next/link';
+import Select from 'react-select/creatable';
 
 const Header = () => {
-  const [location, setLocation] = useState("");
-  const [speciality, setSpeciality] = useState("");
+  const [location, setLocation] = useState('');
+  const [speciality, setSpeciality] = useState('');
 
   const locations = [
-    { label: "Mumbai", value: "mumbai" },
-    { label: "Chennai", value: "chennai" },
-    { label: "Banglore", value: "banglore" },
-    { label: "Hyderabad", value: "hyderabad" },
-    { label: "Ahmedabad", value: "ahmedabad" },
-    { label: "Delhi", value: "delhi" },
-    { label: "Kolkata", value: "kolkata" },
+    { label: 'Mumbai', value: 'mumbai' },
+    { label: 'Chennai', value: 'chennai' },
+    { label: 'Banglore', value: 'banglore' },
+    { label: 'Hyderabad', value: 'hyderabad' },
+    { label: 'Ahmedabad', value: 'ahmedabad' },
+    { label: 'Delhi', value: 'delhi' },
+    { label: 'Kolkata', value: 'kolkata' },
   ];
   const specialities = [
-    { label: "Dentist", value: "dentist" },
-    { label: "Gynecologist", value: "gynecologist" },
-    { label: "General Physician", value: "general physician" },
-    { label: "Dermatologist", value: "dermatologist" },
-    { label: "Ear-nose-throat (ent)", value: "ear-nose-throat (ent)" },
-    { label: "Homoepath", value: "homoepath" },
-    { label: "Ayurveda", value: "ayurveda" },
+    { label: 'Dentist', value: 'dentist' },
+    { label: 'Gynecologist', value: 'gynecologist' },
+    { label: 'General Physician', value: 'general physician' },
+    { label: 'Dermatologist', value: 'dermatologist' },
+    { label: 'Ear-nose-throat (ent)', value: 'ear-nose-throat (ent)' },
+    { label: 'Homoepath', value: 'homoepath' },
+    { label: 'Ayurveda', value: 'ayurveda' },
   ];
 
   return (
@@ -39,6 +39,7 @@ const Header = () => {
             onChange={(e) => setLocation(e.value)}
             placeholder="Location"
             formatCreateLabel={(input) => `Search for ${input}`}
+            className="md:w-48"
           />
         </div>
         <div>
@@ -48,6 +49,7 @@ const Header = () => {
             onChange={(e) => setSpeciality(e.value)}
             placeholder="Speciality"
             formatCreateLabel={(input) => `Search for ${input}`}
+            className="md:w-48"
           />
         </div>
 

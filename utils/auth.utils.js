@@ -1,8 +1,8 @@
-import axios from "axios";
-import Router from "next/router";
-import catchErrors from "./error.utils";
-import cookie from "js-cookie";
-import baseURL from "./baseURL";
+import axios from 'axios';
+import Router from 'next/router';
+import catchErrors from './error.utils';
+import cookie from 'js-cookie';
+import baseURL from './baseURL';
 
 export const registerUser = async (
   { name, email, password, role },
@@ -21,7 +21,7 @@ export const registerUser = async (
     });
 
     toast.info(res.data.msg);
-    Router.push("/");
+    Router.push('/');
   } catch (error) {
     const errorMsg = catchErrors(error);
     setError(errorMsg);
@@ -39,16 +39,16 @@ export const login = async (
   setLoading(true);
   try {
     const res = await axios.post(`${baseURL}/api/auth`, { email, password });
-    cookie.set("token", res.data.token, { expires: 730 });
+    cookie.set('token', res.data.token, { expires: 730 });
 
-    if (res.data.role === "doctor") {
-      if (res.data.doctor != "" && res.data.doctor.initialFee !== 0) {
-        Router.push("/home");
+    if (res.data.role === 'doctor') {
+      if (res.data.doctor != '' && res.data.doctor.initialFee !== 0) {
+        Router.push('/home');
       } else {
-        Router.push("/doctor-details");
+        Router.push('/doctor-details');
       }
     } else {
-      Router.push("/home");
+      Router.push('/home');
     }
   } catch (error) {
     const errorMsg = catchErrors(error);
@@ -59,8 +59,8 @@ export const login = async (
 };
 
 export const logoutUser = () => {
-  cookie.remove("token");
-  Router.push("/signin");
+  cookie.remove('token');
+  Router.push('/signin');
 };
 
 export const redirectUser = (ctx, location) => {
