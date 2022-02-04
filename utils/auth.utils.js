@@ -43,7 +43,6 @@ export const login = async (
 
     if (res.data.role === "doctor") {
       if (res.data.doctor != "" && res.data.doctor.initialFee !== 0) {
-        console.log(res.doctor);
         Router.push("/home");
       } else {
         Router.push("/doctor-details");

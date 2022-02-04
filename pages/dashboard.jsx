@@ -35,7 +35,7 @@ const DoctorDashboard = ({ user }) => {
             <h1 className="text-blue-500 font-semibold text-lg">
               {user?.name}
             </h1>
-            <p className="text-gray-500 ">Speciality, Speciality</p>
+            <p className="text-gray-500 ">{user?.doctor?.speciality}</p>
           </div>
         </div>
 
