@@ -6,7 +6,9 @@ import cookie from "js-cookie";
 import baseURL from "../../utils/baseURL";
 import { BsCalendar2Check } from "react-icons/bs";
 import { MdCalendarToday } from "react-icons/md";
+import { IoCashOutline } from "react-icons/io5";
 import AppointmentCard from "./AppointmentCard.component";
+import Statistics from "./Statistics.component";
 
 const getAppointments = async (tab) => {
   const data = await axios.get(`${baseURL}/api/appointments/${tab}/`, {
@@ -75,15 +77,40 @@ const DoctorDashboard = ({ user }) => {
               Today's Appointments
             </p>
           </div>
+
+          <div
+            onClick={() => setTab("statistics")}
+            className={
+              tab === "statistics"
+                ? "text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
+                : "text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
+            }
+          >
+            <IoCashOutline />
+            <p
+              className={
+                tab === "statistics"
+                  ? "text-blue-600"
+                  : "text-gray-500 hover:text-blue-500"
+              }
+            >
+              Your Statistics
+            </p>
+          </div>
         </div>
       </aside>
       <section className="col-span-6 bg-white border-r border-gray-300">
         <div className="border-b border-gray-300 py-8 px-4">
           <h2 className="text-gray-500 text-xl">
-            {tab.charAt(0).toUpperCase() + tab.slice(1)} Appointments
+            {tab.charAt(0).toUpperCase() + tab.slice(1)}
           </h2>
         </div>
-        <AppointmentCard data={data} tab={tab} />
+
+        {tab === "statistics" ? (
+          <Statistics data={data} />
+        ) : (
+          <AppointmentCard data={data} tab={tab} />
+        )}
       </section>
       <aside className="col-span-3 bg-white">
         <div className="border-b border-gray-300 py-6 px-4">

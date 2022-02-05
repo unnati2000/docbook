@@ -69,6 +69,19 @@ router.get("/unchecked", auth, async (req, res) => {
   }
 });
 
+router.get("/statistics", auth, async (req, res) => {
+  try {
+    const appointments = await Appointment.find({
+      doctor: req.userId,
+    });
+
+    return res.status(200).json(appointments);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
 router.put("/", auth, async (req, res) => {
   try {
     const user = await User.findById(req.userId);

@@ -129,9 +129,8 @@ const Doctors = ({ user }) => {
           </Listbox>
         </div>
       </div>
-      {data === undefined ? (
-        <h1>Loading!!!!</h1>
-      ) : data?.length > 0 ? (
+
+      {data?.length > 0 || data !== undefined ? (
         data?.map((doc) => (
           <div
             key={doc._id}
