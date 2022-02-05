@@ -167,7 +167,6 @@ function Landing() {
                 </h1>
                 <p className="my-6 text-lg text-gray-600">
                   Search for the suitable doctors and book an appointment today!
-                  Wanna guide click on the Tour button fr the same
                 </p>
               </div>
             </div>

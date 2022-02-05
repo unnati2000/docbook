@@ -1,36 +1,38 @@
-import { useState, Fragment } from "react";
-import axios from "axios";
-import Link from "next/link";
-import { memo } from "react";
-import { useQuery, QueryClient } from "react-query";
-import { dehydrate } from "react-query/hydration";
-import { useRouter } from "next/router";
-import { AiFillStar } from "react-icons/ai";
-import { FaStarHalf } from "react-icons/fa";
-import { Listbox, Transition } from "@headlessui/react";
-import { CheckIcon, ChevronDownIcon } from "@heroicons/react/solid";
-import baseURL from "../utils/baseURL";
+import { useState, Fragment } from 'react';
+import axios from 'axios';
+import Link from 'next/link';
+import { memo } from 'react';
+import { useQuery, QueryClient } from 'react-query';
+import { dehydrate } from 'react-query/hydration';
+import { useRouter } from 'next/router';
+import { AiFillStar } from 'react-icons/ai';
+import { FaStarHalf } from 'react-icons/fa';
+import { Listbox, Transition } from '@headlessui/react';
+import { CheckIcon, ChevronDownIcon } from '@heroicons/react/solid';
+import baseURL from '../utils/baseURL';
 
 const publishingOptions = [
   {
-    title: "Fees",
+    title: 'Fees',
     current: true,
   },
   {
-    title: "Rating",
+    title: 'Rating',
     current: false,
   },
 ];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 const getDoctorsFromSearch = async (location, speciality) => {
   const data = await axios.get(
     `${baseURL}/api/search/${location}/${speciality}`
   );
-  return data.data;
+  // Sort by intialFee in ascending order
+  const sorted = data.data.sort((a, b) => a.initialFee - b.initialFee);
+  return sorted;
 };
 
 const Doctors = ({ user }) => {
@@ -39,7 +41,7 @@ const Doctors = ({ user }) => {
 
   const [selected, setSelected] = useState(publishingOptions[0]);
 
-  const { data } = useQuery(["search", location, speciality], () =>
+  const { data } = useQuery(['search', location, speciality], () =>
     getDoctorsFromSearch(location, speciality)
   );
 
@@ -87,9 +89,9 @@ const Doctors = ({ user }) => {
                           className={({ active }) =>
                             classNames(
                               active
-                                ? "text-white bg-blue-500"
-                                : "text-gray-900",
-                              "cursor-default select-none relative p-4 text-sm"
+                                ? 'text-white bg-blue-500'
+                                : 'text-gray-900',
+                              'cursor-default select-none relative p-4 text-sm'
                             )
                           }
                           value={option}
@@ -99,7 +101,7 @@ const Doctors = ({ user }) => {
                               <div className="flex justify-between">
                                 <p
                                   className={
-                                    selected ? "font-semibold" : "font-normal"
+                                    selected ? 'font-semibold' : 'font-normal'
                                   }
                                 >
                                   {option.title}
@@ -107,7 +109,7 @@ const Doctors = ({ user }) => {
                                 {selected ? (
                                   <span
                                     className={
-                                      active ? "text-white" : "text-blue-500"
+                                      active ? 'text-white' : 'text-blue-500'
                                     }
                                   >
                                     <CheckIcon
@@ -136,8 +138,8 @@ const Doctors = ({ user }) => {
             key={doc._id}
             className={
               doc?._id === user?._id
-                ? "hidden"
-                : "border bg-white rounded-md mx-8 my-4 p-8"
+                ? 'hidden'
+                : 'border bg-white rounded-md mx-8 my-4 p-8'
             }
           >
             <div className="flex items-center justify-between">
@@ -155,7 +157,7 @@ const Doctors = ({ user }) => {
 
                   <h4 className="text-gray-500 text-md ">{doc?.speciality}</h4>
                   <p className="text-gray-500 text-md">
-                    Initial Fee:{" "}
+                    Initial Fee:{' '}
                     <span className="text-blue-500"> ₹{doc?.initialFee}</span>
                   </p>
                 </div>
@@ -167,7 +169,7 @@ const Doctors = ({ user }) => {
                   <AiFillStar className="h-4 w-4 text-yellow-500" />
                   <FaStarHalf />
                 </p>
-                {user.role === "patient" && (
+                {user.role === 'patient' && (
                   <Link href={`/doctor/${doc?.user?._id}`}>
                     <button className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md my-2">
                       Book Appointment
@@ -190,7 +192,7 @@ export async function getServerSideProps(ctx) {
   const { location, speciality } = ctx.query;
 
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(["search", location, speciality], () =>
+  await queryClient.prefetchQuery(['search', location, speciality], () =>
     getDoctorsFromSearch(location, speciality)
   );
 

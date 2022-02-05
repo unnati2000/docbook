@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { login } from "../utils/auth.utils";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
-import Link from "next/link";
+import { useState } from 'react';
+import { login } from '../utils/auth.utils';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import Link from 'next/link';
 
 function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -88,8 +89,13 @@ function SignIn() {
                 <div>
                   <button
                     type="submit"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="relative w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   >
+                    {loading && (
+                      <span className="absolute right-2 inset-y-0 flex items-center pr-3">
+                        <AiOutlineLoading3Quarters className="animate-spin h-4 w-4" />
+                      </span>
+                    )}
                     Sign in
                   </button>
                 </div>
