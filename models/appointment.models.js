@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const appointmentSchema = new mongoose.Schema(
   {
     doctor: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
     timeSlot: {
@@ -31,11 +31,11 @@ const appointmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    confirmed: {
+    isConfirmed: {
       type: Boolean,
       default: false,
     },
-    cancelled: {
+    isAccepted: {
       type: Boolean,
       default: false,
     },
@@ -43,7 +43,4 @@ const appointmentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Appointment', appointmentSchema);
-
-// isConfirmed: Did the doctor accept or reject this appointment i.e did he take the action?
-// isAccepted: Did the doctor accept the appointment?
+module.exports = mongoose.model("Appointment", appointmentSchema);

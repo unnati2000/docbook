@@ -121,7 +121,7 @@ const Timing = ({ doctor, user }) => {
         doctor={doctor}
         time={time}
         date={date.format("DD-MM-YYYY")}
-        day={weekday[date.isoWeekday()]}
+        day={weekday[date.isoWeekday() - 1]}
         setOpen={setOpen}
       />
       <div className="px-4 my-4">
@@ -129,7 +129,7 @@ const Timing = ({ doctor, user }) => {
           onClick={() => setOpen(true)}
           className="bg-blue-500 w-full rounded-md py-1 text-white shadow-md"
         >
-          Appointment
+          Book Appointment
         </button>
       </div>
     </>

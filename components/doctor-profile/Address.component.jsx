@@ -32,7 +32,7 @@ const Address = ({ doctor }) => {
               </td>
             </tr>
             {Object.entries(doctor?.timings).map(([key, value]) => (
-              <tr>
+              <tr key={key}>
                 <td className="px-6 py-2">
                   <p className="text-gray-500">
                     {key.charAt(0).toUpperCase() + key.slice(1)}

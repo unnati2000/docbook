@@ -27,7 +27,9 @@ const AdvancedSearch = () => {
         <div>
           <select className="w-full py-2 rounded-md px-4 border border-gray-500 text-gray-500">
             {proficiences?.map((proficience) => (
-              <option value={proficience}>{proficience}</option>
+              <option key={proficience} value={proficience}>
+                {proficience}
+              </option>
             ))}
           </select>
         </div>

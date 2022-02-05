@@ -46,6 +46,8 @@ const PatientProfileForm = () => {
     try {
       if (streetAdd === "" || city === "" || state === "" || pincode === "") {
         toast.error("Please enter all the fields");
+      } else if (image === null) {
+        toast.error("Please add a profile pic");
       } else {
         const formdata = new FormData();
         formdata.append("address", JSON.stringify(address));
