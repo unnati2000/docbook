@@ -71,11 +71,24 @@ router.get("/unchecked", auth, async (req, res) => {
 
 router.get("/statistics", auth, async (req, res) => {
   try {
-    const appointments = await Appointment.find({
+    const allAppointments = await Appointment.find({
       doctor: req.userId,
+    }).populate("user doctor");
+
+    const acceptedAppointment = await Appointment.find({
+      doctor: req.userId,
+      isAccepted: true,
     });
 
-    return res.status(200).json(appointments);
+    const rejectedAppointment = await Appointment.find({
+      doctor: req.userId,
+      isAccepted: false,
+      isConfirmed: true,
+    });
+
+    return res
+      .status(200)
+      .json({ allAppointments, acceptedAppointment, rejectedAppointment });
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "Server error" });
@@ -121,6 +134,23 @@ router.get("/:id", auth, async (req, res) => {
       doctor: req.params.id,
       date: req.query.date,
     });
+
+    res.status(200).json(appointment);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+router.get("/", auth, async (req, res) => {
+  try {
+    const user = await User.findOne({ user: req.UserId });
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+    const appointment = await Appointment.find({
+      user: req.userId,
+    }).populate("doctor");
 
     res.status(200).json(appointment);
   } catch (error) {

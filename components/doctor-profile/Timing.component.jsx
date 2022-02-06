@@ -81,7 +81,9 @@ const Timing = ({ doctor, user }) => {
           <IoIosArrowForward className="text-xl text-blue-500 cursor-pointer" />
         </p>
       </div>
+      {console.log(moment().format("HH:mm"))}
 
+      {console.log(doctor?.timeSlots?.saturday)}
       <div className="flex flex-wrap justify-center my-2 mx-2 gap-4">
         {weekday.map((day, ind) => {
           if (date.isoWeekday() === ind + 1) {

@@ -107,7 +107,7 @@ const DoctorDashboard = ({ user }) => {
         </div>
 
         {tab === "statistics" ? (
-          <Statistics data={data} />
+          <Statistics data={data} fee={user?.doctor?.initialFee} />
         ) : (
           <AppointmentCard data={data} tab={tab} />
         )}
