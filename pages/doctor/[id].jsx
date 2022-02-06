@@ -23,7 +23,7 @@ const Doctor = ({ user }) => {
 
   return (
     <div className="bg-gray-100">
-      <section className="grid my-12 mx-8 grid-cols-3 gap-4">
+      <section className="grid  my-12 mx-8 grid-cols-3 gap-4">
         <div className="bg-white col-span-2 p-8 rounded-md shadow-sm">
           <DoctorProfile doctor={data} />
         </div>
