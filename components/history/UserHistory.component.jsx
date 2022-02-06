@@ -67,7 +67,7 @@ export default function UserHistory() {
                           <img
                             className="h-10 w-10 rounded-full"
                             src={person?.doctor?.profilePic}
-                            alt=""
+                            alt={person?.user?.name}
                           />
                         </div>
                         <div className="ml-4">
@@ -82,9 +82,7 @@ export default function UserHistory() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
-                        {`${moment(person?.date).format("ddd")}, ${
-                          person?.date
-                        }`}
+                        {`${person?.date}`}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
