@@ -1,22 +1,22 @@
-import { Fragment, useState } from "react";
-import { useRouter } from "next/router";
-import { useQuery } from "react-query";
-import axios from "axios";
-import baseURL from "../utils/baseURL";
-import { Menu, Transition } from "@headlessui/react";
-import { BsChat } from "react-icons/bs";
-import { VscBellDot, VscBell } from "react-icons/vsc";
-import { MenuAlt2Icon } from "@heroicons/react/outline";
-import { logoutUser } from "../utils/auth.utils";
-import { SearchIcon } from "@heroicons/react/solid";
+import { Fragment, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import baseURL from '../utils/baseURL';
+import { Menu, Transition } from '@headlessui/react';
+import { BsChat } from 'react-icons/bs';
+import { VscBellDot, VscBell } from 'react-icons/vsc';
+import { MenuAlt2Icon } from '@heroicons/react/outline';
+import { logoutUser } from '../utils/auth.utils';
+import { SearchIcon } from '@heroicons/react/solid';
 
 const Searchbar = ({ user, setMobileMenuOpen }) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
   const router = useRouter();
 
   const { data, isLoading, isSuccess } = useQuery(
-    ["search", search],
+    ['search', search],
     async () => {
       const CancelToken = axios.CancelToken;
 
@@ -38,7 +38,7 @@ const Searchbar = ({ user, setMobileMenuOpen }) => {
   );
 
   return (
-    <header className="w-full">
+    <header className="w-full text-black">
       <div className="relative z-10 flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
         <button
           type="button"
@@ -77,7 +77,7 @@ const Searchbar = ({ user, setMobileMenuOpen }) => {
                       key={user?._id}
                       onClick={() => {
                         router.push(`/doctor/${user?._id}`);
-                        setSearch("");
+                        setSearch('');
                       }}
                       className="bg-white flex gap-4 p-4 cursor-pointer border-b border-gray-200"
                     >
@@ -101,7 +101,7 @@ const Searchbar = ({ user, setMobileMenuOpen }) => {
                       key={doctor?.user?._id}
                       onClick={() => {
                         router.push(`/doctor/${doctor?.user?._id}`);
-                        setSearch("");
+                        setSearch('');
                       }}
                       className="bg-white flex gap-4 p-4 cursor-pointer  border-b border-gray-200"
                     >
