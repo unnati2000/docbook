@@ -1,20 +1,27 @@
-import { useState } from "react";
-import General from "../components/settings/General.component";
-import Password from "../components/settings/Password.component";
-import DoctorDetails from "../components/settings/DoctorDetails.component";
+import { useState } from 'react';
+import General from '../components/settings/General.component';
+import Password from '../components/settings/Password.component';
+import DoctorDetails from '../components/settings/DoctorDetails.component';
 
-const tabs = [
-  { name: "General", href: "#", current: true },
-  { name: "Password", href: "#", current: false },
-  { name: "Doctor Details", href: "#", current: false },
+const doctorTabs = [
+  { name: 'General', href: '#', current: true },
+  { name: 'Password', href: '#', current: false },
+  { name: 'Doctor Details', href: '#', current: false },
+];
+
+const patientTabs = [
+  { name: 'General', href: '#', current: true },
+  { name: 'Password', href: '#', current: false },
 ];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 function Settings({ user }) {
-  const [activeTab, setactiveTab] = useState("General");
+  const [activeTab, setactiveTab] = useState('General');
+
+  const tabsToRender = user.role === 'doctor' ? doctorTabs : patientTabs;
 
   return (
     <div className="relative h-screen bg-white overflow-hidden flex">
@@ -37,9 +44,11 @@ function Settings({ user }) {
                       id="selected-tab"
                       name="selected-tab"
                       className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-                      defaultValue={tabs.find((tab) => tab.current).name}
+                      defaultValue={
+                        tabsToRender.find((tab) => tab.current).name
+                      }
                     >
-                      {tabs.map((tab) => (
+                      {tabsToRender.map((tab) => (
                         <option key={tab.name}>{tab.name}</option>
                       ))}
                     </select>
@@ -47,16 +56,16 @@ function Settings({ user }) {
                   <div className="hidden lg:block">
                     <div className="border-b border-gray-200">
                       <nav className="-mb-px flex space-x-8">
-                        {tabs.map((tab) => (
+                        {tabsToRender.map((tab) => (
                           <a
                             key={tab.name}
                             href={tab.href}
                             onClick={() => setactiveTab(tab.name)}
                             className={classNames(
                               activeTab === tab.name
-                                ? "border-b border-blue-500 text-blue-500"
-                                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                              "whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                                ? 'border-b border-blue-500 text-blue-500'
+                                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                              'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
                             )}
                           >
                             {tab.name}
@@ -67,18 +76,18 @@ function Settings({ user }) {
                   </div>
 
                   <div className="mt-10 divide-y divide-gray-200">
-                    {activeTab === "General" && (
+                    {activeTab === 'General' && (
                       <div>
                         <General user={user} />
                       </div>
                     )}
-                    {activeTab === "Password" && (
+                    {activeTab === 'Password' && (
                       <div>
                         <Password user={user} />
                       </div>
                     )}
 
-                    {user?.role === "doctor" && activeTab === "Doctor Details" && (
+                    {user?.role === 'doctor' && activeTab === 'Doctor Details' && (
                       <div>
                         <DoctorDetails user={user} />
                       </div>
