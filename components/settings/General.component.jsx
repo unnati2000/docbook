@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { toast } from "react-toastify";
-import baseURL from "../../utils/baseURL";
-import { useMutation } from "react-query";
-import cookie from "js-cookie";
-import axios from "axios";
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+import baseURL from '../../utils/baseURL';
+import { useMutation } from 'react-query';
+import cookie from 'js-cookie';
+import axios from 'axios';
 
 const General = ({ user }) => {
   const [name, setName] = useState(user?.name);
@@ -24,8 +24,8 @@ const General = ({ user }) => {
   const mutation = useMutation(async (formdata) => {
     const { data } = await axios.put(`${baseURL}/api/profile`, formdata, {
       headers: {
-        Authorization: cookie.get("token"),
-        "Content-Type": "multipart/form-data",
+        Authorization: cookie.get('token'),
+        'Content-Type': 'multipart/form-data',
       },
     });
     return data;
@@ -34,18 +34,18 @@ const General = ({ user }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("profilePic", file);
-    formData.append("address", JSON.stringify(address));
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('profilePic', file);
+    formData.append('address', JSON.stringify(address));
 
     try {
       const data = await mutation.mutateAsync(formData);
       toast.success(data?.msg);
-      router.push("/home");
+      router.push('/home');
     } catch (err) {
       console.log(err);
-      toast.error(err.response?.data?.msg || "Please recheck your inputs");
+      toast.error(err.response?.data?.msg || 'Please recheck your inputs');
     }
   };
 

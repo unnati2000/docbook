@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { useQuery, QueryClient } from "react-query";
+import React, { useState } from 'react';
+import { useQuery, QueryClient } from 'react-query';
 
-import axios from "axios";
-import cookie from "js-cookie";
-import baseURL from "../../utils/baseURL";
-import { BsCalendar2Check } from "react-icons/bs";
-import { MdCalendarToday } from "react-icons/md";
-import { IoCashOutline } from "react-icons/io5";
-import AppointmentCard from "./AppointmentCard.component";
-import Statistics from "./Statistics.component";
+import axios from 'axios';
+import cookie from 'js-cookie';
+import baseURL from '../../utils/baseURL';
+import { BsCalendar2Check } from 'react-icons/bs';
+import { MdCalendarToday } from 'react-icons/md';
+import { IoCashOutline } from 'react-icons/io5';
+import AppointmentCard from './AppointmentCard.component';
+import Statistics from './Statistics.component';
 
 const getAppointments = async (tab) => {
   const data = await axios.get(`${baseURL}/api/appointments/${tab}/`, {
     headers: {
-      Authorization: cookie.get("token"),
+      Authorization: cookie.get('token'),
     },
   });
 
@@ -21,13 +21,13 @@ const getAppointments = async (tab) => {
 };
 
 const DoctorDashboard = ({ user }) => {
-  const [tab, setTab] = useState("unchecked");
+  const [tab, setTab] = useState('unchecked');
 
-  const { data } = useQuery(["appointments", tab], () => getAppointments(tab));
+  const { data } = useQuery(['appointments', tab], () => getAppointments(tab));
 
   return (
-    <div className="grid grid-cols-12 min-h-screen">
-      <aside className="bg-white col-span-3 border-r border-gray-300">
+    <div className="grid grid-cols-12 md:min-h-screen">
+      <aside className="bg-white col-span-12 md:col-span-3 border-r border-gray-300">
         <div className="flex items-center space-x-4 border-b border-gray-300 pt-8 pl-4 pb-8">
           <img src={user?.profilePic} className="h-12 w-12 rounded-full" />
           <div>
@@ -40,38 +40,38 @@ const DoctorDashboard = ({ user }) => {
 
         <div className="mt-6">
           <div
-            onClick={() => setTab("unchecked")}
+            onClick={() => setTab('unchecked')}
             className={
-              tab === "unchecked"
-                ? "text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
-                : "text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
+              tab === 'unchecked'
+                ? 'text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
+                : 'text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
             }
           >
             <BsCalendar2Check />
             <p
               className={
-                tab === "unchecked"
-                  ? "text-blue-600"
-                  : "text-gray-500 hover:text-blue-500"
+                tab === 'unchecked'
+                  ? 'text-blue-600'
+                  : 'text-gray-500 hover:text-blue-500'
               }
             >
               Unchecked Appointments
             </p>
           </div>
           <div
-            onClick={() => setTab("today")}
+            onClick={() => setTab('today')}
             className={
-              tab === "today"
-                ? "text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
-                : "text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
+              tab === 'today'
+                ? 'text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
+                : 'text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
             }
           >
             <MdCalendarToday />
             <p
               className={
-                tab === "today"
-                  ? "text-blue-600"
-                  : "text-gray-500 hover:text-blue-500"
+                tab === 'today'
+                  ? 'text-blue-600'
+                  : 'text-gray-500 hover:text-blue-500'
               }
             >
               Today's Appointments
@@ -79,19 +79,19 @@ const DoctorDashboard = ({ user }) => {
           </div>
 
           <div
-            onClick={() => setTab("statistics")}
+            onClick={() => setTab('statistics')}
             className={
-              tab === "statistics"
-                ? "text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
-                : "text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
+              tab === 'statistics'
+                ? 'text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
+                : 'text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
             }
           >
             <IoCashOutline />
             <p
               className={
-                tab === "statistics"
-                  ? "text-blue-600"
-                  : "text-gray-500 hover:text-blue-500"
+                tab === 'statistics'
+                  ? 'text-blue-600'
+                  : 'text-gray-500 hover:text-blue-500'
               }
             >
               Your Statistics
@@ -99,20 +99,20 @@ const DoctorDashboard = ({ user }) => {
           </div>
         </div>
       </aside>
-      <section className="col-span-6 bg-white border-r border-gray-300">
+      <section className="col-span-12 md:col-span-6 bg-white border-r border-gray-300">
         <div className="border-b border-gray-300 py-8 px-4">
           <h2 className="text-gray-500 text-xl">
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
           </h2>
         </div>
 
-        {tab === "statistics" ? (
+        {tab === 'statistics' ? (
           <Statistics data={data} fee={user?.doctor?.initialFee} />
         ) : (
           <AppointmentCard data={data} tab={tab} />
         )}
       </section>
-      <aside className="col-span-3 bg-white">
+      <aside className="col-span-12 md:col-span-3 bg-white">
         <div className="border-b border-gray-300 py-6 px-4">
           <h2 className="text-blue-500 text-xl">Upcoming Appointment</h2>
         </div>

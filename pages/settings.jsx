@@ -47,6 +47,7 @@ function Settings({ user }) {
                       defaultValue={
                         tabsToRender.find((tab) => tab.current).name
                       }
+                      onChange={(e) => setactiveTab(e.target.value)}
                     >
                       {tabsToRender.map((tab) => (
                         <option key={tab.name}>{tab.name}</option>

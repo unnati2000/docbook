@@ -1,15 +1,15 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const appointmentSchema = new mongoose.Schema(
   {
     doctor: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     timeSlot: {
@@ -39,8 +39,23 @@ const appointmentSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isPaid: {
+      type: Boolean,
+      default: false,
+    },
+    paymentDetails: {
+      razorpayPaymentId: {
+        type: String,
+      },
+      razorpayOrderId: {
+        type: String,
+      },
+      razorpaySignature: {
+        type: String,
+      },
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Appointment", appointmentSchema);
+module.exports = mongoose.model('Appointment', appointmentSchema);

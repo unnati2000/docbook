@@ -38,7 +38,7 @@ const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
                 className={classNames(
                   item.current
                     ? 'bg-blue-800 text-white'
-                    : 'text-indigo-100 hover:bg-blue-800 hover:text-white',
+                    : 'text-blue-100 hover:bg-blue-800 hover:text-white',
                   'group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium'
                 )}
                 aria-current={item.current ? 'page' : undefined}
@@ -47,7 +47,7 @@ const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
                   className={classNames(
                     item.current
                       ? 'text-white'
-                      : 'text-indigo-300 group-hover:text-white',
+                      : 'text-blue-300 group-hover:text-white',
                     'h-6 w-6'
                   )}
                   aria-hidden="true"
@@ -89,7 +89,7 @@ const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <div className="relative max-w-xs w-full bg-indigo-700 pt-5 pb-4 flex-1 flex flex-col">
+              <div className="relative max-w-xs w-full bg-blue-700 pt-5 pb-4 flex-1 flex flex-col">
                 <Transition.Child
                   as={Fragment}
                   enter="ease-in-out duration-300"
@@ -125,8 +125,8 @@ const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
                           href={item.href}
                           className={classNames(
                             item.current
-                              ? 'bg-indigo-800 text-white'
-                              : 'text-indigo-100 hover:bg-indigo-800 hover:text-white',
+                              ? 'bg-blue-800 text-white'
+                              : 'text-blue-100 hover:bg-blue-800 hover:text-white',
                             'group py-2 px-3 rounded-md flex items-center text-sm font-medium'
                           )}
                           aria-current={item.current ? 'page' : undefined}
@@ -135,7 +135,7 @@ const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
                             className={classNames(
                               item.current
                                 ? 'text-white'
-                                : 'text-indigo-300 group-hover:text-white',
+                                : 'text-blue-300 group-hover:text-white',
                               'mr-3 h-6 w-6'
                             )}
                             aria-hidden="true"
