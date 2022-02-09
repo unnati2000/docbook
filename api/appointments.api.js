@@ -53,12 +53,14 @@ router.get("/today", auth, async (req, res) => {
     const user = await User.findById(req.userId);
 
     if (user.role !== "doctor") {
-      return res.status(404).send("Unauthorized to access this route");
+      return res.status(401).send("Unauthorized to access this route");
     }
 
     const appointments = await Appointment.find({
       doctor: req.userId,
       date: moment().format("DD-MM-YYYY"),
+      isConfirmed: true,
+      isAccepted: true,
     }).populate("user");
 
     res.status(200).json(appointments);
@@ -115,14 +117,24 @@ router.get("/statistics", auth, async (req, res) => {
   }
 });
 
+router.get("/user/today", auth, async (req, res) => {
+  try {
+    const appointments = await Appointment.find({
+      user: req.userId,
+      date: moment().format("DD-MM-YYYY"),
+      isConfirmed: true,
+      isAccepted: true,
+    }).populate("doctor");
+
+    res.status(200).json(appointments);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
 router.put("/", auth, async (req, res) => {
   try {
-    const user = await User.findById(req.userId);
-
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
-
     const appointment = await Appointment.findById(req.body.id);
 
     if (req.body.status === "confirm") {
@@ -141,6 +153,25 @@ router.put("/", auth, async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "Server error" });
+  }
+});
+
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const appointment = await Appointment.findById(req.params.id);
+    if (!appointment) {
+      return res.status(404).json({ msg: "Appointment not found" });
+    }
+
+    if (appointment.isConfirmed) {
+      return res.status(400).json({ msg: "Appointment already confirmed" });
+    } else {
+      await Appointment.findByIdAndDelete(req.params.id);
+      res.status(200).json({ msg: "Appointment deleted successfully" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Server Error" });
   }
 });
 

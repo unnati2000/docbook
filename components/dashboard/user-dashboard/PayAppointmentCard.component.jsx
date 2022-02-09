@@ -1,14 +1,15 @@
 import { XCircleIcon } from "@heroicons/react/solid";
 import { MdPayment } from "react-icons/md";
-import { AiOutlineWarning } from "react-icons/ai";
 
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import cookie from "js-cookie";
 import baseURL from "../../../utils/baseURL";
 import { toast } from "react-toastify";
 
 const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
+  const queryClient = useQueryClient();
+
   async function displayRazorpay() {
     const res = await loadRazorpay();
     if (!res) {
@@ -57,17 +58,28 @@ const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
     }
   );
 
-  const deleteMutation = useMutation(async () => {
-    const { data } = await axios.delete(
-      `${baseURL}/api/appointments/${appointment._id}`,
-      {
-        headers: {
-          Authorization: cookie.get("token"),
-        },
-      }
-    );
-    return data;
-  });
+  const deleteMutation = useMutation(
+    async () => {
+      const {} = await axios.delete(
+        `${baseURL}/api/appointments/${appointment._id}`,
+        {
+          headers: {
+            Authorization: cookie.get("token"),
+          },
+        }
+      );
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("appointments");
+        toast.success("Appointment cancelled successfully");
+      },
+    }
+  );
+
+  if (appointment?.isPaid) {
+    return null;
+  }
 
   return (
     <li className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200">
@@ -117,10 +129,14 @@ const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
                 <span className="ml-3 text-blue-600">Pay</span>
               </button>
             </div>
-            <div className="-ml-px w-0 flex-1 flex bg-red-100">
+          </div>
+        )}
+        {!appointment?.isConfirmed && (
+          <div className="-mt-px flex">
+            <div className="w-0 flex-1 flex bg-red-100">
               <button
-                onClick={() => deleteAppointment(appointment?._id)}
-                className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500"
+                onClick={() => deleteMutation.mutate()}
+                className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
               >
                 <XCircleIcon
                   className="w-5 h-5 text-red-600"
@@ -128,19 +144,6 @@ const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
                 />
                 <span className="ml-3 text-red-600">Cancel</span>
               </button>
-            </div>
-          </div>
-        )}
-        {!appointment?.isConfirmed && (
-          <div className="-mt-px flex">
-            <div className="w-0 flex-1 flex bg-gray-100">
-              <a className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500">
-                <AiOutlineWarning
-                  className="w-5 h-5 text-gray-600"
-                  aria-hidden="true"
-                />
-                <span className="ml-3 text-gray-600">Not Confirmed Yet</span>
-              </a>
             </div>
           </div>
         )}
