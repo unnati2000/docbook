@@ -1,33 +1,33 @@
-import { XCircleIcon } from '@heroicons/react/solid';
-import { MdPayment } from 'react-icons/md';
-import { AiOutlineWarning } from 'react-icons/ai';
+import { XCircleIcon } from "@heroicons/react/solid";
+import { MdPayment } from "react-icons/md";
+import { AiOutlineWarning } from "react-icons/ai";
 
-import { useMutation } from 'react-query';
-import axios from 'axios';
-import cookie from 'js-cookie';
-import baseURL from '../../../utils/baseURL';
-import { toast } from 'react-toastify';
+import { useMutation } from "react-query";
+import axios from "axios";
+import cookie from "js-cookie";
+import baseURL from "../../../utils/baseURL";
+import { toast } from "react-toastify";
 
 const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
   async function displayRazorpay() {
     const res = await loadRazorpay();
     if (!res) {
-      alert('Razorpay SDK failed to load. Are you online?');
+      alert("Razorpay SDK failed to load. Are you online?");
       return;
     }
 
     const options = {
-      key: 'rzp_test_OTRdVb3meRV7GC',
-      currency: 'INR',
-      name: 'DocBook',
-      description: 'Order Payment',
+      key: "rzp_test_OTRdVb3meRV7GC",
+      currency: "INR",
+      name: "DocBook",
+      description: "Order Payment",
       order_id: `${appointment.paymentDetails.razorpayOrderId}`,
       handler: function (response) {
         mutation.mutate(response);
       },
       prefill: {
-        name: 'John Doe',
-        email: 'jdoe@gmail.com',
+        name: "John Doe",
+        email: "jdoe@gmail.com",
       },
     };
     const paymentObject = new window.Razorpay(options);
@@ -41,7 +41,7 @@ const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
         body,
         {
           headers: {
-            Authorization: cookie.get('token'),
+            Authorization: cookie.get("token"),
           },
         }
       );
@@ -49,13 +49,25 @@ const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
     },
     {
       onSuccess: () => {
-        toast.success('Successfully paid for the appointment');
+        toast.success("Successfully paid for the appointment");
       },
       onError: (error) => {
         toast.error(error.message);
       },
     }
   );
+
+  const deleteMutation = useMutation(async () => {
+    const { data } = await axios.delete(
+      `${baseURL}/api/appointments/${appointment._id}`,
+      {
+        headers: {
+          Authorization: cookie.get("token"),
+        },
+      }
+    );
+    return data;
+  });
 
   return (
     <li className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200">
@@ -71,16 +83,16 @@ const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
           </p>
 
           <p className="mt-1 text-gray-500 text-sm truncate">
-            {appointment?.timeSlot?.split(':')[0] === 12
+            {appointment?.timeSlot?.split(":")[0] === 12
               ? `${appointment?.timeSlot} PM`
-              : appointment?.timeSlot?.split(':')[0] > 12
-              ? `${parseInt(appointment?.timeSlot?.split(':')[0]) - 12}:${
-                  appointment?.timeSlot?.split(':')[1]
+              : appointment?.timeSlot?.split(":")[0] > 12
+              ? `${parseInt(appointment?.timeSlot?.split(":")[0]) - 12}:${
+                  appointment?.timeSlot?.split(":")[1]
                 } PM`
               : `${appointment?.timeSlot} AM`}
           </p>
           <p className="mt-1 text-gray-500 text-sm truncate">
-            {' '}
+            {" "}
             {`${appointment?.date}`}
           </p>
         </div>
@@ -106,8 +118,8 @@ const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
               </button>
             </div>
             <div className="-ml-px w-0 flex-1 flex bg-red-100">
-              <a
-                href={`tel`}
+              <button
+                onClick={() => deleteAppointment(appointment?._id)}
                 className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500"
               >
                 <XCircleIcon
@@ -115,7 +127,7 @@ const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
                   aria-hidden="true"
                 />
                 <span className="ml-3 text-red-600">Cancel</span>
-              </a>
+              </button>
             </div>
           </div>
         )}
