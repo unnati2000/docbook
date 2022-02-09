@@ -1,17 +1,17 @@
-import { useState } from "react";
-import Appointment from "./user-dashboard/Appointments.component";
+import { useState } from 'react';
+import Appointment from './user-dashboard/Appointments.component';
 
 const tabs = [
-  { name: "Appointments", href: "#", current: true },
-  { name: "Plans", href: "#", current: false },
+  { name: 'Unchecked Appointments', current: true },
+  { name: 'Plans', current: false },
 ];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function UserDashboard({ user }) {
-  const [activeTab, setActiveTab] = useState("Appointments");
+  const [activeTab, setActiveTab] = useState('Unchecked Appointments');
 
   return (
     <div className="relative h-screen flex overflow-hidden bg-white">
@@ -66,17 +66,19 @@ export default function UserDashboard({ user }) {
                           onClick={() => setActiveTab(tab.name)}
                           className={classNames(
                             activeTab === tab.name
-                              ? "border-b border-blue-500 text-blue-500"
-                              : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                            "whitespace-nowrap cursor-pointer py-4 px-1 border-b-2 font-medium text-sm"
+                              ? 'border-b border-blue-500 text-blue-500'
+                              : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                            'whitespace-nowrap cursor-pointer py-4 px-1 border-b-2 font-medium text-sm'
                           )}
                         >
                           {tab.name}
                         </a>
                       ))}
                     </nav>
-                    <div className="mt-8">
-                      {activeTab === "Appointments" && <Appointment />}
+                    <div className="mt-8 pb-16">
+                      {activeTab === 'Unchecked Appointments' && (
+                        <Appointment />
+                      )}
                     </div>
                   </div>
                 </div>

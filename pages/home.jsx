@@ -1,54 +1,35 @@
-import { XCircleIcon, VideoCameraIcon } from "@heroicons/react/solid";
-import Header from "../components/home/Header.component";
-
-const people = [
-  {
-    id: 1,
-    name: "Jane Cooper",
-    title: "BDS",
-    time: "1:30PM-2:00PM",
-    day: "Sun 12/2/2022",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-  {
-    id: 2,
-    name: "Jane Cooper",
-    title: "BDS",
-    time: "1:30PM-2:00PM",
-    day: "Sun 12/2/2022",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-  {
-    id: 3,
-    name: "Jane Cooper",
-    title: "BDS",
-    time: "1:30PM-2:00PM",
-    day: "Sun 12/2/2022",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-  {
-    id: 4,
-    name: "Jane Cooper",
-    title: "BDS",
-    time: "1:30PM-2:00PM",
-    day: "Sun 12/2/2022",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-];
+import axios from 'axios';
+import cookie from 'js-cookie';
+import { useQuery } from 'react-query';
+import { XCircleIcon, VideoCameraIcon } from '@heroicons/react/solid';
+import baseURL from '../utils/baseURL';
+import Header from '../components/home/Header.component';
 
 const Home = ({ user }) => {
+  const { data, isLoading, isError, isSuccess } = useQuery(
+    ['appointments', 'today'],
+    async () => {
+      if (user.role === 'patient') {
+        const { data } = await axios.get(
+          `${baseURL}/api/appointments/user/today`,
+          {
+            headers: {
+              Authorization: cookie.get('token'),
+            },
+          }
+        );
+        return data;
+      } else {
+        const { data } = await axios.get(`${baseURL}/api/appointments/today`, {
+          headers: {
+            Authorization: cookie.get('token'),
+          },
+        });
+        return data;
+      }
+    }
+  );
+
   return (
     <div>
       <Header />
@@ -58,8 +39,78 @@ const Home = ({ user }) => {
           Upcoming Appointments
         </h2>
         <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {people.map((person) => (
-            <li
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : isError ? (
+            <p>Error</p>
+          ) : isSuccess && data.length === 0 ? (
+            <p>No appointments</p>
+          ) : (
+            data.map((appointment) => (
+              <li
+                key={appointment._id}
+                className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200"
+              >
+                <div className="w-full flex justify-between p-6 space-x-6">
+                  <div className="flex-1 truncate">
+                    <div className="flex items-center space-x-3">
+                      <h3 className="text-gray-900 text-sm font-medium truncate">
+                        {user.role === 'doctor'
+                          ? appointment.user.name
+                          : appointment.doctor.name}
+                      </h3>
+                    </div>
+                    <p className="mt-1 text-gray-500 text-sm truncate">
+                      {appointment.date}
+                    </p>
+
+                    <p className="mt-1 text-gray-500 text-sm truncate">
+                      {appointment.timeSlot}
+                    </p>
+                    <p className="mt-1 text-gray-500 text-sm truncate">
+                      {appointment.day}
+                    </p>
+                  </div>
+                  <img
+                    className="w-10 h-10 bg-gray-300 rounded-full flex-shrink-0"
+                    src={
+                      user.role === 'doctor'
+                        ? appointment.user.profilePic
+                        : appointment.doctor.profilePic
+                    }
+                    alt={
+                      user.role === 'doctor'
+                        ? appointment.user.name
+                        : appointment.doctor.name
+                    }
+                  />
+                </div>
+                <div>
+                  <div className="-mt-px flex divide-x divide-gray-200">
+                    <div className="w-0 flex-1 flex bg-blue-100">
+                      <a className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500">
+                        <VideoCameraIcon
+                          className="w-5 h-5 text-blue-600"
+                          aria-hidden="true"
+                        />
+                        <span className="ml-3 text-blue-600">Join</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            ))
+          )}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default Home;
+
+{
+  /* <li
               key={person.id}
               className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200"
             >
@@ -101,26 +152,7 @@ const Home = ({ user }) => {
                       <span className="ml-3 text-blue-600">Join</span>
                     </a>
                   </div>
-                  <div className="-ml-px w-0 flex-1 flex bg-red-100">
-                    <a
-                      href={`tel:${person.telephone}`}
-                      className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500"
-                    >
-                      <XCircleIcon
-                        className="w-5 h-5 text-red-600"
-                        aria-hidden="true"
-                      />
-                      <span className="ml-3 text-red-600">Cancel</span>
-                    </a>
-                  </div>
                 </div>
               </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-};
-
-export default Home;
+            </li> */
+}
