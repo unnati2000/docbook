@@ -52,8 +52,7 @@ const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
         toast.success('Successfully paid for the appointment');
       },
       onError: (error) => {
-        console.errror(error);
-        toast.error('There was an error. Try again later.');
+        toast.error(error.message);
       },
     }
   );
