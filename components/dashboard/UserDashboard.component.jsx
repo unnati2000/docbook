@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import Appointment from './user-dashboard/Appointments.component';
+import { useState } from "react";
+import Appointment from "./user-dashboard/Appointments.component";
 
 const tabs = [
-  { name: 'Unchecked Appointments', current: true },
-  { name: 'Plans', current: false },
+  { name: "Unchecked Appointments", current: true },
+  { name: "Plans", current: false },
 ];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function UserDashboard({ user }) {
-  const [activeTab, setActiveTab] = useState('Unchecked Appointments');
+  const [activeTab, setActiveTab] = useState("Unchecked Appointments");
 
   return (
     <div className="relative h-screen flex overflow-hidden bg-white">
@@ -34,7 +34,7 @@ export default function UserDashboard({ user }) {
                   <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
                     <div className="flex">
                       <img
-                        className="h-24 w-24 rounded-full ring-4 ring-white sm:h-32 sm:w-32"
+                        className="h-24 w-24 object-cover rounded-full ring-4 ring-white sm:h-32 sm:w-32"
                         src={user?.profilePic}
                         alt=""
                       />
@@ -66,9 +66,9 @@ export default function UserDashboard({ user }) {
                           onClick={() => setActiveTab(tab.name)}
                           className={classNames(
                             activeTab === tab.name
-                              ? 'border-b border-blue-500 text-blue-500'
-                              : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                            'whitespace-nowrap cursor-pointer py-4 px-1 border-b-2 font-medium text-sm'
+                              ? "border-b border-blue-500 text-blue-500"
+                              : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
+                            "whitespace-nowrap cursor-pointer py-4 px-1 border-b-2 font-medium text-sm"
                           )}
                         >
                           {tab.name}
@@ -76,7 +76,7 @@ export default function UserDashboard({ user }) {
                       ))}
                     </nav>
                     <div className="mt-8 pb-16">
-                      {activeTab === 'Unchecked Appointments' && (
+                      {activeTab === "Unchecked Appointments" && (
                         <Appointment />
                       )}
                     </div>

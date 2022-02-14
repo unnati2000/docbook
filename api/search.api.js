@@ -14,10 +14,12 @@ router.get("/:search", async (req, res) => {
         { address: { city: { $regex: search, $options: "i" } } },
       ],
       role: "doctor",
+      isVerfiied: true,
     }).populate("doctor");
 
     const doctors = await Doctor.find({
       $or: [{ speciality: { $regex: search, $options: "i" } }],
+      initialFee: { $ne: 0 },
     }).populate("user");
 
     res.status(200).send({ users, doctors });

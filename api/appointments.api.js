@@ -100,6 +100,7 @@ router.get("/statistics", auth, async (req, res) => {
     const acceptedAppointment = await Appointment.find({
       doctor: req.userId,
       isAccepted: true,
+      isPaid: true,
     });
 
     const rejectedAppointment = await Appointment.find({
