@@ -8,7 +8,7 @@ const Doctor = require("../models/doctor.models");
 router.get("/:search", async (req, res) => {
   try {
     const search = req.params.search;
-    const users = await User.find({
+    let users = await User.find({
       $or: [
         { name: { $regex: search, $options: "i" } },
         { address: { city: { $regex: search, $options: "i" } } },
@@ -19,8 +19,12 @@ router.get("/:search", async (req, res) => {
 
     const doctors = await Doctor.find({
       $or: [{ speciality: { $regex: search, $options: "i" } }],
-      initialFee: { $ne: 0 },
+      initialFee: { $gt: 0 },
     }).populate("user");
+
+    users = users.filter((user) => {
+      return user.doctor.initialFee > 0;
+    });
 
     res.status(200).send({ users, doctors });
   } catch (error) {
