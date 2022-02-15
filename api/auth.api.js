@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const router = express.Router();
-
 const User = require("../models/user.models");
 const auth = require("../middleware/auth.middleware");
 
@@ -11,7 +10,7 @@ const sendEmail = require("../utils-server/sendEmail");
 
 router.get("/", auth, async (req, res) => {
   try {
-    const user = await User.findById(req.userId);
+    const user = await User.findById(req.userId).populate("doctor");
 
     if (!user) {
       return res.status(400).json({
@@ -36,9 +35,9 @@ router.post("/", async (req, res) => {
         .json({ msg: "Please enter password greater than 6" });
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() }).select(
-      "+password"
-    );
+    const user = await User.findOne({ email: email.toLowerCase() })
+      .select("+password")
+      .populate("doctor");
 
     if (!user) {
       return res.status(400).json({ msg: "Invalid credentials" });
@@ -53,9 +52,12 @@ router.post("/", async (req, res) => {
     if (!isCorrectPassword) {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
+
+    const { role, doctor } = user;
+
     jwt.sign({ userId: user._id }, process.env.JWT_SECRET, (err, token) => {
       if (err) throw err;
-      res.status(200).json({ token });
+      res.status(200).json({ token, role, doctor });
     });
   } catch (error) {
     console.error(error);

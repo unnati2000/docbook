@@ -4,9 +4,9 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { Hydrate } from "react-query/hydration";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { ToastContainer } from "react-toastify";
+
 import { parseCookies, destroyCookie } from "nookies";
 
-import Head from "../components/Head.component";
 import Layout from "../components/Layout.components";
 import "tailwindcss/tailwind.css";
 
@@ -22,7 +22,6 @@ function MyApp({ Component, pageProps, user }) {
       <Hydrate state={pageProps.dehydratedState}>
         <Layout {...pageProps} user={pageProps?.user}>
           <ToastContainer />
-          <Head />
           <Component {...pageProps} />
         </Layout>
         <ReactQueryDevtools />
@@ -35,7 +34,17 @@ MyApp.getInitialProps = async ({ ctx }) => {
   const { token } = parseCookies(ctx);
   let pageProps = {};
 
-  const protectedRoutes = ctx.pathname === "/dashboard";
+  const protectedRoutes =
+    ctx.pathname === "/history" ||
+    ctx.pathname === "/doctors" ||
+    ctx.pathname === "/advanced-search" ||
+    ctx.pathname === "/doctor-details" ||
+    ctx.pathname === "/charts" ||
+    ctx.pathname === "/settings" ||
+    ctx.pathname === "/search" ||
+    ctx.pathname === "/doctor/[id]" ||
+    ctx.pathname === "/dashboard";
+
   const availableForEveryone =
     ctx.pathname === "/home" ||
     ctx.pathname === "/forgot-password" ||
@@ -43,7 +52,7 @@ MyApp.getInitialProps = async ({ ctx }) => {
 
   if (!token) {
     destroyCookie(ctx, "token");
-    // Redirect to login if user is trying to access protected routes
+
     protectedRoutes && redirectUser(ctx, "/signin");
   } else {
     try {

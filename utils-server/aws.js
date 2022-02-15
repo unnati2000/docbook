@@ -10,4 +10,6 @@ const s3Bucket = new AWS.S3({
   params: { Bucket: process.env.AWS_BUCKET_NAME },
 });
 
+
+
 module.exports = s3Bucket;

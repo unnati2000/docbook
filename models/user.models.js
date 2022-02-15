@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema(
       state: String,
       pincode: String,
     },
+    doctor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Doctor",
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
   },

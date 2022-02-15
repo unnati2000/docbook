@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 function DropDown({
   proficiences,
@@ -21,7 +21,7 @@ function DropDown({
   };
 
   return (
-    <div className="flex items-center justify-center w-full p-12">
+    <div className="flex items-center w-full">
       <div className="relative inline-block text-left w-full">
         <select
           onChange={onChangeCurrentDegree}
@@ -29,7 +29,9 @@ function DropDown({
           className="w-full py-2 rounded-md px-4 border border-gray-500 text-gray-500"
         >
           {proficiences?.map((proficience) => (
-            <option value={proficience}>{proficience}</option>
+            <option key={proficience} value={proficience}>
+              {proficience}
+            </option>
           ))}
         </select>
       </div>

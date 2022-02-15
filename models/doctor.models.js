@@ -7,12 +7,6 @@ const doctorSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    degree: {
-      degreeName: String,
-      from: String,
-      to: String,
-      university: String,
-    },
     proficiencies: {
       type: [String],
       enum: [
@@ -39,7 +33,91 @@ const doctorSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    initialFee: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
+    speciality: {
+      type: String,
+      enum: [
+        "Dentist",
+        "Gynecologist",
+        "General Physician",
+        "Dermatologist",
+        "Ear-nose-throat (ent) Specialist",
+        "Homoepath",
+        "Ayurveda",
+        "Cardiologist",
+        "Neurologist",
+        "Orthopedic",
+        "Dietician",
+        "Physiotherapist",
+      ],
+      required: true,
+    },
+    experience: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
+    timings: {
+      sunday: {
+        from: String,
+        to: String,
+        markAsHoliday: false,
+      },
+      monday: {
+        from: String,
+        to: String,
+        markAsHoliday: false,
+      },
+      tuesday: {
+        from: String,
+        to: String,
+        markAsHoliday: false,
+      },
+      wednesday: {
+        from: String,
+        to: String,
+        markAsHoliday: false,
+      },
+      thursday: {
+        from: String,
+        to: String,
+        markAsHoliday: false,
+      },
+      friday: {
+        from: String,
+        to: String,
+        markAsHoliday: false,
+      },
+      saturday: {
+        from: String,
+        to: String,
+        markAsHoliday: false,
+      },
+    },
+
+    description: {
+      type: String,
+    },
+    timeSlots: {
+      monday: [String],
+      tuesday: [String],
+      wednesday: [String],
+      thursday: [String],
+      friday: [String],
+      saturday: [String],
+      sunday: [String],
+    },
+    rating: {
+      type: Number,
+      min: 0,
+      max: 5,
+    },
   },
+
   { timestamps: true }
 );
 
