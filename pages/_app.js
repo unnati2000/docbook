@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { Hydrate } from "react-query/hydration";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { ToastContainer } from "react-toastify";
+import { HMSRoomProvider, HMSThemeProvider } from "@100mslive/hms-video-react";
 
 import { parseCookies, destroyCookie } from "nookies";
 
@@ -18,15 +19,19 @@ function MyApp({ Component, pageProps, user }) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
-        <Layout {...pageProps} user={pageProps?.user}>
-          <ToastContainer />
-          <Component {...pageProps} />
-        </Layout>
-        <ReactQueryDevtools />
-      </Hydrate>
-    </QueryClientProvider>
+    <HMSRoomProvider>
+      <HMSThemeProvider appBuilder={{ theme: "dark" }}>
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={pageProps.dehydratedState}>
+            <Layout {...pageProps} user={pageProps?.user}>
+              <ToastContainer />
+              <Component {...pageProps} />
+            </Layout>
+            <ReactQueryDevtools />
+          </Hydrate>
+        </QueryClientProvider>
+      </HMSThemeProvider>
+    </HMSRoomProvider>
   );
 }
 

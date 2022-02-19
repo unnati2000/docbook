@@ -49,7 +49,9 @@ const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
       return data;
     },
     {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        console.log(data);
+
         toast.success("Successfully paid for the appointment");
       },
       onError: (error) => {

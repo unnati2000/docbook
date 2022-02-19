@@ -75,6 +75,7 @@ export default function UserDashboard({ user }) {
                         </a>
                       ))}
                     </nav>
+
                     <div className="mt-8 pb-16">
                       {activeTab === "Unchecked Appointments" && (
                         <Appointment />

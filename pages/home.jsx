@@ -1,20 +1,50 @@
-import axios from 'axios';
-import cookie from 'js-cookie';
-import { useQuery } from 'react-query';
-import { XCircleIcon, VideoCameraIcon } from '@heroicons/react/solid';
-import baseURL from '../utils/baseURL';
-import Header from '../components/home/Header.component';
+import axios from "axios";
+import cookie from "js-cookie";
+import { useQuery } from "react-query";
+import {
+  useHMSActions,
+  useHMSStore,
+  selectIsConnectedToRoom,
+} from "@100mslive/hms-video-react";
+import { XCircleIcon, VideoCameraIcon } from "@heroicons/react/solid";
+import baseURL from "../utils/baseURL";
+import Header from "../components/home/Header.component";
+import Room from "../components/video/Room.component";
+
+const endPoint = "https://prod-in.100ms.live/hmsapi/docbook.app.100ms.live/";
 
 const Home = ({ user }) => {
+  const hmsActions = useHMSActions();
+  const isConnected = useHMSStore(selectIsConnectedToRoom);
+
+  const onSubmit = async () => {
+    const token = await getToken(user?.name);
+    hmsActions.join({ authToken: token, userName: user?.name });
+  };
+
+  const getToken = async (user_id) => {
+    const response = await fetch(`${endPoint}api/token`, {
+      method: "POST",
+      body: JSON.stringify({
+        user_id,
+        role: "host",
+        type: "app",
+        room_id: "620b968d71bd215ae0421f15",
+      }),
+    });
+    const { token } = await response.json();
+    return token;
+  };
+
   const { data, isLoading, isError, isSuccess } = useQuery(
-    ['appointments', 'today'],
+    ["appointments", "today"],
     async () => {
-      if (user.role === 'patient') {
+      if (user.role === "patient") {
         const { data } = await axios.get(
           `${baseURL}/api/appointments/user/today`,
           {
             headers: {
-              Authorization: cookie.get('token'),
+              Authorization: cookie.get("token"),
             },
           }
         );
@@ -22,7 +52,7 @@ const Home = ({ user }) => {
       } else {
         const { data } = await axios.get(`${baseURL}/api/appointments/today`, {
           headers: {
-            Authorization: cookie.get('token'),
+            Authorization: cookie.get("token"),
           },
         });
         return data;
@@ -44,7 +74,7 @@ const Home = ({ user }) => {
           ) : isError ? (
             <p>Error</p>
           ) : isSuccess && data.length === 0 ? (
-            <p>No appointments</p>
+            <p className="text-gray-500 text-xl">No appointments today!</p>
           ) : (
             data.map((appointment) => (
               <li
@@ -55,7 +85,7 @@ const Home = ({ user }) => {
                   <div className="flex-1 truncate">
                     <div className="flex items-center space-x-3">
                       <h3 className="text-gray-900 text-sm font-medium truncate">
-                        {user.role === 'doctor'
+                        {user.role === "doctor"
                           ? appointment.user.name
                           : appointment.doctor.name}
                       </h3>
@@ -74,12 +104,12 @@ const Home = ({ user }) => {
                   <img
                     className="w-10 h-10 bg-gray-300 rounded-full flex-shrink-0"
                     src={
-                      user.role === 'doctor'
+                      user.role === "doctor"
                         ? appointment.user.profilePic
                         : appointment.doctor.profilePic
                     }
                     alt={
-                      user.role === 'doctor'
+                      user.role === "doctor"
                         ? appointment.user.name
                         : appointment.doctor.name
                     }
@@ -88,13 +118,16 @@ const Home = ({ user }) => {
                 <div>
                   <div className="-mt-px flex divide-x divide-gray-200">
                     <div className="w-0 flex-1 flex bg-blue-100">
-                      <a className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500">
+                      <button
+                        onClick={() => onSubmit()}
+                        className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
+                      >
                         <VideoCameraIcon
                           className="w-5 h-5 text-blue-600"
                           aria-hidden="true"
                         />
                         <span className="ml-3 text-blue-600">Join</span>
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>
