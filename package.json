@@ -33,7 +33,9 @@
     "react-modal": "^3.14.4",
     "react-query": "^3.26.0",
     "react-select": "^5.2.1",
+    "react-simple-chatbot": "^0.6.1",
     "react-toastify": "^8.0.3",
+    "styled-components": "^5.3.3",
     "use-debounce": "^7.0.1"
   },
   "devDependencies": {

@@ -1,20 +1,36 @@
-import axios from 'axios';
-import cookie from 'js-cookie';
-import { useQuery } from 'react-query';
-import { XCircleIcon, VideoCameraIcon } from '@heroicons/react/solid';
-import baseURL from '../utils/baseURL';
-import Header from '../components/home/Header.component';
+import { useState } from "react";
+import axios from "axios";
+import cookie from "js-cookie";
+import { useQuery } from "react-query";
+import { XCircleIcon, VideoCameraIcon } from "@heroicons/react/solid";
+import baseURL from "../utils/baseURL";
+import Header from "../components/home/Header.component";
+import Chatbot from "react-simple-chatbot";
+import { ThemeProvider } from "styled-components";
+import { BsChatRight } from "react-icons/bs";
 
 const Home = ({ user }) => {
+  const theme = {
+    background: "#f5f8fb",
+    fontFamily: "Open sans, sans-serif",
+    headerBgColor: "#3d6bff",
+    headerFontColor: "#fff",
+    headerFontSize: "15px",
+    botBubbleColor: "#3d6bff",
+    botFontColor: "#fff",
+    userBubbleColor: "#fff",
+    userFontColor: "#4a4a4a",
+  };
+
   const { data, isLoading, isError, isSuccess } = useQuery(
-    ['appointments', 'today'],
+    ["appointments", "today"],
     async () => {
-      if (user.role === 'patient') {
+      if (user.role === "patient") {
         const { data } = await axios.get(
           `${baseURL}/api/appointments/user/today`,
           {
             headers: {
-              Authorization: cookie.get('token'),
+              Authorization: cookie.get("token"),
             },
           }
         );
@@ -22,7 +38,7 @@ const Home = ({ user }) => {
       } else {
         const { data } = await axios.get(`${baseURL}/api/appointments/today`, {
           headers: {
-            Authorization: cookie.get('token'),
+            Authorization: cookie.get("token"),
           },
         });
         return data;
@@ -30,8 +46,42 @@ const Home = ({ user }) => {
     }
   );
 
+  const [open, setOpen] = useState(false);
+  const steps = [
+    {
+      id: "Greet",
+      message: `Hello ${user?.name}, Welcome to Docbook`,
+      trigger: "Query",
+    },
+    {
+      id: "Query",
+      message: "How can I help you?",
+      options: [
+        { value: 1, label: "Search for doctors", trigger: "4" },
+        { value: 2, label: "Chart", trigger: "5" },
+        { value: 3, label: "Mood tracking", trigger: "6" },
+      ],
+    },
+    {
+      id: "4",
+      message: "Search for doctors",
+    },
+    {
+      id: "5",
+      message: "Chart",
+    },
+    {
+      id: "6",
+      message: "Mood tracking",
+    },
+    {
+      id: "Done",
+      message: "Thank you for using Docbook",
+    },
+  ];
+
   return (
-    <div>
+    <div className="">
       <Header />
 
       <div className="mx-12 my-8">
@@ -55,7 +105,7 @@ const Home = ({ user }) => {
                   <div className="flex-1 truncate">
                     <div className="flex items-center space-x-3">
                       <h3 className="text-gray-900 text-sm font-medium truncate">
-                        {user.role === 'doctor'
+                        {user.role === "doctor"
                           ? appointment.user.name
                           : appointment.doctor.name}
                       </h3>
@@ -74,12 +124,12 @@ const Home = ({ user }) => {
                   <img
                     className="w-10 h-10 bg-gray-300 rounded-full flex-shrink-0"
                     src={
-                      user.role === 'doctor'
+                      user.role === "doctor"
                         ? appointment.user.profilePic
                         : appointment.doctor.profilePic
                     }
                     alt={
-                      user.role === 'doctor'
+                      user.role === "doctor"
                         ? appointment.user.name
                         : appointment.doctor.name
                     }
@@ -102,6 +152,20 @@ const Home = ({ user }) => {
             ))
           )}
         </ul>
+      </div>
+
+      <div className="fixed bottom-10 right-10">
+        {open && (
+          <ThemeProvider theme={theme}>
+            <Chatbot steps={steps} />;
+          </ThemeProvider>
+        )}
+        <button
+          className="bg-blue-600 p-4 shadow-md rounded-full"
+          onClick={() => setOpen(!open)}
+        >
+          <BsChatRight className="w-6 h-6 text-white" />
+        </button>
       </div>
     </div>
   );
