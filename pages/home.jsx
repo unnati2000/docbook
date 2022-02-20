@@ -1,35 +1,35 @@
 import axios from "axios";
 import cookie from "js-cookie";
 import { useQuery } from "react-query";
+import { useRouter } from "next/router";
 import {
   useHMSActions,
   useHMSStore,
   selectIsConnectedToRoom,
 } from "@100mslive/hms-video-react";
-import { XCircleIcon, VideoCameraIcon } from "@heroicons/react/solid";
+import { VideoCameraIcon } from "@heroicons/react/solid";
 import baseURL from "../utils/baseURL";
 import Header from "../components/home/Header.component";
-import Room from "../components/video/Room.component";
 
 const endPoint = "https://prod-in.100ms.live/hmsapi/docbook.app.100ms.live/";
 
 const Home = ({ user }) => {
   const hmsActions = useHMSActions();
   const isConnected = useHMSStore(selectIsConnectedToRoom);
+  const router = useRouter();
 
-  const onSubmit = async () => {
-    const token = await getToken(user?.name);
+  const onSubmit = async (roomId) => {
+    const token = await getToken(roomId);
     hmsActions.join({ authToken: token, userName: user?.name });
   };
 
-  const getToken = async (user_id) => {
+  const getToken = async (roomId) => {
     const response = await fetch(`${endPoint}api/token`, {
       method: "POST",
       body: JSON.stringify({
-        user_id,
-        role: "host",
         type: "app",
-        room_id: "620b968d71bd215ae0421f15",
+        room_id: roomId,
+        role: "host",
       }),
     });
     const { token } = await response.json();
@@ -59,6 +59,9 @@ const Home = ({ user }) => {
       }
     }
   );
+  if (isConnected) {
+    router.push("/video");
+  }
 
   return (
     <div>
@@ -73,7 +76,7 @@ const Home = ({ user }) => {
             <p>Loading...</p>
           ) : isError ? (
             <p>Error</p>
-          ) : isSuccess && data.length === 0 ? (
+          ) : isSuccess && data?.length === 0 ? (
             <p className="text-gray-500 text-xl">No appointments today!</p>
           ) : (
             data.map((appointment) => (
@@ -116,10 +119,11 @@ const Home = ({ user }) => {
                   />
                 </div>
                 <div>
+                  {console.log(appointment)}
                   <div className="-mt-px flex divide-x divide-gray-200">
                     <div className="w-0 flex-1 flex bg-blue-100">
                       <button
-                        onClick={() => onSubmit()}
+                        onClick={() => onSubmit(appointment?.roomId)}
                         className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
                       >
                         <VideoCameraIcon
@@ -141,51 +145,3 @@ const Home = ({ user }) => {
 };
 
 export default Home;
-
-{
-  /* <li
-              key={person.id}
-              className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200"
-            >
-              <div className="w-full flex justify-between p-6 space-x-6">
-                <div className="flex-1 truncate">
-                  <div className="flex items-center space-x-3">
-                    <h3 className="text-gray-900 text-sm font-medium truncate">
-                      {person.name}
-                    </h3>
-                  </div>
-                  <p className="mt-1 text-gray-500 text-sm truncate">
-                    {person.title}
-                  </p>
-
-                  <p className="mt-1 text-gray-500 text-sm truncate">
-                    {person.time}
-                  </p>
-                  <p className="mt-1 text-gray-500 text-sm truncate">
-                    {person.day}
-                  </p>
-                </div>
-                <img
-                  className="w-10 h-10 bg-gray-300 rounded-full flex-shrink-0"
-                  src={person.imageUrl}
-                  alt=""
-                />
-              </div>
-              <div>
-                <div className="-mt-px flex divide-x divide-gray-200">
-                  <div className="w-0 flex-1 flex bg-blue-100">
-                    <a
-                      href={`mailto:${person.email}`}
-                      className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
-                    >
-                      <VideoCameraIcon
-                        className="w-5 h-5 text-blue-600"
-                        aria-hidden="true"
-                      />
-                      <span className="ml-3 text-blue-600">Join</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </li> */
-}
