@@ -112,7 +112,7 @@ const Home = ({ user }) => {
                     </p>
                   </div>
                   <img
-                    className="w-10 h-10 bg-gray-300 rounded-full flex-shrink-0"
+                    className="w-10 h-10 object-cover bg-gray-300 rounded-full flex-shrink-0"
                     src={
                       user.role === "doctor"
                         ? appointment.user.profilePic
