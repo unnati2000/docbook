@@ -8,6 +8,7 @@
   "dependencies": {
     "@100mslive/hms-video": "^0.1.43",
     "@100mslive/hms-video-react": "^0.3.116",
+    "@100mslive/react-sdk": "0.0.6",
     "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.4",
     "aws-sdk": "^2.1009.0",
@@ -44,5 +45,4 @@
     "postcss": "^8.3.5",
     "tailwindcss": "^2.2.4"
   }
-  
 }

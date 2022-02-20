@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useState } from "react";
 import cookie from "js-cookie";
 import { useQuery } from "react-query";
 import { useRouter } from "next/router";
@@ -6,6 +7,7 @@ import {
   useHMSActions,
   useHMSStore,
   selectIsConnectedToRoom,
+  selectIsInPreview,
 } from "@100mslive/hms-video-react";
 import { VideoCameraIcon } from "@heroicons/react/solid";
 import baseURL from "../utils/baseURL";
@@ -14,13 +16,18 @@ import Header from "../components/home/Header.component";
 const endPoint = "https://prod-in.100ms.live/hmsapi/docbook.app.100ms.live/";
 
 const Home = ({ user }) => {
+  const [hmsToken, setHMSToken] = useState("");
+
   const hmsActions = useHMSActions();
-  const isConnected = useHMSStore(selectIsConnectedToRoom);
+  const isInPreview = useHMSStore(selectIsInPreview);
   const router = useRouter();
 
   const onSubmit = async (roomId) => {
     const token = await getToken(roomId);
-    hmsActions.join({ authToken: token, userName: user?.name });
+
+    setHMSToken(token);
+
+    await hmsActions.preview({ authToken: token, userName: user?.name });
   };
 
   const getToken = async (roomId) => {
@@ -59,8 +66,8 @@ const Home = ({ user }) => {
       }
     }
   );
-  if (isConnected) {
-    router.push("/video");
+  if (isInPreview) {
+    router.push("/video?token=" + hmsToken);
   }
 
   return (
@@ -119,7 +126,6 @@ const Home = ({ user }) => {
                   />
                 </div>
                 <div>
-                  {console.log(appointment)}
                   <div className="-mt-px flex divide-x divide-gray-200">
                     <div className="w-0 flex-1 flex bg-blue-100">
                       <button

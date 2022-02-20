@@ -1,31 +1,51 @@
 import {
   useHMSStore,
-  selectLocalPeer,
   selectPeers,
+  VideoList,
+  ControlBar,
+  useHMSActions,
+  selectIsLocalAudioEnabled,
+  selectIsLocalVideoEnabled,
 } from "@100mslive/hms-video-react";
-import Video from "./Video.component";
-import ControlBar from "./ControlBar.component";
+import { useRouter } from "next/router";
 
 const Room = () => {
-  const localPeer = useHMSStore(selectLocalPeer);
+  const actions = useHMSActions();
+  const isLocalAudioEnabled = useHMSStore(selectIsLocalAudioEnabled);
+  const isLocalVideoEnabled = useHMSStore(selectIsLocalVideoEnabled);
+  const router = useRouter();
+
+  const toggleAudio = async () => {
+    await actions.setLocalAudioEnabled(!isLocalAudioEnabled);
+  };
+  const toggleVideo = async () => {
+    await actions.setLocalVideoEnabled(!isLocalVideoEnabled);
+  };
+
   const peers = useHMSStore(selectPeers);
 
   return (
-    <div className="flex flex-col">
-      <div className="flex bg-gray-900 w-screen min-h-screen p-2 flex-wrap">
-        {localPeer && <Video peer={localPeer} isLocal={true} />}
-        {peers &&
-          peers
-            .filter((peer) => !peer.isLocal)
-            .map((peer) => {
-              return (
-                <>
-                  <Video isLocal={false} peer={peer} />
-                </>
-              );
-            })}
+    <div className="h-screen">
+      <div className="flex items-center justify-center h-5/6">
+        <VideoList
+          classes={{
+            video: "rounded-lg shadow-lg",
+          }}
+          maxTileCount={3}
+          peers={peers}
+          width="100%"
+        />
       </div>
-      <ControlBar />
+      <div className="">
+        <ControlBar
+          videoButtonOnClick={toggleVideo}
+          audioButtonOnClick={toggleAudio}
+          leaveButtonOnClick={() => {
+            actions.leave();
+            router.push("/home");
+          }}
+        />
+      </div>
     </div>
   );
 };

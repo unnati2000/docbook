@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-
 import {
   useHMSActions,
   useHMSStore,
@@ -13,8 +12,6 @@ const Video = ({ peer, isLocal }) => {
 
   useEffect(() => {
     (async () => {
-      console.log(videoRef.current);
-      console.log(videoTrack);
       if (videoRef.current && videoTrack) {
         if (videoTrack.enabled) {
           await hmsActions.attachVideo(videoTrack.id, videoRef.current);
@@ -23,7 +20,6 @@ const Video = ({ peer, isLocal }) => {
         }
       }
     })();
-    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoTrack]);
 
   return (
