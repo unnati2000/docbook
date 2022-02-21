@@ -42,7 +42,13 @@ const Mood = ({ user }) => {
         ariaHideApp={false}
         contentLabel="Example Modal"
       >
-        <form className="p-8 h-240 flex flex-col justify-center gap-4 w-full">
+        <form className="p-8 h-240 relative flex flex-col justify-center gap-4 w-full">
+          <button
+            className="absolute top-0 right-0 text-lg text-red-500 font-semibold"
+            onClick={() => setIsOpen(false)}
+          >
+            x
+          </button>
           <h1 className="text-lg text-blue-500 my-2 font-semibold">
             Hi {user?.name}{" "}
           </h1>
@@ -55,7 +61,10 @@ const Mood = ({ user }) => {
             className="md:w-48"
             isSearchable={false}
           />
-          <textarea className="bg-gray-100 border outline-none border-gray-400 rounded-sm"></textarea>
+          <textarea
+            placeholder="Tell us why you're in this mood"
+            className="bg-gray-100 border outline-none h-32 px-2 border-gray-400 rounded-sm"
+          ></textarea>
           <button className="bg-blue-500 px-4 py-2 text-white ">Submit</button>
         </form>
       </Modal>
