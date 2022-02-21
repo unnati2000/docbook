@@ -36,4 +36,12 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
+router.get("/", auth, async (req, res) => {
+  try {
+    const mood = await Mood.findOne({ user: req.userId }).populate("user");
+    return res.json(mood);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+});
 module.exports = router;
