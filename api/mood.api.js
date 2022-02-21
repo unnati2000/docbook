@@ -1,16 +1,12 @@
 const router = require("express").Router();
 const auth = require("../middleware/auth.middleware");
+const Mood = require("../models/mood.models");
 
 router.post("/", auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
-
     let mood = await Mood.findOne({ user: req.userId });
     if (!mood) {
-      mood = new Modal({
+      mood = new Mood({
         user: req.userId,
         moods: [
           {
@@ -21,12 +17,18 @@ router.post("/", auth, async (req, res) => {
           },
         ],
       });
+
+      await mood.save();
+
+      return res.json({ msg: "Recorded successfully", mood });
     } else {
-      mood = mood.findOneAndUpdate(
+      mood = await Mood.findOneAndUpdate(
         { user: req.userId },
         { $push: { moods: req.body } },
         { new: true }
       );
+
+      await mood.save();
       return res.json({ msg: "Recorded successfully", mood });
     }
   } catch (error) {

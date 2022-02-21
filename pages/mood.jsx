@@ -1,7 +1,21 @@
 import { useState } from "react";
+import { useMutation } from "react-query";
 import { ResponsiveCalendar } from "nivo";
 import Modal from "react-modal";
 import Select from "react-select";
+import baseURL from "../utils/baseURL";
+import cookie from "js-cookie";
+import axios from "axios";
+import { toast } from "react-toastify";
+
+const moodCodeArray = [
+  {
+    happy: 50,
+  },
+  { sad: 10 },
+  { angry: 20 },
+  { neutral: 30 },
+];
 
 const customStyles = {
   overlay: {
@@ -27,12 +41,57 @@ const closeModal = () => {
 const Mood = ({ user }) => {
   const [open, setIsOpen] = useState(false);
   const [mood, setMood] = useState("");
+  const [description, setDescription] = useState("");
   const moods = [
     { label: "Happy 😀", value: "happy" },
     { label: "Sad 🥺", value: "sad" },
     { label: "Angry 😡", value: "angry" },
     { label: "Neutral 🙂", value: "neutral" },
   ];
+
+  const mutation = useMutation(
+    async ({ user, mood, moodCode, description }) => {
+      console.log({ user, mood, moodCode, description });
+      const { data } = await axios.post(
+        `${baseURL}/api/moods/`,
+        { user, moodType: mood, moodScore: moodCode, description },
+        {
+          headers: { Authorization: cookie.get("token") },
+        }
+      );
+      return data;
+    }
+  );
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    let moodCode;
+    // loop through moodCode array and get value of mood state
+    for (let i = 0; i < moodCodeArray.length; i++) {
+      if (moodCodeArray[i][mood]) {
+        moodCode = moodCodeArray[i][mood];
+      }
+    }
+
+    console.log("mood", mood);
+
+    try {
+      const data = await mutation.mutateAsync({
+        user: user?._id,
+        mood,
+        moodCode,
+        description,
+      });
+      if (data) {
+        setIsOpen(false);
+      }
+
+      toast.success(data?.msg);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <div>
       <Modal
@@ -42,7 +101,10 @@ const Mood = ({ user }) => {
         ariaHideApp={false}
         contentLabel="Example Modal"
       >
-        <form className="p-8 h-240 relative flex flex-col justify-center gap-4 w-full">
+        <form
+          onSubmit={onSubmit}
+          className="p-8 h-240 relative flex flex-col justify-center gap-4 w-full"
+        >
           <button
             className="absolute top-0 right-0 text-lg text-red-500 font-semibold"
             onClick={() => setIsOpen(false)}
@@ -62,10 +124,15 @@ const Mood = ({ user }) => {
             isSearchable={false}
           />
           <textarea
+            name="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             placeholder="Tell us why you're in this mood"
             className="bg-gray-100 border outline-none h-32 px-2 border-gray-400 rounded-sm"
           ></textarea>
-          <button className="bg-blue-500 px-4 py-2 text-white ">Submit</button>
+          <button type="submit" className="bg-blue-500 px-4 py-2 text-white ">
+            Submit
+          </button>
         </form>
       </Modal>
       <section className="py-4 px-6">
