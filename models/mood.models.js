@@ -4,15 +4,18 @@ const moodSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
   moods: [
     {
       moodType: {
         type: String,
         enum: ["happy", "sad", "angry", "neutral"],
+        required: true,
       },
-      modeCode: {
+      moodScore: {
         type: Number,
+        required: true,
       },
       moodDate: {
         type: Date,
@@ -23,6 +26,10 @@ const moodSchema = new mongoose.Schema({
       },
     },
   ],
+  average: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model("Mood", moodSchema);

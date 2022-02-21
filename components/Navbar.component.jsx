@@ -18,7 +18,7 @@ const sidebarNavigation = [
     icon: AiOutlineBarChart,
     current: false,
   },
-  { name: "Moods", href: "/moods", icon: MdOutlineMood, current: false },
+  { name: "Moods", href: "/mood", icon: MdOutlineMood, current: false },
   { name: "Settings", href: "/settings", icon: CogIcon, current: false },
 ];
 
