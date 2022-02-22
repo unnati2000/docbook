@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Modal from "react-modal";
 import { useMutation, useQuery, QueryClient } from "react-query";
+import { dehydrate } from "react-query/hydration";
 import axios from "axios";
 import moment from "moment";
 import { parseCookies } from "nookies";
@@ -8,10 +9,23 @@ import { toast } from "react-toastify";
 import baseURL from "../utils/baseURL";
 import cookie from "js-cookie";
 
+const getSymptom = async (token) => {
+  const { data } = await axios.get(`${baseURL}/api/symptoms/`, {
+    headers: { Authorization: token },
+  });
+  return data;
+};
+
 const Symptom = ({ user }) => {
   const [open, setIsOpen] = useState(false);
   const [symptom, setSymptom] = useState("");
   const [description, setDescription] = useState("");
+
+  const { data } = useQuery(["symptoms"], () =>
+    getSymptom(cookie.get("token"))
+  );
+
+  console.log(data);
 
   const mutation = useMutation(async ({ user, symptom, description }) => {
     const { data } = await axios.post(
@@ -134,74 +148,70 @@ const Symptom = ({ user }) => {
           <div className="relative wrap overflow-hidden p-10 h-full">
             <div className="border-2-2 absolute border-opacity-20 border-gray-700 h-full border left-1/2"></div>
 
-            <div className="mb-8 flex justify-between items-center w-full right-timeline">
-              <div className="order-1 w-5/12"></div>
-              <div className="z-20 flex items-center order-1 bg-blue-500 shadow-xl w-8 h-8 rounded-full">
-                <h1 className="mx-auto font-semibold text-lg text-white">1</h1>
-              </div>
-              <div className="order-1 bg-white border border-gray-300 rounded-lg shadow-md w-5/12 px-6 py-4">
-                <h3 className="mb-3 font-bold text-blue-500 text-xl">
-                  Lorem Ipsum
-                </h3>
-                <p className="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's .
-                </p>
-              </div>
-            </div>
-
-            <div className="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline">
-              <div className="order-1 w-5/12"></div>
-              <div className="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-8 h-8 rounded-full">
-                <h1 className="mx-auto text-white font-semibold text-lg">2</h1>
-              </div>
-              <div className="order-1 bg-white border border-gray-300 rounded-lg shadow-md w-5/12 px-6 py-4">
-                <h3 className="mb-3 font-bold text-blue-500 text-xl">
-                  Lorem Ipsum
-                </h3>
-                <p className="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's .
-                </p>
-              </div>
-            </div>
-
-            <div className="mb-8 flex justify-between items-center w-full right-timeline">
-              <div className="order-1 w-5/12"></div>
-              <div className="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-8 h-8 rounded-full">
-                <h1 className="mx-auto font-semibold text-lg text-white">3</h1>
-              </div>
-              <div className="order-1 bg-white border border-gray-300 rounded-lg shadow-md w-5/12 px-6 py-4">
-                <h3 className="mb-3 font-bold text-blue-500 text-xl">
-                  Lorem Ipsum
-                </h3>
-                <p className="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's .
-                </p>
-              </div>
-            </div>
-
-            <div className="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline">
-              <div className="order-1 w-5/12"></div>
-              <div className="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-8 h-8 rounded-full">
-                <h1 className="mx-auto text-white font-semibold text-lg">4</h1>
-              </div>
-              <div className="order-1 bg-white border border-gray-300 rounded-lg shadow-md w-5/12 px-6 py-4">
-                <h3 className="mb-3 font-bold text-blue-500 text-xl">
-                  Lorem Ipsum
-                </h3>
-                <p className="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's .
-                </p>
-              </div>
-            </div>
+            {data?.symptoms.map((symptom, ind) =>
+              ind % 2 === 0 ? (
+                <div className="mb-8 flex justify-between items-center w-full right-timeline">
+                  <div className="order-1 w-5/12"></div>
+                  <div className="z-20 flex items-center order-1 bg-blue-500 shadow-xl w-8 h-8 rounded-full">
+                    <h1 className="mx-auto font-semibold text-lg text-white">
+                      {ind + 1}
+                    </h1>
+                  </div>
+                  <div className="order-1 bg-white border border-gray-300 rounded-lg shadow-md w-5/12 px-6 py-4">
+                    <h3 className="mb-3 font-bold text-blue-500 text-xl">
+                      {symptom.symptom}
+                    </h3>
+                    <p className="leading-snug tracking-wide text-gray-900 text-opacity-100">
+                      {symptom.description}
+                    </p>
+                    <p className="text-gray-500 text-sm mt-2">
+                      {moment(symptom.date).format("MMMM Do YYYY")},{" "}
+                      {symptom.time}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline">
+                  <div className="order-1 w-5/12"></div>
+                  <div className="z-20 flex items-center order-1 bg-blue-500 shadow-xl w-8 h-8 rounded-full">
+                    <h1 className="mx-auto text-white font-semibold text-lg">
+                      {ind + 1}
+                    </h1>
+                  </div>
+                  <div className="order-1 bg-white border border-gray-300 rounded-lg shadow-md w-5/12 px-6 py-4">
+                    <h3 className="mb-3 font-bold text-blue-500 text-xl">
+                      {symptom.symptom}
+                    </h3>
+                    <p className="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">
+                      {symptom.description}
+                    </p>
+                    <p className="text-gray-500 text-sm mt-2">
+                      {moment(symptom.date).format("MMMM Do YYYY")},{" "}
+                      {symptom.time}
+                    </p>
+                  </div>
+                </div>
+              )
+            )}
           </div>
         </div>
       </section>
     </div>
   );
 };
+
+export async function getServerSideProps(ctx) {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(["moods"], () =>
+    getSymptom(parseCookies(ctx).token)
+  );
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
 
 export default Symptom;
