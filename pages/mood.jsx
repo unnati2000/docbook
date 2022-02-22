@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { useMutation } from "react-query";
-import { ResponsiveCalendar } from "nivo";
+import { useMutation, useQuery, QueryClient } from "react-query";
+import { dehydrate } from "react-query/hydration";
+import { ResponsiveCalendar, ResponsiveLine } from "nivo";
 import Modal from "react-modal";
 import Select from "react-select";
 import baseURL from "../utils/baseURL";
 import cookie from "js-cookie";
 import axios from "axios";
+import moment from "moment";
+import { parseCookies } from "nookies";
 import { toast } from "react-toastify";
 
 const moodCodeArray = [
@@ -38,6 +41,13 @@ const closeModal = () => {
   setIsOpen(false);
 };
 
+const getMood = async (token) => {
+  const { data } = await axios.get(`${baseURL}/api/moods/`, {
+    headers: { Authorization: token },
+  });
+  return data;
+};
+
 const Mood = ({ user }) => {
   const [open, setIsOpen] = useState(false);
   const [mood, setMood] = useState("");
@@ -49,12 +59,19 @@ const Mood = ({ user }) => {
     { label: "Neutral 🙂", value: "neutral" },
   ];
 
+  const { data } = useQuery(["moods"], () => getMood(cookie.get("token")));
+
   const mutation = useMutation(
     async ({ user, mood, moodCode, description }) => {
-      console.log({ user, mood, moodCode, description });
       const { data } = await axios.post(
         `${baseURL}/api/moods/`,
-        { user, moodType: mood, moodScore: moodCode, description },
+        {
+          user,
+          moodType: mood,
+          moodScore: moodCode,
+          moodDate: moment().format("YYYY-MM-DD"),
+          description,
+        },
         {
           headers: { Authorization: cookie.get("token") },
         }
@@ -73,8 +90,6 @@ const Mood = ({ user }) => {
         moodCode = moodCodeArray[i][mood];
       }
     }
-
-    console.log("mood", mood);
 
     try {
       const data = await mutation.mutateAsync({
@@ -151,26 +166,17 @@ const Mood = ({ user }) => {
           Click Here
         </button>
       </section>
+      {console.log(data)}
       <div className="h-screen">
         <ResponsiveCalendar
-          data={[
-            {
-              value: 41,
-              day: "2016-03-15",
-            },
-            {
-              value: 283,
-              day: "2015-08-29",
-            },
-            {
-              value: 298,
-              day: "2017-07-25",
-            },
-          ]}
-          from="2015-03-01"
-          to="2016-07-12"
+          data={data?.moods?.map((mood) => ({
+            day: mood?.date,
+            value: mood?.value,
+          }))}
+          from="2022-01-01"
+          to="2022-12-31"
           emptyColor="#eeeeee"
-          colors={["#61cdbb", "#97e3d5", "#e8c1a0", "#f47560"]}
+          colors={["#f47560", "#e8c1a0", "#97e3d5", "#61cdbb"]}
           margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
           yearSpacing={40}
           monthBorderColor="#ffffff"
@@ -193,5 +199,19 @@ const Mood = ({ user }) => {
     </div>
   );
 };
+
+export async function getServerSideProps(ctx) {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(["moods"], () =>
+    getMood(parseCookies(ctx).token)
+  );
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
 
 export default Mood;

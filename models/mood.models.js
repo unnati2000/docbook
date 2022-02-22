@@ -13,13 +13,13 @@ const moodSchema = new mongoose.Schema({
         enum: ["happy", "sad", "angry", "neutral"],
         required: true,
       },
-      moodScore: {
+      value: {
         type: Number,
         required: true,
       },
-      moodDate: {
-        type: Date,
-        default: Date.now,
+      date: {
+        type: String,
+        required: true,
       },
       description: {
         type: String,

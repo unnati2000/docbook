@@ -14,7 +14,7 @@ const sidebarNavigation = [
   { name: "History", href: "/history", icon: AiOutlineHistory, current: false },
   {
     name: "Symptoms",
-    href: "/symptoms",
+    href: "/symptom",
     icon: AiOutlineBarChart,
     current: false,
   },

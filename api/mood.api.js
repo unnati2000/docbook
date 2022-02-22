@@ -11,8 +11,8 @@ router.post("/", auth, async (req, res) => {
         moods: [
           {
             moodType: req.body.moodType,
-            moodScore: req.body.moodScore,
-            moodDate: req.body.moodDate,
+            value: req.body.moodScore,
+            date: req.body.moodDate,
             description: req.body.description,
           },
         ],
