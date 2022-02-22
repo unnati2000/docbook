@@ -8,22 +8,8 @@ const symptomSchema = new mongoose.Schema({
   },
   symptoms: [
     {
-      symptomType: {
+      symptom: {
         type: String,
-
-        enum: [
-          "headache",
-          "fever",
-          "cough",
-          "sore throat",
-          "runny nose",
-          "nausea",
-          "vomiting",
-          "diarrhea",
-          "loss of appetite",
-          "loss of taste",
-          "loss of smell",
-        ],
       },
       description: {
         type: String,

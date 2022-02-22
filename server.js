@@ -22,6 +22,7 @@ nextApp.prepare().then(() => {
   app.use("/api/payment", require("./api/payment.api"));
   app.use("/api/profile", require("./api/profile.api"));
   app.use("/api/moods", require("./api/mood.api"));
+  app.use("/api/symptoms", require("./api/symptom.api"));
   app.all("*", (req, res) => handle(req, res));
   server.listen(PORT, (err) => {
     if (err) {

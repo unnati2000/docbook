@@ -10,7 +10,7 @@ router.post("/", auth, async (req, res) => {
         user: req.userId,
         symptoms: [
           {
-            symptomType: req.body.symptomType,
+            symptom: req.body.symptom,
             description: req.body.description,
 
             date: req.body.date,

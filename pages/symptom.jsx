@@ -1,10 +1,34 @@
 import { useState } from "react";
 import Modal from "react-modal";
+import { useMutation, useQuery, QueryClient } from "react-query";
+import axios from "axios";
+import moment from "moment";
+import { parseCookies } from "nookies";
+import { toast } from "react-toastify";
+import baseURL from "../utils/baseURL";
+import cookie from "js-cookie";
 
 const Symptom = ({ user }) => {
   const [open, setIsOpen] = useState(false);
   const [symptom, setSymptom] = useState("");
   const [description, setDescription] = useState("");
+
+  const mutation = useMutation(async ({ user, symptom, description }) => {
+    const { data } = await axios.post(
+      `${baseURL}/api/symptoms/`,
+      {
+        user,
+        symptom: symptom,
+        date: moment().format("YYYY-MM-DD"),
+        time: moment().format("LT"),
+        description,
+      },
+      {
+        headers: { Authorization: cookie.get("token") },
+      }
+    );
+    return data;
+  });
 
   const customStyles = {
     overlay: {
@@ -27,8 +51,23 @@ const Symptom = ({ user }) => {
     setIsOpen(false);
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      const data = await mutation.mutateAsync({
+        user: user?._id,
+        symptom,
+        description,
+      });
+      if (data) {
+        setIsOpen(false);
+      }
+
+      toast.success(data?.msg);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
