@@ -3,6 +3,8 @@ import Modal from "react-modal";
 
 const Symptom = ({ user }) => {
   const [open, setIsOpen] = useState(false);
+  const [symptom, setSymptom] = useState("");
+  const [description, setDescription] = useState("");
 
   const customStyles = {
     overlay: {
@@ -52,6 +54,25 @@ const Symptom = ({ user }) => {
             <h1 className="text-2xl text-blue-500 my-2 font-semibold">
               Hi {user?.name}{" "}
             </h1>
+            <input
+              type="text"
+              name="symptom"
+              value={symptom}
+              onChange={(e) => setSymptom(e.target.value)}
+              placeholder="Symptom"
+              className="bg-gray-100 border p-1 my-2 rounded-md border-blue-500"
+            />
+            <textarea
+              placeholder="Description"
+              name="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="bg-gray-100 border p-1 my-2 rounded-md border-blue-500"
+            ></textarea>
+
+            <button type="submit" className="bg-blue-500 px-4 py-2 text-white ">
+              Submit
+            </button>
           </form>
         </Modal>
 
