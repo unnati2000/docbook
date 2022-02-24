@@ -5,9 +5,8 @@ const Mood = require("../models/mood.models");
 router.post("/", auth, async (req, res) => {
   try {
     let mood = await Mood.findOne({ user: req.userId });
-    console.log(req.body);
+
     if (!mood) {
-      console.log("no mood");
       mood = new Mood({
         user: req.userId,
         moods: [
@@ -24,14 +23,12 @@ router.post("/", auth, async (req, res) => {
 
       return res.json({ msg: "Recorded successfully", mood });
     } else {
-      console.log("mood");
       mood = await Mood.findOneAndUpdate(
         { user: req.userId },
         { $push: { moods: req.body } },
         { new: true }
       );
 
-      console.log(mood);
       await mood.save();
       return res.json({ msg: "Recorded successfully", mood });
     }

@@ -26,10 +26,6 @@ const moodSchema = new mongoose.Schema({
       },
     },
   ],
-  average: {
-    type: Number,
-    default: 0,
-  },
 });
 
 module.exports = mongoose.model("Mood", moodSchema);
