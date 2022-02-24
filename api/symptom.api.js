@@ -5,15 +5,14 @@ const Symptom = require("../models/symptom.models");
 router.post("/", auth, async (req, res) => {
   try {
     let symptom = await Symptom.findOne({ user: req.userId });
+
     if (!symptom) {
       symptom = new Symptom({
         user: req.userId,
         symptoms: [
           {
             name: req.body.name,
-
             age: req.body.age,
-
             gender: req.body.gender,
             part: req.body.part,
             symptom: req.body.symptom,
@@ -25,6 +24,7 @@ router.post("/", auth, async (req, res) => {
           },
         ],
       });
+
       await symptom.save();
     } else {
       symptom = await Symptom.findOneAndUpdate(
@@ -32,6 +32,7 @@ router.post("/", auth, async (req, res) => {
         { $push: { symptoms: req.body } },
         { new: true }
       );
+
       await symptom.save();
     }
 

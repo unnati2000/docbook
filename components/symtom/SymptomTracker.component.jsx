@@ -1,7 +1,13 @@
 import { useState } from "react";
+import { useMutation } from "react-query";
 import StepOne from "./StepOne.compoent";
 import StepThree from "./StepThree.component";
 import StepTwo from "./StepTwo.component";
+import axios from "axios";
+import baseURL from "../../utils/baseURL";
+import moment from "moment";
+import cookie from "js-cookie";
+import { toast } from "react-toastify";
 
 const bodyPart = [
   { label: "Head", value: "head" },
@@ -98,7 +104,7 @@ const durationOfSymptom = [
   { label: "More", value: "More" },
 ];
 
-const Symptom = () => {
+const Symptom = ({ user, setIsOpen }) => {
   const [step, setStep] = useState(1);
   const [part, setPart] = useState("");
   const [name, setName] = useState("");
@@ -109,8 +115,65 @@ const Symptom = () => {
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState("");
 
+  const mutation = useMutation(
+    async ({
+      name,
+      age,
+      gender,
+      part,
+      symptom,
+      severity,
+      duration,
+      description,
+      date,
+      time,
+    }) => {
+      const { data } = await axios.post(
+        `${baseURL}/api/symptoms/`,
+        {
+          name,
+          age,
+          gender,
+          part,
+          symptom,
+          severity,
+          duration,
+          description,
+          date,
+          time,
+        },
+        {
+          headers: { Authorization: cookie.get("token") },
+        }
+      );
+      return data;
+    }
+  );
+
   const onSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const data = await mutation.mutateAsync({
+        user: user?._id,
+        name,
+        age: parseInt(age),
+        gender,
+        part,
+        symptom,
+        severity,
+        duration,
+        description,
+        date: moment().format("YYYY-MM-DD"),
+        time: moment().format("HH:MM"),
+      });
+      if (data) {
+        setIsOpen(false);
+      }
+
+      toast.success(data?.msg);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
