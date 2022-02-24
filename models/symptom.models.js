@@ -8,8 +8,35 @@ const symptomSchema = new mongoose.Schema({
   },
   symptoms: [
     {
+      name: {
+        type: String,
+        required: true,
+      },
+
+      age: {
+        type: Number,
+        required: true,
+      },
+
+      gender: {
+        type: String,
+        required: true,
+      },
+      part: {
+        type: String,
+        required: true,
+      },
       symptom: {
         type: String,
+        required: true,
+      },
+      severity: {
+        type: String,
+        required: true,
+      },
+      duration: {
+        type: String,
+        required: true,
       },
       description: {
         type: String,

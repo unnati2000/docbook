@@ -10,9 +10,16 @@ router.post("/", auth, async (req, res) => {
         user: req.userId,
         symptoms: [
           {
-            symptom: req.body.symptom,
-            description: req.body.description,
+            name: req.body.name,
 
+            age: req.body.age,
+
+            gender: req.body.gender,
+            part: req.body.part,
+            symptom: req.body.symptom,
+            severity: req.body.severity,
+            duration: req.body.duration,
+            description: req.body.description,
             date: req.body.date,
             time: req.body.time,
           },

@@ -15,8 +15,8 @@ const moodCodeArray = [
   {
     happy: 50,
   },
-  { sad: 10 },
-  { angry: 20 },
+  { sad: 20 },
+  { angry: 10 },
   { neutral: 30 },
 ];
 
@@ -59,6 +59,13 @@ const Mood = ({ user }) => {
     { label: "Neutral 🙂", value: "neutral" },
   ];
 
+  const moodIndicator = [
+    { label: "Happy 😀", color: "#61cdbb" },
+    { label: "Sad 🥺", color: "#e8c1a0" },
+    { label: "Angry 😡", color: "#f47560" },
+    { label: "Neutral 🙂", color: "#97e3d5" },
+  ];
+
   const { data } = useQuery(["moods"], () => getMood(cookie.get("token")));
 
   const mutation = useMutation(
@@ -68,8 +75,8 @@ const Mood = ({ user }) => {
         {
           user,
           moodType: mood,
-          moodScore: moodCode,
-          moodDate: moment().format("YYYY-MM-DD"),
+          value: moodCode,
+          date: moment().format("YYYY-MM-DD"),
           description,
         },
         {
@@ -84,7 +91,7 @@ const Mood = ({ user }) => {
     e.preventDefault();
 
     let moodCode;
-    // loop through moodCode array and get value of mood state
+
     for (let i = 0; i < moodCodeArray.length; i++) {
       if (moodCodeArray[i][mood]) {
         moodCode = moodCodeArray[i][mood];
@@ -167,6 +174,18 @@ const Mood = ({ user }) => {
         </button>
       </section>
       {console.log(data)}
+      <div className="flex items-center gap-8 px-8">
+        {moodIndicator.map((mood) => (
+          <div
+            className={`flex items-center gap-2 bg-[${mood.color}]`}
+            key={mood.label}
+          >
+            <div className={` h-4 w-4 rounded-sm bg-[${mood.color}]`}></div>
+            <p className={`text-[${mood.color}]`}>{mood.label}</p>
+          </div>
+        ))}
+      </div>
+
       <div className="h-screen">
         <ResponsiveCalendar
           data={data?.moods?.map((mood) => ({

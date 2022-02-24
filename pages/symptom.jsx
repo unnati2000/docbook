@@ -8,6 +8,9 @@ import { parseCookies } from "nookies";
 import { toast } from "react-toastify";
 import baseURL from "../utils/baseURL";
 import cookie from "js-cookie";
+import SymptomTracker from "../components/symtom/SymptomTracker.component";
+import StepOne from "../components/symtom/StepOne.compoent";
+import StepTwo from "../components/symtom/StepTwo.component";
 
 const getSymptom = async (token) => {
   const { data } = await axios.get(`${baseURL}/api/symptoms/`, {
@@ -94,39 +97,13 @@ const Symptom = ({ user }) => {
           ariaHideApp={false}
           contentLabel="Example Modal"
         >
-          <form
-            onSubmit={onSubmit}
-            className="p-8 h-240 relative flex flex-col justify-center gap-4 w-full"
+          <button
+            className="absolute top-5 right-5 text-lg text-red-500 font-semibold"
+            onClick={() => setIsOpen(false)}
           >
-            <button
-              className="absolute top-0 right-0 text-lg text-red-500 font-semibold"
-              onClick={() => setIsOpen(false)}
-            >
-              x
-            </button>
-            <h1 className="text-2xl text-blue-500 my-2 font-semibold">
-              Hi {user?.name}{" "}
-            </h1>
-            <input
-              type="text"
-              name="symptom"
-              value={symptom}
-              onChange={(e) => setSymptom(e.target.value)}
-              placeholder="Symptom"
-              className="bg-gray-100 border p-1 my-2 rounded-md border-blue-500"
-            />
-            <textarea
-              placeholder="Description"
-              name="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="bg-gray-100 border p-1 my-2 rounded-md border-blue-500"
-            ></textarea>
-
-            <button type="submit" className="bg-blue-500 px-4 py-2 text-white ">
-              Submit
-            </button>
-          </form>
+            x
+          </button>
+          <SymptomTracker />
         </Modal>
 
         <h1 className="text-blue-500 text-2xl font-semibold">
@@ -215,3 +192,39 @@ export async function getServerSideProps(ctx) {
 }
 
 export default Symptom;
+
+{
+  /* <form
+onSubmit={onSubmit}
+className="p-8 h-240 relative flex flex-col justify-center gap-4 w-full"
+>
+<button
+  className="absolute top-0 right-0 text-lg text-red-500 font-semibold"
+  onClick={() => setIsOpen(false)}
+>
+  x
+</button>
+<h1 className="text-2xl text-blue-500 my-2 font-semibold">
+  Hi {user?.name}{" "}
+</h1>
+<input
+  type="text"
+  name="symptom"
+  value={symptom}
+  onChange={(e) => setSymptom(e.target.value)}
+  placeholder="Symptom"
+  className="bg-gray-100 border p-1 my-2 rounded-md border-blue-500"
+/>
+<textarea
+  placeholder="Description"
+  name="description"
+  value={description}
+  onChange={(e) => setDescription(e.target.value)}
+  className="bg-gray-100 border p-1 my-2 rounded-md border-blue-500"
+></textarea>
+
+<button type="submit" className="bg-blue-500 px-4 py-2 text-white ">
+  Submit
+</button>
+</form> */
+}
