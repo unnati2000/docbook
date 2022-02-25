@@ -59,13 +59,6 @@ const Mood = ({ user }) => {
     { label: "Neutral 🙂", value: "neutral" },
   ];
 
-  const moodIndicator = [
-    { label: "Happy 😀", color: "happy" },
-    { label: "Sad 🥺", color: "sad" },
-    { label: "Angry 😡", color: "angry" },
-    { label: "Neutral 🙂", color: "neutral" },
-  ];
-
   const { data } = useQuery(["moods"], () => getMood(cookie.get("token")));
 
   const mutation = useMutation(
@@ -183,12 +176,22 @@ const Mood = ({ user }) => {
       </section>
 
       <div className="flex items-center gap-8 px-8">
-        {moodIndicator.map((mood) => (
-          <div className={`flex items-center gap-2`} key={mood.label}>
-            <div className={`h-4 w-4 rounded-sm bg-${mood.color}`}></div>
-            <p className={`text-${mood.color}`}>{mood.label}</p>
-          </div>
-        ))}
+        <div className={`flex items-center gap-2`}>
+          <div className={`h-4 w-4 rounded-sm bg-happy`}></div>
+          <p className={`text-`}>Happy 😀</p>
+        </div>
+        <div className={`flex items-center gap-2`}>
+          <div className={`h-4 w-4 rounded-sm bg-neutral`}></div>
+          <p className={`text-`}> Neutral 🙂</p>
+        </div>
+        <div className={`flex items-center gap-2`}>
+          <div className={`h-4 w-4 rounded-sm bg-sad`}></div>
+          <p className={`text-`}>Sad 🥺</p>
+        </div>
+        <div className={`flex items-center gap-2`}>
+          <div className={`h-4 w-4 rounded-sm bg-angry`}></div>
+          <p className={`text-`}>Angry 😡 </p>
+        </div>
       </div>
 
       <div className="h-screen">

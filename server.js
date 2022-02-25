@@ -24,6 +24,7 @@ nextApp.prepare().then(() => {
   app.use("/api/moods", require("./api/mood.api"));
   app.use("/api/symptoms", require("./api/symptom.api"));
   app.all("*", (req, res) => handle(req, res));
+
   server.listen(PORT, (err) => {
     if (err) {
       throw err;

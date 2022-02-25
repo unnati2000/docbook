@@ -8,8 +8,11 @@ import Header from "../components/home/Header.component";
 import Chatbot from "react-simple-chatbot";
 import { ThemeProvider } from "styled-components";
 import { BsChatRight } from "react-icons/bs";
+import { useRouter } from "next/router";
 
 const Home = ({ user }) => {
+  const router = useRouter();
+
   const theme = {
     background: "#f5f8fb",
     fontFamily: "Open sans, sans-serif",
@@ -50,29 +53,58 @@ const Home = ({ user }) => {
   const steps = [
     {
       id: "Greet",
-      message: `Hello ${user?.name}, Welcome to Docbook`,
-      trigger: "Query",
+      message: `Hello ${user?.name}, Welcome to Docbook! How can I help you today?`,
+      trigger: "Help",
     },
     {
-      id: "Query",
-      message: "How can I help you?",
+      id: "Help",
+      message: "How can I help you today?",
+      trigger: "Options",
+    },
+
+    {
+      id: "Options",
       options: [
-        { value: 1, label: "Search for doctors", trigger: "4" },
-        { value: 2, label: "Chart", trigger: "5" },
-        { value: 3, label: "Mood tracking", trigger: "6" },
+        { value: 1, label: "History page", trigger: "History" },
+        { value: 2, label: "Symptom Tracking", trigger: "symptom" },
+        { value: 3, label: "Mood tracking", trigger: "Mood" },
       ],
     },
     {
-      id: "4",
-      message: "Search for doctors",
+      id: "History",
+      component: (
+        <button
+          className="bg-blue-500 rounded-md shadow-md text-white px-4 py-2"
+          onClick={() => router.push("/history")}
+        >
+          Click here
+        </button>
+      ),
+      trigger: "Done",
     },
     {
-      id: "5",
-      message: "Chart",
+      id: "symptom",
+      component: (
+        <button
+          className="bg-blue-500 rounded-md shadow-md text-white px-4 py-2"
+          onClick={() => router.push("/symptom")}
+        >
+          Click here
+        </button>
+      ),
+      trigger: "Done",
     },
     {
-      id: "6",
-      message: "Mood tracking",
+      id: "Mood",
+      component: (
+        <button
+          className="bg-blue-500 rounded-md shadow-md text-white px-4 py-2"
+          onClick={() => router.push("/mood")}
+        >
+          Click here
+        </button>
+      ),
+      trigger: "Done",
     },
     {
       id: "Done",
