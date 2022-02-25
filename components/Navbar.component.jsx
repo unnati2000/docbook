@@ -1,24 +1,29 @@
-import { Fragment } from 'react';
-import { CogIcon, HomeIcon, ViewGridIcon } from '@heroicons/react/outline';
+import { Fragment } from "react";
+import { CogIcon, HomeIcon, ViewGridIcon } from "@heroicons/react/outline";
 import {
   AiOutlineHistory,
   AiOutlineBarChart,
   AiFillMedicineBox,
-} from 'react-icons/ai';
-import { MdOutlineMood } from 'react-icons/md';
-import { Dialog, Transition } from '@headlessui/react';
+} from "react-icons/ai";
+import { MdOutlineMood } from "react-icons/md";
+import { Dialog, Transition } from "@headlessui/react";
 
 const sidebarNavigation = [
-  { name: 'Home', href: '/home', icon: HomeIcon, current: false },
-  { name: 'Dashboard', href: '/dashboard', icon: ViewGridIcon, current: false },
-  { name: 'History', href: '/history', icon: AiOutlineHistory, current: false },
-  { name: 'Charts', href: '/charts', icon: AiOutlineBarChart, current: false },
-  { name: 'Outline', href: '#', icon: MdOutlineMood, current: false },
-  { name: 'Settings', href: '/settings', icon: CogIcon, current: false },
+  { name: "Home", href: "/home", icon: HomeIcon, current: false },
+  { name: "Dashboard", href: "/dashboard", icon: ViewGridIcon, current: false },
+  { name: "History", href: "/history", icon: AiOutlineHistory, current: false },
+  {
+    name: "Symptoms",
+    href: "/symptom",
+    icon: AiOutlineBarChart,
+    current: false,
+  },
+  { name: "Moods", href: "/mood", icon: MdOutlineMood, current: false },
+  { name: "Settings", href: "/settings", icon: CogIcon, current: false },
 ];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
@@ -37,18 +42,18 @@ const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
                 href={item.href}
                 className={classNames(
                   item.current
-                    ? 'bg-blue-800 text-white'
-                    : 'text-blue-100 hover:bg-blue-800 hover:text-white',
-                  'group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium'
+                    ? "bg-blue-800 text-white"
+                    : "text-blue-100 hover:bg-blue-800 hover:text-white",
+                  "group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium"
                 )}
-                aria-current={item.current ? 'page' : undefined}
+                aria-current={item.current ? "page" : undefined}
               >
                 <item.icon
                   className={classNames(
                     item.current
-                      ? 'text-white'
-                      : 'text-blue-300 group-hover:text-white',
-                    'h-6 w-6'
+                      ? "text-white"
+                      : "text-blue-300 group-hover:text-white",
+                    "h-6 w-6"
                   )}
                   aria-hidden="true"
                 />
@@ -125,18 +130,18 @@ const Navbar = ({ user, mobileMenuOpen, setMobileMenuOpen }) => {
                           href={item.href}
                           className={classNames(
                             item.current
-                              ? 'bg-blue-800 text-white'
-                              : 'text-blue-100 hover:bg-blue-800 hover:text-white',
-                            'group py-2 px-3 rounded-md flex items-center text-sm font-medium'
+                              ? "bg-blue-800 text-white"
+                              : "text-blue-100 hover:bg-blue-800 hover:text-white",
+                            "group py-2 px-3 rounded-md flex items-center text-sm font-medium"
                           )}
-                          aria-current={item.current ? 'page' : undefined}
+                          aria-current={item.current ? "page" : undefined}
                         >
                           <item.icon
                             className={classNames(
                               item.current
-                                ? 'text-white'
-                                : 'text-blue-300 group-hover:text-white',
-                              'mr-3 h-6 w-6'
+                                ? "text-white"
+                                : "text-blue-300 group-hover:text-white",
+                              "mr-3 h-6 w-6"
                             )}
                             aria-hidden="true"
                           />
