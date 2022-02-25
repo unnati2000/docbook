@@ -57,6 +57,10 @@ const appointmentSchema = new mongoose.Schema(
     roomId: {
       type: String,
     },
+    isOver: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

@@ -10,6 +10,7 @@ import {
   selectIsInPreview,
 } from "@100mslive/hms-video-react";
 import { VideoCameraIcon } from "@heroicons/react/solid";
+import { MdOutlineCancel } from "react-icons/md";
 import baseURL from "../utils/baseURL";
 import Header from "../components/home/Header.component";
 
@@ -127,16 +128,26 @@ const Home = ({ user }) => {
                 </div>
                 <div>
                   <div className="-mt-px flex divide-x divide-gray-200">
-                    <div className="w-0 flex-1 flex bg-blue-100">
+                    <div className="w-0 flex-1 flex ">
                       <button
                         onClick={() => onSubmit(appointment?.roomId)}
-                        className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
+                        className="relative bg-blue-100 -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
                       >
                         <VideoCameraIcon
                           className="w-5 h-5 text-blue-600"
                           aria-hidden="true"
                         />
                         <span className="ml-3 text-blue-600">Join</span>
+                      </button>
+                      <button
+                        className="relative bg-red-100 -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
+                        onClick={() => console.log("sheep")}
+                      >
+                        <MdOutlineCancel
+                          className="w-5 h-5 text-red-500"
+                          aria-hidden="true"
+                        />
+                        <span className="ml-3 text-red-500">Cancel</span>
                       </button>
                     </div>
                   </div>

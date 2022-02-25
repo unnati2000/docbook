@@ -211,19 +211,27 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-router.delete("/:id", auth, async (req, res) => {
+router.post("/over/:id", auth, async (req, res) => {
   try {
     let appointment = await Appointment.findById(req.params.id);
 
     if (!appointment) {
-      return res.status(401).json({ msg: "Appointment not found" });
+      return res.status(404).json({ msg: "Not found" });
     }
 
-    appointment = await Appointment.findByIdAndDelete(req.params.id);
+    appointment = await Appointment.findByIdAndUpdate(
+      req.params.id,
+      {
+        isOver: true,
+      },
+      {
+        new: true,
+      }
+    );
 
-    res.status(200).json({ msg: "Appointment deleted successfully" });
+    return res.status(200).json({ msg: "Appointment completed" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ msg: "Server error" });
   }
 });
