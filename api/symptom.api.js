@@ -27,18 +27,28 @@ router.post("/", auth, async (req, res) => {
 
       await symptom.save();
     } else {
-      symptom = await Symptom.findOneAndUpdate(
-        { user: req.userId },
-        { $push: { symptoms: req.body } },
-        { new: true }
-      );
+      symptom.symptoms.unshift({
+        name: req.body.name,
+        age: req.body.age,
+        gender: req.body.gender,
+        part: req.body.part,
+        symptom: req.body.symptom,
+        severity: req.body.severity,
+        duration: req.body.duration,
+        description: req.body.description,
+        date: req.body.date,
+        time: req.body.time,
+      });
+
+      await symptom.save();
 
       await symptom.save();
     }
 
-    res.status(201).json({ msg: "Recorded successfully", symptom });
+    return res.status(201).json({ msg: "Recorded successfully", symptom });
   } catch (e) {
-    res.status(500).send(e);
+    console.log(e);
+    return res.status(500).send(e);
   }
 });
 

@@ -69,11 +69,10 @@ const Mood = ({ user }) => {
   const { data } = useQuery(["moods"], () => getMood(cookie.get("token")));
 
   const mutation = useMutation(
-    async ({ user, mood, moodCode, description }) => {
+    async ({ mood, moodCode, description }) => {
       const { data } = await axios.post(
         `${baseURL}/api/moods/`,
         {
-          user,
           moodType: mood,
           value: moodCode,
           date: moment().format("YYYY-MM-DD"),
@@ -83,6 +82,7 @@ const Mood = ({ user }) => {
           headers: { Authorization: cookie.get("token") },
         }
       );
+      console.log(data);
       return data;
     },
     {
@@ -111,9 +111,15 @@ const Mood = ({ user }) => {
         description,
       });
 
+      console.log(data);
+
       toast.success(data?.msg);
     } catch (error) {
-      toast.error(error.message);
+      console.log(error);
+      setIsOpen(false);
+      toast.error(
+        error.response?.data?.msg || "There was an error. Try again later."
+      );
     }
   };
   return (
@@ -186,33 +192,37 @@ const Mood = ({ user }) => {
       </div>
 
       <div className="h-screen">
-        <ResponsiveCalendar
-          data={data?.moods?.map((mood) => ({
-            day: mood?.date,
-            value: mood?.value,
-          }))}
-          from="2022-01-01"
-          to="2022-12-31"
-          emptyColor="#eeeeee"
-          colors={["#f47560", "#e8c1a0", "#97e3d5", "#61cdbb"]}
-          margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
-          yearSpacing={40}
-          monthBorderColor="#ffffff"
-          dayBorderWidth={2}
-          dayBorderColor="#ffffff"
-          legends={[
-            {
-              anchor: "bottom-right",
-              direction: "row",
-              translateY: 36,
-              itemCount: 4,
-              itemWidth: 42,
-              itemHeight: 36,
-              itemsSpacing: 14,
-              itemDirection: "right-to-left",
-            },
-          ]}
-        />
+        {data?.moods.length > 0 ? (
+          <ResponsiveCalendar
+            data={data?.moods?.map((mood) => ({
+              day: mood?.date,
+              value: mood?.value,
+            }))}
+            from="2022-01-01"
+            to="2022-12-31"
+            emptyColor="#eeeeee"
+            colors={["#f47560", "#e8c1a0", "#97e3d5", "#61cdbb"]}
+            margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
+            yearSpacing={40}
+            monthBorderColor="#ffffff"
+            dayBorderWidth={2}
+            dayBorderColor="#ffffff"
+            legends={[
+              {
+                anchor: "bottom-right",
+                direction: "row",
+                translateY: 36,
+                itemCount: 4,
+                itemWidth: 42,
+                itemHeight: 36,
+                itemsSpacing: 14,
+                itemDirection: "right-to-left",
+              },
+            ]}
+          />
+        ) : (
+          <h1>No moods recorded</h1>
+        )}
       </div>
     </div>
   );

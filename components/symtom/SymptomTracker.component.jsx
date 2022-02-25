@@ -128,6 +128,18 @@ const Symptom = ({ user, setIsOpen }) => {
       date,
       time,
     }) => {
+      console.log({
+        name,
+        age,
+        gender,
+        part,
+        symptom,
+        severity,
+        duration,
+        description,
+        date,
+        time,
+      });
       const { data } = await axios.post(
         `${baseURL}/api/symptoms/`,
         {
@@ -169,6 +181,7 @@ const Symptom = ({ user, setIsOpen }) => {
       if (data) {
         setIsOpen(false);
       }
+      console.log(moment().format("hh:mm"));
 
       toast.success(data?.msg);
     } catch (error) {

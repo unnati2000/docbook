@@ -20,9 +20,16 @@ router.post("/", auth, async (req, res) => {
       });
 
       await mood.save();
-
-      return res.json({ msg: "Recorded successfully", mood });
     } else {
+      mood = await Mood.find({
+        user: req.userId,
+        moods: { $elemMatch: { date: req.body.date } },
+      });
+
+      if (mood.length > 0) {
+        return res.status(400).json({ msg: "Mood already exists" });
+      }
+
       mood = await Mood.findOneAndUpdate(
         { user: req.userId },
         { $push: { moods: req.body } },
@@ -30,9 +37,11 @@ router.post("/", auth, async (req, res) => {
       );
 
       await mood.save();
-      return res.json({ msg: "Recorded successfully", mood });
     }
+
+    return res.status(200).json({ msg: "Recorded successfully", mood });
   } catch (error) {
+    console.log(error);
     return res.status(500).send(error);
   }
 });
