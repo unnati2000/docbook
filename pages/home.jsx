@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState } from "react";
 import cookie from "js-cookie";
 import { useQuery, useMutation } from "react-query";
-import { useRouter } from "next/router";
 import {
   useHMSActions,
   useHMSStore,
@@ -14,6 +13,10 @@ import { MdOutlineCancel } from "react-icons/md";
 import baseURL from "../utils/baseURL";
 import Header from "../components/home/Header.component";
 import { toast } from "react-toastify";
+import Chatbot from "react-simple-chatbot";
+import { ThemeProvider } from "styled-components";
+import { BsChatRight } from "react-icons/bs";
+import { useRouter } from "next/router";
 
 const endPoint = "https://prod-in.100ms.live/hmsapi/docbook.app.100ms.live/";
 
@@ -42,6 +45,18 @@ const Home = ({ user }) => {
     });
     const { token } = await response.json();
     return token;
+  };
+
+  const theme = {
+    background: "#f5f8fb",
+    fontFamily: "Open sans, sans-serif",
+    headerBgColor: "#3d6bff",
+    headerFontColor: "#fff",
+    headerFontSize: "15px",
+    botBubbleColor: "#3d6bff",
+    botFontColor: "#fff",
+    userBubbleColor: "#fff",
+    userFontColor: "#4a4a4a",
   };
 
   const { data, isLoading, isError, isSuccess } = useQuery(
@@ -93,9 +108,71 @@ const Home = ({ user }) => {
   if (isInPreview) {
     router.push("/video?token=" + hmsToken);
   }
+  const [open, setOpen] = useState(false);
+  const steps = [
+    {
+      id: "Greet",
+      message: `Hello ${user?.name}, Welcome to Docbook! How can I help you today?`,
+      trigger: "Help",
+    },
+    {
+      id: "Help",
+      message: "How can I help you today?",
+      trigger: "Options",
+    },
+
+    {
+      id: "Options",
+      options: [
+        { value: 1, label: "History page", trigger: "History" },
+        { value: 2, label: "Symptom Tracking", trigger: "symptom" },
+        { value: 3, label: "Mood tracking", trigger: "Mood" },
+      ],
+    },
+    {
+      id: "History",
+      component: (
+        <button
+          className="bg-blue-500 rounded-md shadow-md text-white px-4 py-2"
+          onClick={() => router.push("/history")}
+        >
+          Click here
+        </button>
+      ),
+      trigger: "Done",
+    },
+    {
+      id: "symptom",
+      component: (
+        <button
+          className="bg-blue-500 rounded-md shadow-md text-white px-4 py-2"
+          onClick={() => router.push("/symptom")}
+        >
+          Click here
+        </button>
+      ),
+      trigger: "Done",
+    },
+    {
+      id: "Mood",
+      component: (
+        <button
+          className="bg-blue-500 rounded-md shadow-md text-white px-4 py-2"
+          onClick={() => router.push("/mood")}
+        >
+          Click here
+        </button>
+      ),
+      trigger: "Done",
+    },
+    {
+      id: "Done",
+      message: "Thank you for using Docbook",
+    },
+  ];
 
   return (
-    <div>
+    <div className="">
       <Header />
 
       <div className="mx-12 my-8">
@@ -182,6 +259,20 @@ const Home = ({ user }) => {
             ))
           )}
         </ul>
+      </div>
+
+      <div className="fixed bottom-10 right-10">
+        {open && (
+          <ThemeProvider theme={theme}>
+            <Chatbot steps={steps} />
+          </ThemeProvider>
+        )}
+        <button
+          className="bg-blue-600 p-4 shadow-md rounded-full"
+          onClick={() => setOpen(!open)}
+        >
+          <BsChatRight className="w-6 h-6 text-white" />
+        </button>
       </div>
     </div>
   );

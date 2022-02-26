@@ -16,8 +16,6 @@ const getAppointments = async () => {
 export default function UserHistory() {
   const { data } = useQuery(["appointments"], () => getAppointments());
 
-  console.log(data);
-
   return (
     <div className="flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
