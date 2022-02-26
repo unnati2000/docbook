@@ -125,6 +125,8 @@ router.get("/user/today", auth, async (req, res) => {
       date: moment().format("DD-MM-YYYY"),
       isConfirmed: true,
       isAccepted: true,
+      isPaid: true,
+      isOver: false,
     }).populate("doctor");
 
     res.status(200).json(appointments);
@@ -211,23 +213,16 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-router.post("/over/:id", auth, async (req, res) => {
+router.put("/over", auth, async (req, res) => {
   try {
-    let appointment = await Appointment.findById(req.params.id);
+    let appointment = await Appointment.findById(req.body.id);
 
     if (!appointment) {
       return res.status(404).json({ msg: "Not found" });
     }
 
-    appointment = await Appointment.findByIdAndUpdate(
-      req.params.id,
-      {
-        isOver: true,
-      },
-      {
-        new: true,
-      }
-    );
+    appointment.isOver = true;
+    await appointment.save();
 
     return res.status(200).json({ msg: "Appointment completed" });
   } catch (error) {

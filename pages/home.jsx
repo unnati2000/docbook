@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import cookie from "js-cookie";
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import { useRouter } from "next/router";
 import {
   useHMSActions,
@@ -13,12 +13,12 @@ import { VideoCameraIcon } from "@heroicons/react/solid";
 import { MdOutlineCancel } from "react-icons/md";
 import baseURL from "../utils/baseURL";
 import Header from "../components/home/Header.component";
+import { toast } from "react-toastify";
 
 const endPoint = "https://prod-in.100ms.live/hmsapi/docbook.app.100ms.live/";
 
 const Home = ({ user }) => {
   const [hmsToken, setHMSToken] = useState("");
-
   const hmsActions = useHMSActions();
   const isInPreview = useHMSStore(selectIsInPreview);
   const router = useRouter();
@@ -67,6 +67,29 @@ const Home = ({ user }) => {
       }
     }
   );
+
+  const mutation = useMutation(async (id) => {
+    const { data } = await axios.put(
+      `${baseURL}/api/appointments/over`,
+      { id },
+      {
+        headers: { Authorization: cookie.get("token") },
+      }
+    );
+    return data;
+  });
+
+  const cancelAppointment = async (id) => {
+    try {
+      const data = await mutation.mutateAsync(id);
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error.response?.data?.msg || "There was an error. Try again later."
+      );
+    }
+  };
+
   if (isInPreview) {
     router.push("/video?token=" + hmsToken);
   }
@@ -139,16 +162,19 @@ const Home = ({ user }) => {
                         />
                         <span className="ml-3 text-blue-600">Join</span>
                       </button>
-                      <button
-                        className="relative bg-red-100 -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
-                        onClick={() => console.log("sheep")}
-                      >
-                        <MdOutlineCancel
-                          className="w-5 h-5 text-red-500"
-                          aria-hidden="true"
-                        />
-                        <span className="ml-3 text-red-500">Cancel</span>
-                      </button>
+                      {user.role === "doctor" && (
+                        <button
+                          className="relative bg-red-100 -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
+                          onClick={() => cancelAppointment(appointment?._id)}
+                        >
+                          {" "}
+                          <MdOutlineCancel
+                            className="w-5 h-5 text-red-500"
+                            aria-hidden="true"
+                          />
+                          <span className="ml-3 text-red-500">Cancel</span>
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
