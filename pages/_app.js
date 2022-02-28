@@ -51,7 +51,8 @@ MyApp.getInitialProps = async ({ ctx }) => {
     ctx.pathname === "/dashboard" ||
     ctx.pathname === "/video" ||
     ctx.pathname === "/mood" ||
-    ctx.pathname === "/symptom";
+    ctx.pathname === "/symptom" ||
+    ctx.pathname === "/chat";
 
   const availableForEveryone =
     ctx.pathname === "/home" ||

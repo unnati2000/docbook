@@ -42,7 +42,7 @@ const StepThree = ({
       <div className="flex my-4 gap-4 items-center">
         <p>You can also download a report </p>
         <button
-          onClick={downloadPdfDocument}
+          onClick={() => downloadPdfDocument()}
           className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md"
         >
           Download here
