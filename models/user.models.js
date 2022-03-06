@@ -46,6 +46,18 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Doctor",
     },
+    newMessagePopup: {
+      type: Boolean,
+      default: true,
+    },
+    unreadMessage: {
+      type: Boolean,
+      default: false,
+    },
+    unreadNotification: {
+      type: Boolean,
+      default: false,
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
   },
