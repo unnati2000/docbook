@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
-import { useQuery, QueryClient } from 'react-query';
-
-import axios from 'axios';
-import cookie from 'js-cookie';
-import baseURL from '../../utils/baseURL';
-import { BsCalendar2Check } from 'react-icons/bs';
-import { MdCalendarToday } from 'react-icons/md';
-import { IoCashOutline } from 'react-icons/io5';
-import AppointmentCard from './AppointmentCard.component';
-import Statistics from './Statistics.component';
+import React, { useState } from "react";
+import { useQuery, QueryClient } from "react-query";
+import axios from "axios";
+import cookie from "js-cookie";
+import baseURL from "../../utils/baseURL";
+import { BsCalendar2Check } from "react-icons/bs";
+import { MdCalendarToday } from "react-icons/md";
+import { IoCashOutline } from "react-icons/io5";
+import AppointmentCard from "./AppointmentCard.component";
+import Statistics from "./Statistics.component";
 
 const getAppointments = async (tab) => {
   const data = await axios.get(`${baseURL}/api/appointments/${tab}/`, {
     headers: {
-      Authorization: cookie.get('token'),
+      Authorization: cookie.get("token"),
     },
   });
 
@@ -21,9 +20,9 @@ const getAppointments = async (tab) => {
 };
 
 const DoctorDashboard = ({ user }) => {
-  const [tab, setTab] = useState('unchecked');
+  const [tab, setTab] = useState("unchecked");
 
-  const { data } = useQuery(['appointments', tab], () => getAppointments(tab));
+  const { data } = useQuery(["appointments", tab], () => getAppointments(tab));
 
   return (
     <div className="grid grid-cols-12 md:min-h-screen">
@@ -40,38 +39,38 @@ const DoctorDashboard = ({ user }) => {
 
         <div className="mt-6">
           <div
-            onClick={() => setTab('unchecked')}
+            onClick={() => setTab("unchecked")}
             className={
-              tab === 'unchecked'
-                ? 'text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
-                : 'text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
+              tab === "unchecked"
+                ? "text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
+                : "text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
             }
           >
             <BsCalendar2Check />
             <p
               className={
-                tab === 'unchecked'
-                  ? 'text-blue-600'
-                  : 'text-gray-500 hover:text-blue-500'
+                tab === "unchecked"
+                  ? "text-blue-600"
+                  : "text-gray-500 hover:text-blue-500"
               }
             >
               Unchecked Appointments
             </p>
           </div>
           <div
-            onClick={() => setTab('today')}
+            onClick={() => setTab("today")}
             className={
-              tab === 'today'
-                ? 'text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
-                : 'text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
+              tab === "today"
+                ? "text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
+                : "text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
             }
           >
             <MdCalendarToday />
             <p
               className={
-                tab === 'today'
-                  ? 'text-blue-600'
-                  : 'text-gray-500 hover:text-blue-500'
+                tab === "today"
+                  ? "text-blue-600"
+                  : "text-gray-500 hover:text-blue-500"
               }
             >
               Today's Appointments
@@ -79,19 +78,19 @@ const DoctorDashboard = ({ user }) => {
           </div>
 
           <div
-            onClick={() => setTab('statistics')}
+            onClick={() => setTab("statistics")}
             className={
-              tab === 'statistics'
-                ? 'text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
-                : 'text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4'
+              tab === "statistics"
+                ? "text-blue-500 bg-blue-100 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
+                : "text-gray-500 p-2 cursor-pointer rounded-tr-full rounded-br-full flex items-center space-x-4"
             }
           >
             <IoCashOutline />
             <p
               className={
-                tab === 'statistics'
-                  ? 'text-blue-600'
-                  : 'text-gray-500 hover:text-blue-500'
+                tab === "statistics"
+                  ? "text-blue-600"
+                  : "text-gray-500 hover:text-blue-500"
               }
             >
               Your Statistics
@@ -106,7 +105,7 @@ const DoctorDashboard = ({ user }) => {
           </h2>
         </div>
 
-        {tab === 'statistics' ? (
+        {tab === "statistics" ? (
           <Statistics data={data} fee={user?.doctor?.initialFee} />
         ) : (
           <AppointmentCard data={data} tab={tab} />

@@ -13,6 +13,10 @@ module.exports = {
         angry: "#f47560",
         sad: "#e8c1a0",
       },
+      spacing: {
+        chat: "88vh",
+        fullscreen: "80vh",
+      },
     },
   },
   variants: {

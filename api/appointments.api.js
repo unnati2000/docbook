@@ -5,6 +5,7 @@ const express = require("express");
 const router = express.Router();
 const moment = require("moment");
 const Razorpay = require("razorpay");
+const { sendMessage } = require("../utils-server/chat");
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -149,6 +150,14 @@ router.put("/", auth, async (req, res) => {
     }
 
     const updatedAppointment = await appointment.save();
+
+    if (updatedAppointment.isAccepted === true) {
+      await sendMessage(
+        req.userId,
+        req.body.user,
+        "Hi there! Your appointment is booked successfully. If you have any queries, please contact us."
+      );
+    }
 
     res
       .status(200)

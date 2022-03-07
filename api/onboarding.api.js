@@ -4,6 +4,7 @@ const router = express.Router();
 
 const User = require("../models/user.models");
 const Doctor = require("../models/doctor.models");
+const Chat = require("../models/chat.models");
 
 const onboardingUpload = require("../middleware/upload.middleware");
 
@@ -58,6 +59,7 @@ router.post("/:token", onboardingUpload, async (req, res) => {
       user.doctor = doctor._id;
       await user.save();
     }
+    await new Chat({ user: user._id, chats: [] }).save();
 
     res.status(200).json({ msg: "Onboarded successfully" });
   } catch (error) {

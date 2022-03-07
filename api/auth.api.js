@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const router = express.Router();
 const User = require("../models/user.models");
+const Chat = require("../models/chat.models");
 const auth = require("../middleware/auth.middleware");
 
 const sendEmail = require("../utils-server/sendEmail");
@@ -59,6 +60,8 @@ router.post("/", async (req, res) => {
       if (err) throw err;
       res.status(200).json({ token, role, doctor });
     });
+
+    // await new Chat({ user: user._id, chats: [] }).save();
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Server error" });

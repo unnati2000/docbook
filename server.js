@@ -14,7 +14,7 @@ const {
   addUser,
   removeUser,
   findConnectedUser,
-} = require("./server-utils/socket");
+} = require("./utils-server/socket");
 
 const {
   loadMessages,
@@ -22,6 +22,7 @@ const {
   setMessageToUnread,
   setMessageToRead,
 } = require("./utils-server/chat");
+
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
@@ -84,6 +85,7 @@ nextApp.prepare().then(() => {
   app.use("/api/profile", require("./api/profile.api"));
   app.use("/api/moods", require("./api/mood.api"));
   app.use("/api/symptoms", require("./api/symptom.api"));
+  app.use("/api/chats", require("./api/chat.api"));
   app.all("*", (req, res) => handle(req, res));
 
   server.listen(PORT, (err) => {

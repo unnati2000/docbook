@@ -1,46 +1,46 @@
-import { useMutation, useQueryClient } from 'react-query';
-import baseURL from '../../utils/baseURL';
-import { toast } from 'react-toastify';
-import cookie from 'js-cookie';
-import axios from 'axios';
-import { TiTick } from 'react-icons/ti';
-import { ImCancelCircle } from 'react-icons/im';
+import { useMutation, useQueryClient } from "react-query";
+import baseURL from "../../utils/baseURL";
+import { toast } from "react-toastify";
+import cookie from "js-cookie";
+import axios from "axios";
+import { TiTick } from "react-icons/ti";
+import { ImCancelCircle } from "react-icons/im";
 
 const AppointmentCard = ({ data, tab }) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation(
-    async ({ id, status }) => {
+    async ({ id, user, status }) => {
       const { data } = await axios.put(
         `${baseURL}/api/appointments/`,
-        { id, status },
+        { id, user, status },
         {
-          headers: { Authorization: cookie.get('token') },
+          headers: { Authorization: cookie.get("token") },
         }
       );
       return data;
     },
     {
       onSuccess: (data) => {
-        const old = queryClient.getQueryData(['appointments', tab]);
+        const old = queryClient.getQueryData(["appointments", tab]);
         queryClient.setQueryData(
-          ['appointments', tab],
+          ["appointments", tab],
           old.filter(
             (appointment) => appointment._id !== data.updatedAppointment._id
           )
         );
-        toast.success('Appointment updated successfully');
+        toast.success("Appointment updated successfully");
       },
     }
   );
 
-  const updateAppointmentStatus = async (id, status) => {
+  const updateAppointmentStatus = async (id, user, status) => {
     try {
-      const data = await mutation.mutateAsync({ id, status });
+      const data = await mutation.mutateAsync({ id, user, status });
     } catch (error) {
       console.log(error);
       toast.error(
-        error.response?.data?.msg || 'There was an error. Try again later.'
+        error.response?.data?.msg || "There was an error. Try again later."
       );
     }
   };
@@ -65,19 +65,23 @@ const AppointmentCard = ({ data, tab }) => {
             <div
               className={
                 doc?.isConfirmed === true
-                  ? 'hidden'
-                  : 'flex space-x-4 pb-4 ml-8'
+                  ? "hidden"
+                  : "flex space-x-4 pb-4 ml-8"
               }
             >
               <button
-                onClick={() => updateAppointmentStatus(doc?._id, 'confirm')}
+                onClick={() =>
+                  updateAppointmentStatus(doc?._id, doc?.user?._id, "confirm")
+                }
                 className="bg-green-100 flex items-center text-green-600 px-8 py-2 rounded-sm"
               >
                 <TiTick className="text-lg" />
                 Accept
               </button>
               <button
-                onClick={() => updateAppointmentStatus(doc?._id, 'cancel')}
+                onClick={() =>
+                  updateAppointmentStatus(doc?._id, doc?.user?._id, "cancel")
+                }
                 className="bg-red-100 flex items-center text-red-600 px-8 py-2 rounded-sm"
               >
                 <ImCancelCircle className="text-lg mr-2" /> Reject

@@ -1,11 +1,11 @@
-const WindowHeader = () => {
+const WindowHeader = ({ banner }) => {
   return (
-    <div className="flex text-left items-center py-4">
+    <div className="flex text-left items-center p-4">
       <img
-        src="https://ps.w.org/simple-local-avatars/assets/icon-256x256.png?rev=2406995"
-        className="h-10 mr-2 w-10 rounded-full"
+        src={banner.profilePic}
+        className="h-10 object-cover mr-2 w-10 rounded-full"
       />
-      <h2 className="text-blue-500 text-xl font-semibold"> Bamania</h2>
+      <h2 className="text-gray-500 text-xl font-normal"> {banner.name}</h2>
     </div>
   );
 };

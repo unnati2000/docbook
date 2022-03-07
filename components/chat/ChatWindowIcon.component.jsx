@@ -14,12 +14,9 @@ const ChatWindowIcon = () => {
       <div className="space-y-0.5">
         <h1 className="font-semibold text-xl">Your Messages</h1>
         <p className="text-gray-600 min-w-46">
-          Send private photos and messages to a friend or group
+          Book an appointment to start chating with your doctor.
         </p>
       </div>
-      <button className="bg-blue-500 py-1 px-3 rounded text-white select-none focus:outline-none">
-        Send Message
-      </button>
     </div>
   );
 };

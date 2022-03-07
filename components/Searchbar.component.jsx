@@ -59,11 +59,9 @@ const Searchbar = ({ user, setMobileMenuOpen }) => {
                   />
                 </div>
                 <input
-                  name="search-field"
                   id="search-field"
                   className="h-full w-full border-transparent py-2 pl-8 pr-3 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent focus:placeholder-gray-400"
                   placeholder="Search"
-                  type="search"
                   name="search"
                   value={search}
                   onChange={(e) => {
@@ -127,7 +125,11 @@ const Searchbar = ({ user, setMobileMenuOpen }) => {
           </div>
 
           <div className="ml-2 flex items-center space-x-4 sm:ml-6 sm:space-x-6">
-            <VscBellDot className="h-6 w-6 text-gray-400" />
+            <VscBellDot
+              className="h-6 w-6 text-gray-400 cursor-pointer"
+              onClick={() => router.push("/chat")}
+            />
+
             <BsChat className="h-6 w-6 text-gray-400" />
             <Menu as="div" className="relative flex-shrink-0">
               {({ open }) => (
