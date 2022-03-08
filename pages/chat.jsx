@@ -200,6 +200,7 @@ const Chat = ({ user }) => {
                       shallow: true,
                     })
                   }
+                  key={chat._id}
                 >
                   <People chat={chat} />
                 </div>
