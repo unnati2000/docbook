@@ -9,11 +9,14 @@ const notificationSchema = new mongoose.Schema({
     {
       type: {
         type: "String",
-        enum: ["booked", "accepted", "cancelled", "paid"],
+        enum: ["booked", "accepted", "cancelled", "cancelledByPatient"],
       },
       user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+      },
+      role: {
+        type: "String",
       },
       appointment: {
         type: mongoose.Schema.Types.ObjectId,
