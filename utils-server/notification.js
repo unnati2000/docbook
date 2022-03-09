@@ -17,6 +17,8 @@ const bookingNotification = async (doctorToNotify, patient, appointmentId) => {
   try {
     const doctor = await Notification.findOne({ user: doctorToNotify });
 
+    console.log(doctor);
+
     const notification = {
       type: "booked",
       user: patient,
@@ -25,10 +27,10 @@ const bookingNotification = async (doctorToNotify, patient, appointmentId) => {
       date: Date.now(),
     };
 
-    doctor.notications.unshift(notification);
-    await notification.save();
+    doctor.notifications.unshift(notification);
+    await doctor.save();
 
-    await setNotificationsToUnread(doctor._id);
+    await setNotificationsToUnread(doctorToNotify);
   } catch (error) {
     console.error(error);
   }
@@ -49,10 +51,10 @@ const acceptedAppointmentNotification = async (
       role: "doctor",
       date: Date.now(),
     };
-    doctor.notications.unshift(notification);
+    patient.notifications.unshift(notification);
 
-    await notification.save();
-    await setNotificationsToUnread(doctor._id);
+    await patient.save();
+    await setNotificationsToUnread(patientToNotify);
   } catch (error) {
     console.error(error);
   }
@@ -73,12 +75,82 @@ const cancelledAppointmentByPatient = async (
       date: Date.now(),
     };
 
-    doctor.notications.unshift(notification);
+    doctor.notifications.unshift(notification);
 
-    await notification.save();
-    await setNotificationsToUnread(doctor._id);
+    await doctor.save();
+    await setNotificationsToUnread(doctorToNotify);
   } catch (error) {
     console.error(error);
+  }
+};
+
+const removeBookingNotification = async (
+  patient,
+  doctorToNotify,
+  appointmentId
+) => {
+  try {
+    const doctor = await Notification.findOneAndUpdate(
+      { user: doctorToNotify },
+      {
+        $pull: {
+          notications: {
+            type: "booked",
+            user: patient,
+            appointment: appointmentId,
+          },
+        },
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const removeAcceptedAppointmentNotification = async (
+  patientToNotify,
+  doctor,
+  appointmentId,
+  type
+) => {
+  try {
+    await Notification.findOneAndUpdate(
+      { user: patientToNotify },
+      {
+        $pull: {
+          notications: {
+            type: type,
+            user: doctor,
+            appointment: appointmentId,
+          },
+        },
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const removeCancelledAppointmentByPatient = async (
+  patient,
+  doctorToNotify,
+  appointmentId
+) => {
+  try {
+    await Notification.findOneAndUpdate(
+      { user: doctorToNotify },
+      {
+        $pull: {
+          notications: {
+            type: "cancelledByPatient",
+            user: patient,
+            appointment: appointmentId,
+          },
+        },
+      }
+    );
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -86,4 +158,7 @@ module.exports = {
   bookingNotification,
   acceptedAppointmentNotification,
   cancelledAppointmentByPatient,
+  removeBookingNotification,
+  removeAcceptedAppointmentNotification,
+  removeCancelledAppointmentByPatient,
 };

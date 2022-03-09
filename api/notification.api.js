@@ -6,8 +6,6 @@ const Notification = require("../models/notification.models");
 
 const auth = require("../middleware/auth.middleware");
 
-// @route   GET /api/notifications
-// @desc    Retreive user's notifications
 router.get("/", auth, async (req, res) => {
   try {
     const user = await Notification.findOne({ user: req.userId }).populate(
@@ -19,7 +17,7 @@ router.get("/", auth, async (req, res) => {
         notification.type === "booked" ||
         notification.type === "accepted" ||
         notification.type === "cancelled" ||
-        notification.type === "paid"
+        notification.type === "cancelledByPatient"
     );
 
     res.status(200).json(notifications);
@@ -29,8 +27,6 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-// @route   POST /api/notifications
-// @desc    Set notifications to read
 router.post("/", auth, async (req, res) => {
   try {
     const user = await User.findById(req.userId);

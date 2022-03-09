@@ -9,6 +9,7 @@ import { VscBellDot, VscBell } from "react-icons/vsc";
 import { MenuAlt2Icon } from "@heroicons/react/outline";
 import { logoutUser } from "../utils/auth.utils";
 import { SearchIcon } from "@heroicons/react/solid";
+import { IoIosNotificationsOutline } from "react-icons/io";
 
 const Searchbar = ({ user, setMobileMenuOpen }) => {
   const [search, setSearch] = useState("");
@@ -125,12 +126,16 @@ const Searchbar = ({ user, setMobileMenuOpen }) => {
           </div>
 
           <div className="ml-2 flex items-center space-x-4 sm:ml-6 sm:space-x-6">
-            <VscBellDot
+            {user?.unreadNotification ? (
+              <VscBellDot className="h-6 w-6 text-gray-400 cursor-pointer" />
+            ) : (
+              <IoIosNotificationsOutline className="h-8 w-8 text-gray-400 cursor-pointer" />
+            )}
+
+            <BsChat
               className="h-6 w-6 text-gray-400 cursor-pointer"
               onClick={() => router.push("/chat")}
             />
-
-            <BsChat className="h-6 w-6 text-gray-400" />
             <Menu as="div" className="relative flex-shrink-0">
               {({ open }) => (
                 <>

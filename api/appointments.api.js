@@ -6,6 +6,11 @@ const router = express.Router();
 const moment = require("moment");
 const Razorpay = require("razorpay");
 const { sendMessage } = require("../utils-server/chat");
+const {
+  bookingNotification,
+  acceptedAppointmentNotification,
+  cancelledAppointmentByPatient,
+} = require("../utils-server/notification");
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -38,6 +43,8 @@ router.post("/", auth, async (req, res) => {
     appointment.paymentDetails.razorpayOrderId = response.id;
 
     appointment = await appointment.save();
+
+    await bookingNotification(req.body.doctor, req.body.user, appointment._id);
 
     res.status(201).json({
       newAppointment: appointment,
@@ -157,6 +164,20 @@ router.put("/", auth, async (req, res) => {
         req.body.user,
         "Hi there! Your appointment is booked successfully. If you have any queries, please contact us."
       );
+
+      await acceptedAppointmentNotification(
+        req.body.user,
+        req.userId,
+        updatedAppointment._id,
+        "accepted"
+      );
+    } else {
+      await acceptedAppointmentNotification(
+        req.body.user,
+        req.userId,
+        updatedAppointment._id,
+        "cancelled"
+      );
     }
 
     res
@@ -179,6 +200,12 @@ router.delete("/:id", auth, async (req, res) => {
       return res.status(400).json({ msg: "Appointment already confirmed" });
     } else {
       await Appointment.findByIdAndDelete(req.params.id);
+
+      await cancelledAppointmentByPatient(
+        req.userId,
+        appointment.doctor,
+        appointment._id
+      );
       res.status(200).json({ msg: "Appointment deleted successfully" });
     }
   } catch (error) {

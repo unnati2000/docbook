@@ -5,6 +5,7 @@ const router = express.Router();
 const User = require("../models/user.models");
 const Doctor = require("../models/doctor.models");
 const Chat = require("../models/chat.models");
+const Notification = require("../models/notification.models");
 
 const onboardingUpload = require("../middleware/upload.middleware");
 
@@ -60,6 +61,10 @@ router.post("/:token", onboardingUpload, async (req, res) => {
       await user.save();
     }
     await new Chat({ user: user._id, chats: [] }).save();
+    await new Notification({
+      user: user._id,
+      notification: [],
+    }).save();
 
     res.status(200).json({ msg: "Onboarded successfully" });
   } catch (error) {

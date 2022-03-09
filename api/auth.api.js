@@ -5,6 +5,7 @@ const crypto = require("crypto");
 const router = express.Router();
 const User = require("../models/user.models");
 const Chat = require("../models/chat.models");
+const Notification = require("../models/notification.models");
 const auth = require("../middleware/auth.middleware");
 
 const sendEmail = require("../utils-server/sendEmail");
