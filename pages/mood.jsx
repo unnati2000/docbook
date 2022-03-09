@@ -75,7 +75,7 @@ const Mood = ({ user }) => {
           headers: { Authorization: cookie.get("token") },
         }
       );
-      console.log(data);
+
       return data;
     },
     {
@@ -103,8 +103,6 @@ const Mood = ({ user }) => {
         moodCode,
         description,
       });
-
-      console.log(data);
 
       toast.success(data?.msg);
     } catch (error) {

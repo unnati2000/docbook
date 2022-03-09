@@ -17,8 +17,6 @@ const bookingNotification = async (doctorToNotify, patient, appointmentId) => {
   try {
     const doctor = await Notification.findOne({ user: doctorToNotify });
 
-    console.log(doctor);
-
     const notification = {
       type: "booked",
       user: patient,

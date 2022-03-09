@@ -23,8 +23,6 @@ const Symptom = ({ user }) => {
     getSymptom(cookie.get("token"))
   );
 
-  console.log(data);
-
   const customStyles = {
     overlay: {
       backgroundColor: "rgba(0, 0, 0, 0.6)",

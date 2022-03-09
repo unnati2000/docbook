@@ -127,9 +127,15 @@ const Searchbar = ({ user, setMobileMenuOpen }) => {
 
           <div className="ml-2 flex items-center space-x-4 sm:ml-6 sm:space-x-6">
             {user?.unreadNotification ? (
-              <VscBellDot className="h-6 w-6 text-gray-400 cursor-pointer" />
+              <VscBellDot
+                onClick={() => router.push("/notification")}
+                className="h-6 w-6 text-blue-500 cursor-pointer"
+              />
             ) : (
-              <IoIosNotificationsOutline className="h-8 w-8 text-gray-400 cursor-pointer" />
+              <IoIosNotificationsOutline
+                onClick={() => router.push("/notification")}
+                className="h-8 w-8 text-gray-400 cursor-pointer"
+              />
             )}
 
             <BsChat

@@ -23,7 +23,7 @@ const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
       name: "DocBook",
       description: "Order Payment",
       order_id: `${appointment.paymentDetails.razorpayOrderId}`,
-      handler: function (response) {
+      handler: function(response) {
         mutation.mutate(response);
       },
       prefill: {
@@ -50,8 +50,6 @@ const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
     },
     {
       onSuccess: (data) => {
-        console.log(data);
-
         toast.success("Successfully paid for the appointment");
       },
       onError: (error) => {

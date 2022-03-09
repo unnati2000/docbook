@@ -14,7 +14,6 @@ const People = ({ chat }) => {
           src={chat.profilePic}
           alt={chat.name}
         />
-        {console.log(chat)}
         <div className="transform translate-y-0.5 text-left">
           <h3 className="leading-4">{chat?.name}</h3>
           <div className="flex justify-between gap-2 mt-2">
