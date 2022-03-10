@@ -4,6 +4,7 @@ const auth = require("../middleware/auth.middleware");
 
 const User = require("../models/user.models");
 const Doctor = require("../models/doctor.models");
+const Appointment = require("../models/appointment.models");
 
 const {
   calculate_time_slot,
@@ -73,6 +74,40 @@ router.post("/", auth, async (req, res) => {
     res.status(200).json({ msg: "Doctor details added successfully" });
   } catch (error) {
     console.error(error);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+router.post("/:patient/:doctor", auth, async (req, res) => {
+  try {
+    const { patient, doctor } = req.params;
+
+    const appointment = await Appointment.find({
+      doctor: doctor,
+      patient: patient,
+    });
+
+    if (appointment.length === 0) {
+      return res.status(401).json({
+        msg:
+          "You can't add review as you haven't booked any appointment with this doctor yet",
+      });
+    }
+
+    const doctorProfile = await Doctor.findById(req.body.doctorProfile);
+
+    doctorProfile.ratings.unshift({
+      user: patient,
+      rating: req.body.rating,
+      description: req.body.description,
+      tags: req.body.tags,
+    });
+
+    await doctorProfile.save();
+
+    res.status(200).json({ msg: "Review added successfully" });
+  } catch (error) {
+    console.log(error);
     res.status(500).json({ msg: "Server error" });
   }
 });

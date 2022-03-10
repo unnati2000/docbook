@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 function DropDown({
   proficiences,
@@ -7,6 +7,10 @@ function DropDown({
   setAddedProficiencies,
 }) {
   const [currentDegree, setCurrentDegree] = useState(proficiences[0]);
+
+  console.log({ proficiences });
+
+  console.log({ addedproficiencies });
 
   const onChangeCurrentDegree = (e) => {
     setCurrentDegree(e.target.value);

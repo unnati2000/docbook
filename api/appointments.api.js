@@ -267,4 +267,10 @@ router.put("/over", auth, async (req, res) => {
   }
 });
 
+// router.get("/:patient/:doctor", auth, async (req, res) => {
+//   try {
+
+//   } catch (error) {}
+// });
+
 module.exports = router;

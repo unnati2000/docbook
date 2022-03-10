@@ -2,7 +2,10 @@ import { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { FaStarHalf } from "react-icons/fa";
 import { AiOutlinePlus } from "react-icons/ai";
+import { ImCross } from "react-icons/im";
 import Modal from "react-modal";
+import DropDown from "../profile-form/DropDown.component";
+import { toast } from "react-toastify";
 
 const Review = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,6 +33,34 @@ const Review = () => {
     setIsOpen(false);
   };
 
+  const [tags, setTags] = useState([
+    "Select tags",
+    "Friendly",
+    "Satisfied",
+    "Not Satisfied",
+    "Not Helpful",
+    "Helpful",
+  ]);
+  const [addedTags, setAddedTags] = useState([]);
+
+  const removeTags = (value) => {
+    setTags((tags) => [...tags, value]);
+    setAddedTags(addedTags.filter((addedTags) => addedTags !== value));
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    if (isNaN(parseFloat(number))) {
+      toast.error("Please enter a valid rating");
+    } else if (parseFloat(number) < 0 && parseFloat(number) > 5) {
+      toast.error("Please enter a rating between 0 and 5");
+    } else if (addedTags.length === 0) {
+      toast.error("Please select at least one tag");
+    } else {
+    }
+  };
+
   return (
     <>
       <Modal
@@ -42,7 +73,7 @@ const Review = () => {
           <h1 className="text-blue-500 py-4 text-2xl font-semibold">
             Add your story for other patients
           </h1>
-          <form>
+          <form onSubmit={onSubmit}>
             <input
               type="text"
               className="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
@@ -50,6 +81,31 @@ const Review = () => {
               name="name"
               value={number}
               onChange={(e) => setNumber(e.target.value)}
+            />
+
+            <div className="flex flex-wrap  space-x-2 pb-2 mt-4">
+              {addedTags?.length > 0 ? (
+                addedTags?.map((added) => (
+                  <div
+                    key={added}
+                    className="border flex my-2 justify-between items-center border-gray-500 rounded-full px-3 py-1 text-gray-500"
+                  >
+                    {added}
+                    <button onClick={() => removeTags(added)}>
+                      <ImCross className="mx-2 font-sm" />
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <h1 className="text-md  py-2">Please add tags</h1>
+              )}
+            </div>
+
+            <DropDown
+              proficiences={tags}
+              setProficiencies={setTags}
+              addedproficiencies={addedTags}
+              setAddedProficiencies={setAddedTags}
             />
 
             <textarea
