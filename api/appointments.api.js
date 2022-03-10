@@ -10,6 +10,7 @@ const {
   bookingNotification,
   acceptedAppointmentNotification,
   cancelledAppointmentByPatient,
+  addRatingNotification,
 } = require("../utils-server/notification");
 
 const razorpay = new Razorpay({
@@ -259,6 +260,11 @@ router.put("/over", auth, async (req, res) => {
 
     appointment.isOver = true;
     await appointment.save();
+    await addRatingNotification(
+      appointment.user,
+      appointment.doctor,
+      appointment._id
+    );
 
     return res.status(200).json({ msg: "Appointment completed" });
   } catch (error) {

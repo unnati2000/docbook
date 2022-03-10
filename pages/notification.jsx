@@ -105,6 +105,18 @@ const Notification = () => {
                     your appointment.
                   </p>
                 )}
+                {doc?.type === "rating" && (
+                  <p className="text-sm text-gray-500">
+                    You just completed an appointment with {doc?.user?.name}.
+                    Please rate your experience here.
+                    <span
+                      className="text-blue-500"
+                      onClick={() => router.push(`/doctor/${doc?.doctor}`)}
+                    >
+                      Click here to add review
+                    </span>
+                  </p>
+                )}
               </div>
             </div>
           </li>

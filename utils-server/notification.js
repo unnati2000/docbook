@@ -82,6 +82,29 @@ const cancelledAppointmentByPatient = async (
   }
 };
 
+const addRatingNotification = async (
+  patientToNotify,
+  doctor,
+  appointmentId
+) => {
+  try {
+    const patient = await Notification.findOne({ user: patientToNotify });
+    const notification = {
+      type: "rating",
+      user: doctor,
+      appointment: appointmentId,
+      role: "doctor",
+      date: Date.now(),
+    };
+    patient.notifications.unshift(notification);
+
+    await patient.save();
+    await setNotificationsToUnread(patientToNotify);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const removeBookingNotification = async (
   patient,
   doctorToNotify,
@@ -156,6 +179,7 @@ module.exports = {
   bookingNotification,
   acceptedAppointmentNotification,
   cancelledAppointmentByPatient,
+  addRatingNotification,
   removeBookingNotification,
   removeAcceptedAppointmentNotification,
   removeCancelledAppointmentByPatient,
