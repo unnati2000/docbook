@@ -117,6 +117,12 @@ const doctorSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
         },
+        name: {
+          type: String,
+        },
+        profilePic: {
+          type: String,
+        },
         rating: {
           type: Number,
           default: 0,
@@ -127,6 +133,10 @@ const doctorSchema = new mongoose.Schema(
         tags: [{ type: String }],
       },
     ],
+    averageRating: {
+      type: Number,
+      default: 0,
+    },
   },
 
   { timestamps: true }

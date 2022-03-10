@@ -8,10 +8,6 @@ function DropDown({
 }) {
   const [currentDegree, setCurrentDegree] = useState(proficiences[0]);
 
-  console.log({ proficiences });
-
-  console.log({ addedproficiencies });
-
   const onChangeCurrentDegree = (e) => {
     setCurrentDegree(e.target.value);
     setAddedProficiencies((addedproficiencies) => [

@@ -1,5 +1,6 @@
 import { AiFillStar } from "react-icons/ai";
 import { FaStarHalf } from "react-icons/fa";
+import RatingStar from "./RatingStar.component";
 
 const DoctorProfile = ({ doctor }) => {
   return (
@@ -25,12 +26,7 @@ const DoctorProfile = ({ doctor }) => {
 
             <p className="py-1">{doctor?.experience} years of Experience</p>
 
-            <p className="flex items-center">
-              <AiFillStar className="h-4 w-4 text-yellow-500" />
-              <AiFillStar className="h-4 w-4 text-yellow-500" />
-              <AiFillStar className="h-4 w-4 text-yellow-500" />
-              <FaStarHalf />
-            </p>
+            <RatingStar rating={doctor?.averageRating} />
           </div>
         </div>
       </div>

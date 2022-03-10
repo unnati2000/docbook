@@ -1,13 +1,13 @@
-import { useQuery, QueryClient } from 'react-query';
-import { dehydrate } from 'react-query/hydration';
-import cookie from 'js-cookie';
-import { useRouter } from 'next/router';
-import axios from 'axios';
-import baseURL from '../../utils/baseURL';
-import Address from '../../components/doctor-profile/Address.component';
-import DoctorProfile from '../../components/doctor-profile/DoctorProfile.component';
-import Review from '../../components/doctor-profile/Review.component';
-import Timing from '../../components/doctor-profile/Timing.component';
+import { useQuery, QueryClient } from "react-query";
+import { dehydrate } from "react-query/hydration";
+import cookie from "js-cookie";
+import { useRouter } from "next/router";
+import axios from "axios";
+import baseURL from "../../utils/baseURL";
+import Address from "../../components/doctor-profile/Address.component";
+import DoctorProfile from "../../components/doctor-profile/DoctorProfile.component";
+import Review from "../../components/doctor-profile/Review.component";
+import Timing from "../../components/doctor-profile/Timing.component";
 
 const getDoctorDetails = async (id) => {
   const { data } = await axios.get(`${baseURL}/api/doctor/${id}`);
@@ -19,7 +19,7 @@ const Doctor = ({ user }) => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data } = useQuery(['doctors', id], () => getDoctorDetails(id));
+  const { data } = useQuery(["doctors", id], () => getDoctorDetails(id));
 
   return (
     <div className="bg-gray-100 py-8">
@@ -37,7 +37,7 @@ const Doctor = ({ user }) => {
           <Address doctor={data} />
         </div>
         <div className="col-span-3 md:col-span-1 bg-white p-4 rounded-sm">
-          <Review doctor={data} />
+          <Review user={user} doctor={data} />
         </div>
       </section>
     </div>
@@ -48,7 +48,7 @@ export async function getServerSideProps(ctx) {
   const { id } = ctx.params;
 
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(['doctors', id], () => getDoctorDetails(id), {
+  await queryClient.prefetchQuery(["doctors", id], () => getDoctorDetails(id), {
     enabled: !!id,
   });
 

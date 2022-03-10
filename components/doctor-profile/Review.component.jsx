@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { AiFillStar } from "react-icons/ai";
-import { FaStarHalf } from "react-icons/fa";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
 import Modal from "react-modal";
 import DropDown from "../profile-form/DropDown.component";
 import { toast } from "react-toastify";
+import { useMutation } from "react-query";
+import axios from "axios";
+import cookie from "js-cookie";
+import baseURL from "../../utils/baseURL";
+import RatingStar from "./RatingStar.component";
 
-const Review = () => {
+const Review = ({ user, doctor }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [number, setNumber] = useState(0);
   const [description, setDescription] = useState("");
@@ -48,19 +51,62 @@ const Review = () => {
     setAddedTags(addedTags.filter((addedTags) => addedTags !== value));
   };
 
-  const onSubmit = (e) => {
+  const mutation = useMutation(
+    async ({ number, addedTags, description }) => {
+      const data = await axios.post(
+        `${baseURL}/api/ratings`,
+        {
+          doctor: doctor?.user?._id,
+          name: user?.name,
+          profilePic: user?.profilePic,
+          doctorProfile: doctor?._id,
+          rating: number,
+          tags: addedTags,
+          description: description,
+        },
+        {
+          headers: {
+            Authorization: cookie.get("token"),
+          },
+        }
+      );
+
+      return data;
+    },
+    {
+      onSuccess: (data) => {
+        toast.success("Rating submitted successfully");
+        setIsOpen(false);
+      },
+    }
+  );
+
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     if (isNaN(parseFloat(number))) {
       toast.error("Please enter a valid rating");
-    } else if (parseFloat(number) < 0 && parseFloat(number) > 5) {
+    } else if (parseFloat(number) < 0 || parseFloat(number) > 5) {
       toast.error("Please enter a rating between 0 and 5");
     } else if (addedTags.length === 0) {
       toast.error("Please select at least one tag");
     } else {
+      try {
+        const data = await mutation.mutateAsync({
+          number,
+          addedTags,
+          description,
+        });
+      } catch (err) {
+        console.log(err);
+        toast.error(
+          err.response?.data?.msg || "There was an error. Try again later."
+        );
+      }
     }
   };
 
+  console.log({ doctor });
   return (
     <>
       <Modal
@@ -136,22 +182,36 @@ const Review = () => {
         </button>
       </div>
 
-      <div className="flex my-4">
-        <img
-          src="https://imagesx.practo.com/providers/d02a7033-1123-49f1-a59d-19c3ba795dd1.jpg?i_type=t_100x100"
-          className="h-12 w-12 rounded-full"
-        />
-        <div className="mx-2">
-          <h1 className="text-blue-500 text-lg">name</h1>
-          <p className="text-gray-500">nulla, animi veritatis consectetur</p>
-          <p className="flex items-center">
-            <AiFillStar className="h-4 w-4 text-yellow-500" />
-            <AiFillStar className="h-4 w-4 text-yellow-500" />
-            <AiFillStar className="h-4 w-4 text-yellow-500" />
-            <FaStarHalf />
-          </p>
-        </div>
-      </div>
+      {doctor?.ratings?.length > 0 ? (
+        doctor?.ratings.map((rating) => (
+          <div className="flex my-4 border-b border-gray-300" key={rating?._id}>
+            <img
+              src={rating?.profilePic}
+              className="object-cover h-12 w-12 rounded-full"
+            />
+            <div className="mx-2">
+              <div className="flex items-center justify-between">
+                <h1 className="text-blue-500 text-lg">{rating?.name}</h1>
+                <RatingStar rating={rating?.rating} />
+              </div>
+
+              <p className="text-gray-500">{rating?.description}</p>
+              <div className="flex pb-2 items-center gap-2 justify-start my-2">
+                {rating?.tags?.map((tag) => (
+                  <div
+                    className="border-2 text-blue-500 px-2 border-blue-500 rounded-full"
+                    key={tag}
+                  >
+                    {tag}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))
+      ) : (
+        <h1>No review available</h1>
+      )}
     </>
   );
 };
