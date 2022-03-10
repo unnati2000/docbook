@@ -111,6 +111,22 @@ const doctorSchema = new mongoose.Schema(
       saturday: [String],
       sunday: [String],
     },
+    ratings: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        rating: {
+          type: Number,
+          default: 0,
+        },
+        description: {
+          type: String,
+        },
+        tags: [{ type: String }],
+      },
+    ],
   },
 
   { timestamps: true }
