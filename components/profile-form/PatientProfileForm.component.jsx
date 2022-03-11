@@ -1,16 +1,16 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { toast } from "react-toastify";
-import { useMutation } from "react-query";
-import baseURL from "../../utils/baseURL";
-import axios from "axios";
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+import { useMutation } from 'react-query';
+import baseURL from '../../utils/baseURL';
+import axios from 'axios';
 
 const PatientProfileForm = () => {
   const [address, setAddress] = useState({
-    streetAdd: "",
-    city: "",
-    state: "",
-    pincode: "",
+    streetAdd: '',
+    city: '',
+    state: '',
+    pincode: '',
   });
 
   const handleAddress = (e) => {
@@ -33,7 +33,7 @@ const PatientProfileForm = () => {
       formdata,
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       }
     );
@@ -44,23 +44,23 @@ const PatientProfileForm = () => {
     e.preventDefault();
 
     try {
-      if (streetAdd === "" || city === "" || state === "" || pincode === "") {
-        toast.error("Please enter all the fields");
+      if (streetAdd === '' || city === '' || state === '' || pincode === '') {
+        toast.error('Please enter all the fields');
       } else if (image === null) {
-        toast.error("Please add a profile pic");
+        toast.error('Please add a profile pic');
       } else {
         const formdata = new FormData();
-        formdata.append("address", JSON.stringify(address));
-        formdata.append("image", image);
+        formdata.append('address', JSON.stringify(address));
+        formdata.append('image', image);
 
         const data = await mutation.mutateAsync(formdata);
         toast.success(data.msg);
-        router.push("/signin");
+        router.push('/signin');
       }
     } catch (error) {
       console.log(error);
       toast.error(
-        error.response?.data?.msg || "There was an error. Try again later."
+        error.response?.data?.msg || 'There was an error. Try again later.'
       );
     }
   };
@@ -149,9 +149,9 @@ const PatientProfileForm = () => {
                   src={
                     image
                       ? URL.createObjectURL(image)
-                      : "https://solangvalleyresorts.com/wp-content/uploads/2019/03/gravatar-60-grey.jpg"
+                      : 'https://solangvalleyresorts.com/wp-content/uploads/2019/03/gravatar-60-grey.jpg'
                   }
-                  className="h-28 w-28 rounded-full"
+                  className="h-28 w-28 rounded-full object-cover"
                 />
               </div>
 

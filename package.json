@@ -6,9 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@100mslive/hms-video": "^0.1.43",
-    "@100mslive/hms-video-react": "^0.3.116",
-    "@100mslive/react-sdk": "0.0.6",
+    "@100mslive/hms-video-react": "^0.3.120",
     "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.4",
     "@nivo/calendar": "^0.79.1",

@@ -1,11 +1,11 @@
-import Room from "../components/video/Room.component";
-import { useRouter } from "next/router";
+import Room from '../components/video/Room.component';
+import { useRouter } from 'next/router';
 import {
   Preview,
   useHMSActions,
   useHMSStore,
   selectIsConnectedToRoom,
-} from "@100mslive/hms-video-react";
+} from '@100mslive/hms-video-react';
 
 const Video = ({ user }) => {
   const actions = useHMSActions();

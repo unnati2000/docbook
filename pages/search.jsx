@@ -8,7 +8,11 @@ import { useRouter } from 'next/router';
 import { AiFillStar } from 'react-icons/ai';
 import { FaStarHalf } from 'react-icons/fa';
 import { Listbox, Transition } from '@headlessui/react';
-import { SortAscendingIcon, ChevronDownIcon } from '@heroicons/react/solid';
+import {
+  SortAscendingIcon,
+  ChevronDownIcon,
+  CheckIcon,
+} from '@heroicons/react/solid';
 import baseURL from '../utils/baseURL';
 
 const publishingOptions = [
@@ -141,14 +145,14 @@ const Doctors = ({ user }) => {
             className={
               doc?._id === user?._id
                 ? 'hidden'
-                : 'border bg-white rounded-md mx-8 my-4 p-8'
+                : 'shadow-md bg-white rounded-md mx-8 my-4 p-8'
             }
           >
             <div className="flex items-center justify-between flex-wrap">
               <div className="flex text-left">
                 <img
                   src={doc?.user?.profilePic}
-                  className="h-16 w-16 rounded-full"
+                  className="h-16 w-16 rounded-full object-cover"
                 />
                 <div className="ml-2">
                   <Link href={`/doctor/${doc?.user?._id}`}>
