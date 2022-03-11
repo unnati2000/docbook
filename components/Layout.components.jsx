@@ -9,6 +9,7 @@ const routesArray = [
   "/",
   "/onboarding/[role]/[token]",
   "/forgot-password",
+  "/reset-password/[token]",
 ];
 
 const Layout = ({ user, children }) => {

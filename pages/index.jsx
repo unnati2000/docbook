@@ -1,10 +1,10 @@
-import { Fragment } from 'react';
-import { AiFillMedicineBox } from 'react-icons/ai';
-import { Popover, Transition } from '@headlessui/react';
-import { MenuIcon, XIcon } from '@heroicons/react/outline';
-import { ToastContainer } from 'react-toastify';
-import Footer from '../components/footer/Footer.component';
-import Link from 'next/link';
+import { Fragment } from "react";
+import { AiFillMedicineBox } from "react-icons/ai";
+import { Popover, Transition } from "@headlessui/react";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { ToastContainer } from "react-toastify";
+import Footer from "../components/footer/Footer.component";
+import Link from "next/link";
 
 function Landing() {
   return (
@@ -132,7 +132,7 @@ function Landing() {
                       <div className="px-5 pt-4 flex items-center justify-between">
                         <div>
                           <img
-                            className="h-8 w-auto"
+                            className="h-8 object-cover w-auto"
                             src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
                             alt=""
                           />
@@ -162,7 +162,7 @@ function Landing() {
             <div className="mt-16 mx-auto max-w-7xl px-4 sm:mt-24 sm:px-6">
               <div className="text-center">
                 <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                  <span className="block xl:inline">Stay Healthy with</span>{' '}
+                  <span className="block xl:inline">Stay Healthy with</span>{" "}
                   <span className="block text-blue-600 xl:inline">Docbook</span>
                 </h1>
                 <p className="my-6 text-lg text-gray-600">

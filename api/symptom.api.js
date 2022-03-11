@@ -57,7 +57,8 @@ router.get("/", auth, async (req, res) => {
     const symptom = await Symptom.findOne({ user: req.userId }).populate(
       "user"
     );
-    res.status(200).json(symptom);
+
+    return res.status(200).json(symptom);
   } catch (error) {
     res.status(500).json(error);
   }

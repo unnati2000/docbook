@@ -10,7 +10,7 @@ const People = ({ chat }) => {
     >
       <button className="flex overflow-x-hidden items-center w-full px-4 py-2 select-none hover:bg-gray-100 focus:outline-none">
         <img
-          className="w-12 h-12 object-cover mr-3 rounded-full border"
+          className="w-12 h-12 object-cover mr-3 object-cover rounded-full border"
           src={chat.profilePic}
           alt={chat.name}
         />

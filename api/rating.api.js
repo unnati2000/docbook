@@ -11,6 +11,7 @@ router.post("/", auth, async (req, res) => {
     const appointment = await Appointment.find({
       doctor: req.body.doctor,
       user: req.userId,
+      isOver: true,
     });
 
     if (appointment.length === 0) {

@@ -109,7 +109,7 @@ const PayAppointmentCard = ({ appointment, loadRazorpay }) => {
           </p>
         </div>
         <img
-          className="w-10 h-10 bg-gray-300 object-cover rounded-full flex-shrink-0"
+          className="w-10 object-cover h-10 bg-gray-300 object-cover rounded-full flex-shrink-0"
           src={appointment?.doctor?.profilePic}
           alt={appointment?.doctor?.name}
         />

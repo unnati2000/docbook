@@ -8,7 +8,7 @@ const DoctorProfile = ({ doctor }) => {
       <div className="flex  space-x-4">
         <img
           src={doctor?.user?.profilePic}
-          className="h-16 w-16 rounded-full"
+          className="h-16 object-cover w-16 rounded-full"
         />
 
         <div>

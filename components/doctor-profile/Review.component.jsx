@@ -12,7 +12,7 @@ import RatingStar from "./RatingStar.component";
 
 const Review = ({ user, doctor }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [number, setNumber] = useState(0);
+  const [number, setNumber] = useState("");
   const [description, setDescription] = useState("");
 
   const customStyles = {
@@ -115,7 +115,7 @@ const Review = ({ user, doctor }) => {
         style={customStyles}
         ariaHideApp={false}
       >
-        <div className="text-center px-8 flex flex-col justify-center align-center items-cxenter">
+        <div className="text-center px-8 flex flex-col justify-center align-center items-center">
           <h1 className="text-blue-500 py-4 text-2xl font-semibold">
             Add your story for other patients
           </h1>
@@ -123,8 +123,8 @@ const Review = ({ user, doctor }) => {
             <input
               type="text"
               className="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 border rounded-md"
-              placeholder="Enter Name"
-              name="name"
+              placeholder="Enter Rating"
+              name="number"
               value={number}
               onChange={(e) => setNumber(e.target.value)}
             />
@@ -184,7 +184,10 @@ const Review = ({ user, doctor }) => {
 
       {doctor?.ratings?.length > 0 ? (
         doctor?.ratings.map((rating) => (
-          <div className="flex my-4 border-b border-gray-300" key={rating?._id}>
+          <div
+            className="flex overflow-auto my-4 border-b border-gray-300"
+            key={rating?._id}
+          >
             <img
               src={rating?.profilePic}
               className="object-cover h-12 w-12 rounded-full"

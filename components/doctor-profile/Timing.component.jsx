@@ -121,7 +121,6 @@ const Timing = ({ doctor, user }) => {
                           : "rounded-md px-2 py-1 border border-gray-400 cursor-pointer"
                       }
                     >
-                      {timings}
                       {t?.split(":")[0] == 12
                         ? `${t} PM`
                         : t?.split(":")[0] > 12
@@ -149,14 +148,16 @@ const Timing = ({ doctor, user }) => {
         setOpen={setOpen}
       />
 
-      <div className="px-4 my-4">
-        <button
-          onClick={() => setOpen(true)}
-          className="bg-blue-500 w-full rounded-md py-1 text-white shadow-md"
-        >
-          Book Appointment
-        </button>
-      </div>
+      {user?.role === "patient" && (
+        <div className="px-4 my-4">
+          <button
+            onClick={() => setOpen(true)}
+            className="bg-blue-500 w-full rounded-md py-1 text-white shadow-md"
+          >
+            Book Appointment
+          </button>
+        </div>
+      )}
     </>
   );
 };

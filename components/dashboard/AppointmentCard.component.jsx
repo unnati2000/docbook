@@ -53,7 +53,7 @@ const AppointmentCard = ({ data, tab }) => {
             <div className="flex space-x-4 p-6">
               <img
                 src={doc?.user?.profilePic}
-                className="h-8 w-8 rounded-full"
+                className="h-8 w-8 object-cover rounded-full"
               />
               <div>
                 <h3 className="text-lg text-blue-500">{doc?.user?.name}</h3>

@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import baseURL from "../utils/baseURL";
 import { Menu, Transition } from "@headlessui/react";
-import { BsChat } from "react-icons/bs";
+import { MdOutlineMarkChatUnread, MdChatBubbleOutline } from "react-icons/md";
 import { VscBellDot, VscBell } from "react-icons/vsc";
 import { MenuAlt2Icon } from "@heroicons/react/outline";
 import { logoutUser } from "../utils/auth.utils";
@@ -97,29 +97,38 @@ const Searchbar = ({ user, setMobileMenuOpen }) => {
                     </div>
                   ))}
 
-                  {data?.doctors?.map((doctor) => (
-                    <div
-                      key={doctor?.user?._id}
-                      onClick={() => {
-                        router.push(`/doctor/${doctor?.user?._id}`);
-                        setSearch("");
-                      }}
-                      className="bg-white flex gap-4 p-4 cursor-pointer  border-b border-gray-200"
-                    >
-                      <img
-                        src={user?.profilePic}
-                        className="h-12 w-12 rounded-full object-cover"
-                      />
-                      <div>
-                        <h3 className="text-blue-600 font-semibold text-lg">
-                          {user?.name}
-                        </h3>
-                        <p className="text-gray-400">
-                          {user?.doctor?.speciality}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                  {data?.doctors?.length > 0
+                    ? data?.doctors?.map((doctor) => (
+                        <div
+                          key={doctor?.user?._id}
+                          onClick={() => {
+                            router.push(`/doctor/${doctor?.user?._id}`);
+                            setSearch("");
+                          }}
+                          className="bg-white flex gap-4 p-4 cursor-pointer  border-b border-gray-200"
+                        >
+                          <img
+                            src={user?.profilePic}
+                            className="h-12 w-12 rounded-full object-cover"
+                          />
+                          <div>
+                            <h3 className="text-blue-600 font-semibold text-lg">
+                              {user?.name}
+                            </h3>
+                            <p className="text-gray-400">
+                              {user?.doctor?.speciality}
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    : data?.users?.length === 0 &&
+                      data?.doctors?.length === 0 && (
+                        <div>
+                          <h1 className="text-lg px-4 bg-white py-6">
+                            No doctor found
+                          </h1>
+                        </div>
+                      )}
                 </div>
               )}
             </form>
@@ -138,10 +147,18 @@ const Searchbar = ({ user, setMobileMenuOpen }) => {
               />
             )}
 
-            <BsChat
-              className="h-6 w-6 text-gray-400 cursor-pointer"
-              onClick={() => router.push("/chat")}
-            />
+            {user?.unreadMessage ? (
+              <MdOutlineMarkChatUnread
+                onClick={() => router.push("/chat")}
+                className="h-6 w-6 text-blue-500 cursor-pointer"
+              />
+            ) : (
+              <MdChatBubbleOutline
+                onClick={() => router.push("/chat")}
+                className="h-6 w-6 text-blue-500 cursor-pointer"
+              />
+            )}
+
             <Menu as="div" className="relative flex-shrink-0">
               {({ open }) => (
                 <>
