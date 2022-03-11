@@ -6,8 +6,8 @@ import {
   useHMSActions,
   selectIsLocalAudioEnabled,
   selectIsLocalVideoEnabled,
-} from "@100mslive/hms-video-react";
-import { useRouter } from "next/router";
+} from '@100mslive/hms-video-react';
+import { useRouter } from 'next/router';
 
 const Room = () => {
   const actions = useHMSActions();
@@ -29,7 +29,7 @@ const Room = () => {
       <div className="flex items-center justify-center h-5/6">
         <VideoList
           classes={{
-            video: "rounded-lg shadow-lg",
+            video: 'rounded-lg shadow-lg',
           }}
           maxTileCount={3}
           peers={peers}
@@ -42,7 +42,7 @@ const Room = () => {
           audioButtonOnClick={toggleAudio}
           leaveButtonOnClick={() => {
             actions.leave();
-            router.push("/home");
+            router.push('/home');
           }}
         />
       </div>

@@ -151,7 +151,7 @@ const PatientProfileForm = () => {
                       ? URL.createObjectURL(image)
                       : "https://solangvalleyresorts.com/wp-content/uploads/2019/03/gravatar-60-grey.jpg"
                   }
-                  className="h-28 object-cover w-28 rounded-full"
+                  className="h-28 w-28 rounded-full object-cover"
                 />
               </div>
 
