@@ -5,6 +5,7 @@ import {
   AiOutlineBarChart,
   AiFillMedicineBox,
 } from "react-icons/ai";
+import { GiMedicines } from "react-icons/gi";
 import { MdOutlineMood } from "react-icons/md";
 import { Dialog, Transition } from "@headlessui/react";
 
@@ -19,6 +20,12 @@ const sidebarNavigation = [
     current: false,
   },
   { name: "Moods", href: "/mood", icon: MdOutlineMood, current: false },
+  {
+    name: "Medications",
+    href: "/medication",
+    icon: GiMedicines,
+    current: false,
+  },
   { name: "Settings", href: "/settings", icon: CogIcon, current: false },
 ];
 

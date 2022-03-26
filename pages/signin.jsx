@@ -81,8 +81,8 @@ function SignIn() {
                       Forgot password?
                     </a>
                   </div>
-                  <p className="mx-1 text-blue-500 font-semibold cursor:pointer">
-                    <Link href="/signup">SignUp here</Link>
+                  <p className="mx-1 font-medium text-blue-500  cursor:pointer">
+                    <Link href="/signup">Signup here</Link>
                   </p>
                 </div>
                 <div className="text-center"></div>

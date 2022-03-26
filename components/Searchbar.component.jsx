@@ -143,7 +143,7 @@ const Searchbar = ({ user, setMobileMenuOpen }) => {
             ) : (
               <IoIosNotificationsOutline
                 onClick={() => router.push("/notification")}
-                className="h-8 w-8 text-gray-400 cursor-pointer"
+                className="h-8 w-8 text-blue-500 cursor-pointer"
               />
             )}
 

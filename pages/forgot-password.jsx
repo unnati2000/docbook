@@ -3,6 +3,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useMutation } from "react-query";
 import { AiOutlineLoading } from "react-icons/ai";
+import Link from "next/link";
 
 import baseURL from "../utils/baseURL";
 
@@ -32,7 +33,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="bg-blue-50 flex flex-col justify-center py-48 items-center">
-      <h1 className="text-blue-600 text-3xl font-bold">Forgot Password</h1>
+      <h1 className="text-blue-600 text-3xl">Forgot Password</h1>
       <p className="text-gray-600">
         {" "}
         Enter your email to receive the passoword reset link.
@@ -57,12 +58,12 @@ const ForgotPassword = () => {
           />
         </div>
         <div className="flex justify-between my-4">
-          <a href="/signup" className="text-blue-600">
-            Don't have an account?
-          </a>
-          <a href="/signin" className="text-blue-600">
-            Login instead
-          </a>
+          <Link href="/signup">
+            <a className="text-blue-600">Don't have an account?</a>
+          </Link>
+          <Link href="/signin">
+            <a className="text-blue-600">Login instead</a>
+          </Link>
         </div>
         <button
           type="submit"

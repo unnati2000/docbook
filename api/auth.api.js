@@ -94,7 +94,7 @@ router.post("/forgot-password", async (req, res) => {
       await sendEmail({
         to: user.email,
         subject: "Docbook - Reset Password",
-        html: `<p>${resetUrl}</p>`,
+        html: ``,
       });
     } catch (error) {
       console.log(error);

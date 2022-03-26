@@ -14,6 +14,7 @@ import {
   CheckIcon,
 } from "@heroicons/react/solid";
 import baseURL from "../utils/baseURL";
+import RatingStar from "../components/doctor-profile/RatingStar.component";
 
 const publishingOptions = [
   {
@@ -22,6 +23,10 @@ const publishingOptions = [
   },
   {
     title: "Rating",
+    current: false,
+  },
+  {
+    title: "Experience",
     current: false,
   },
 ];
@@ -49,6 +54,20 @@ const Doctors = ({ user }) => {
     getDoctorsFromSearch(location, speciality)
   );
 
+  const filterAccordingly = (filterObj) => {
+    if (data?.length > 0) {
+      if (filterObj === "Fees") {
+        const sorted = data.sort((a, b) => a.initialFee - b.initialFee);
+        return sorted;
+      } else if (filterObj === "Rating") {
+        const sorted = data.sort((a, b) => a.rating - b.rating);
+        return sorted;
+      } else if (filterObj === "Experience") {
+        const sorted = data.sort((a, b) => a.experience - b.experience);
+        return sorted;
+      }
+    }
+  };
   return (
     <div className="text-center my-8">
       <div className="flex justify-between mx-8">
@@ -92,6 +111,7 @@ const Doctors = ({ user }) => {
                       {publishingOptions.map((option) => (
                         <Listbox.Option
                           key={option.title}
+                          onChange={() => filterAccordingly(option.title)}
                           className={({ active }) =>
                             classNames(
                               active
@@ -100,7 +120,7 @@ const Doctors = ({ user }) => {
                               "cursor-default select-none relative p-4 text-sm"
                             )
                           }
-                          value={option}
+                          value={option.title}
                         >
                           {({ selected, active }) => (
                             <div className="flex flex-col">
@@ -122,6 +142,7 @@ const Doctors = ({ user }) => {
                                       className="h-5 w-5"
                                       aria-hidden="true"
                                     />
+                                    {selected}
                                   </span>
                                 ) : null}
                               </div>
@@ -169,12 +190,7 @@ const Doctors = ({ user }) => {
                 </div>
               </div>
               <div className="flex flex-col items-start mt-2 md:items-end">
-                <p className="flex items-center mb-2 md:mb-0">
-                  <AiFillStar className="h-4 w-4 text-yellow-500" />
-                  <AiFillStar className="h-4 w-4 text-yellow-500" />
-                  <AiFillStar className="h-4 w-4 text-yellow-500" />
-                  <FaStarHalf />
-                </p>
+                <RatingStar rating={doc?.averageRating} />
                 {user.role === "patient" && (
                   <Link href={`/doctor/${doc?.user?._id}`}>
                     <button className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md my-2">

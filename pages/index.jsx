@@ -145,12 +145,14 @@ function Landing() {
                         </div>
                       </div>
                       <div className="px-2 pt-2 pb-3 space-y-1"></div>
-                      <a
-                        href="#"
-                        className="block w-full px-5 py-3 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100 hover:text-indigo-700"
-                      >
-                        Log in
-                      </a>
+                      <Link href="/signin">
+                        <a
+                          href="#"
+                          className="block w-full px-5 py-3 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100 hover:text-indigo-700"
+                        >
+                          Log in
+                        </a>
+                      </Link>
                     </div>
                   </Popover.Panel>
                 </Transition>
