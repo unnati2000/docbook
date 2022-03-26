@@ -88,7 +88,7 @@ nextApp.prepare().then(() => {
   app.use("/api/chats", require("./api/chat.api"));
   app.use("/api/notifications", require("./api/notification.api"));
   app.use("/api/ratings", require("./api/rating.api"));
-  app.use("");
+  app.use("/api/medicine", require("./api/medicine.api"));
   app.all("*", (req, res) => handle(req, res));
 
   server.listen(PORT, (err) => {

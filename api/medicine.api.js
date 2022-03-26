@@ -52,4 +52,14 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const medicine = await Medicine.findByIdAndDelete(req.params.id);
+    return res.status(200).json({ msg: "Deleted Successfully" });
+  } catch (error) {
+    console.log(e);
+    return res.status(500).send(e);
+  }
+});
+
 module.exports = router;

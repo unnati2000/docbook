@@ -1,7 +1,23 @@
 import { useState } from "react";
 import Modal from "react-modal";
 import Select from "react-select";
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlus, AiFillDelete } from "react-icons/ai";
+import { useMutation, useQuery, QueryClient } from "react-query";
+import { dehydrate } from "react-query/hydration";
+
+import { parseCookies, destroyCookie } from "nookies";
+
+import baseURL from "../utils/baseURL";
+import cookie from "js-cookie";
+import axios from "axios";
+import { toast } from "react-toastify";
+
+const getMedicine = async (token) => {
+  const { data } = await axios.get(`${baseURL}/api/medicine/`, {
+    headers: { Authorization: token },
+  });
+  return data;
+};
 
 const Medication = () => {
   const [open, setIsOpen] = useState(false);
@@ -44,6 +60,82 @@ const Medication = () => {
     { label: "Bi-Weekly", value: "bi-weekly" },
     { label: "Monthly", value: "monthly" },
   ];
+  const { data } = useQuery(["medicine"], () =>
+    getMedicine(cookie.get("token"))
+  );
+
+  const mutation = useMutation(
+    async ({ name, time, day, timeFrequency }) => {
+      const { data } = await axios.post(
+        `${baseURL}/api/medicine/`,
+        {
+          name,
+          time,
+          day,
+          frequency: timeFrequency,
+        },
+        {
+          headers: { Authorization: cookie.get("token") },
+        }
+      );
+
+      return data;
+    },
+    {
+      onSuccess: () => {
+        setIsOpen(false);
+      },
+    }
+  );
+
+  const mutation2 = useMutation(async ({ id }) => {
+    const { data } = await axios.delete(
+      `${baseURL}/api/medicine/${id}`,
+
+      {
+        headers: { Authorization: cookie.get("token") },
+      }
+    );
+
+    return data;
+  });
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const data = await mutation.mutateAsync({
+        name,
+        time,
+        day,
+        timeFrequency,
+      });
+
+      toast.success(data?.msg);
+    } catch (error) {
+      console.log(error);
+      setIsOpen(false);
+      toast.error(
+        error.response?.data?.msg || "There was an error. Try again later."
+      );
+    }
+  };
+
+  const deleteItem = async (id) => {
+    try {
+      const data = await mutation2.mutateAsync({
+        id,
+      });
+
+      toast.success(data?.msg);
+    } catch (error) {
+      console.log(error);
+      setIsOpen(false);
+      toast.error(
+        error.response?.data?.msg || "There was an error. Try again later."
+      );
+    }
+  };
 
   return (
     <div>
@@ -70,7 +162,7 @@ const Medication = () => {
             x
           </button>
 
-          <form className="p-8">
+          <form className="p-8" onSubmit={onSubmit}>
             <h1 className="text-blue-600 font-semibold text-xl">
               Add your medicine here!
             </h1>
@@ -128,8 +220,90 @@ const Medication = () => {
           <AiOutlinePlus /> Add medicine
         </button>
       </div>
+      <div className="flex flex-col">
+        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Medicine name
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Time
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Frequency during day
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Frequency for time span
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Delete
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {data?.medicine?.map((doc) => (
+                    <tr key={doc?._id}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {doc?.name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{doc?.time}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {doc?.frequency}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {doc?.day}{" "}
+                      </td>
+                      <td
+                        onClick={() => deleteItem(doc?._id)}
+                        className="px-6 text-center py-4 whitespace-nowrap text-sm text-gray-500"
+                      >
+                        <AiFillDelete className="h-6 w-6" />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
+
+export async function getServerSideProps(ctx) {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(["medicine"], () =>
+    getMedicine(parseCookies(ctx).token)
+  );
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
 
 export default Medication;
