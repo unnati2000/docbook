@@ -8,6 +8,7 @@ const Medication = () => {
   const [name, setName] = useState("");
   const [time, setTime] = useState("");
   const [day, setDay] = useState("");
+  const [timeFrequency, setTimeFrequency] = useState("");
 
   const customStyles = {
     overlay: {
@@ -97,7 +98,7 @@ const Medication = () => {
               <Select
                 isClearable
                 options={timeFreq}
-                onChange={(e) => setTime(e.value)}
+                onChange={(e) => setTimeFrequency(e.value)}
                 placeholder="Select frequency by time"
                 //   className="md:w-48"
                 isSearchable={false}
