@@ -1,79 +1,70 @@
-import { useState, Fragment } from "react";
-import axios from "axios";
-import Link from "next/link";
-import { memo } from "react";
-import { useQuery, QueryClient } from "react-query";
-import { dehydrate } from "react-query/hydration";
-import { useRouter } from "next/router";
-import { AiFillStar } from "react-icons/ai";
-import { FaStarHalf } from "react-icons/fa";
-import { Listbox, Transition } from "@headlessui/react";
+import { useState, Fragment } from 'react';
+import axios from 'axios';
+import Link from 'next/link';
+import { memo } from 'react';
+import { useQuery, QueryClient } from 'react-query';
+import { dehydrate } from 'react-query/hydration';
+import { useRouter } from 'next/router';
+import { Listbox, Transition } from '@headlessui/react';
 import {
   SortAscendingIcon,
   ChevronDownIcon,
   CheckIcon,
-} from "@heroicons/react/solid";
-import baseURL from "../utils/baseURL";
-import RatingStar from "../components/doctor-profile/RatingStar.component";
+} from '@heroicons/react/solid';
+import baseURL from '../utils/baseURL';
+import RatingStar from '../components/doctor-profile/RatingStar.component';
 
-const publishingOptions = [
+const sortOptions = [
   {
-    title: "Fees",
+    title: 'Fees',
     current: true,
+    sort: 'fees',
   },
   {
-    title: "Rating",
+    title: 'Rating',
     current: false,
+    sort: 'rating',
   },
   {
-    title: "Experience",
+    title: 'Experience',
     current: false,
+    sort: 'experience',
   },
 ];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
-const getDoctorsFromSearch = async (location, speciality) => {
-  const data = await axios.get(
-    `${baseURL}/api/search/${location}/${speciality}`
+const getDoctorsFromSearch = async (location, speciality, sort) => {
+  const { data } = await axios.get(
+    `${baseURL}/api/search/${location}/${speciality}?sortBy=${sort}`
   );
-  // Sort by intialFee in ascending order
-  const sorted = data.data.sort((a, b) => a.initialFee - b.initialFee);
-  return sorted;
+  return data;
 };
 
 const Doctors = ({ user }) => {
   const router = useRouter();
   const { location, speciality } = router.query;
 
-  const [selected, setSelected] = useState(publishingOptions[0]);
+  const [sort, setSort] = useState(sortOptions[0]);
 
-  const { data } = useQuery(["search", location, speciality], () =>
-    getDoctorsFromSearch(location, speciality)
+  const { data, isLoading } = useQuery(
+    ['search', location, speciality, sort.sort],
+    () => getDoctorsFromSearch(location, speciality, sort.sort)
   );
 
-  const filterAccordingly = (filterObj) => {
-    if (data?.length > 0) {
-      if (filterObj === "Fees") {
-        const sorted = data.sort((a, b) => a.initialFee - b.initialFee);
-        return sorted;
-      } else if (filterObj === "Rating") {
-        const sorted = data.sort((a, b) => a.rating - b.rating);
-        return sorted;
-      } else if (filterObj === "Experience") {
-        const sorted = data.sort((a, b) => a.experience - b.experience);
-        return sorted;
-      }
-    }
-  };
   return (
     <div className="text-center my-8">
       <div className="flex justify-between mx-8">
         <h2 className="text-blue-500 text-xl font-semibold">Search Results</h2>
         <div className="flex items-center space-x-4">
-          <Listbox value={selected} onChange={setSelected}>
+          <Listbox
+            value={sort.sort}
+            onChange={(e) => {
+              setSort(sortOptions.find((option) => option.title === e));
+            }}
+          >
             {({ open }) => (
               <>
                 <div className="relative">
@@ -85,7 +76,7 @@ const Doctors = ({ user }) => {
                           aria-hidden="true"
                         />
                         <p className="ml-2.5 text-sm font-medium">
-                          {selected.title}
+                          {sort.title}
                         </p>
                       </div>
                       <Listbox.Button className="relative inline-flex items-center bg-blue-500 p-2 rounded-l-none rounded-r-md text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:z-10 focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500">
@@ -108,16 +99,15 @@ const Doctors = ({ user }) => {
                       static
                       className="origin-top-right absolute z-10 right-0 mt-2 w-72 rounded-md shadow-lg overflow-hidden bg-white divide-y divide-gray-200 ring-1 ring-black ring-opacity-5 focus:outline-none"
                     >
-                      {publishingOptions.map((option) => (
+                      {sortOptions.map((option) => (
                         <Listbox.Option
                           key={option.title}
-                          onChange={() => filterAccordingly(option.title)}
                           className={({ active }) =>
                             classNames(
                               active
-                                ? "text-white bg-blue-500"
-                                : "text-gray-900",
-                              "cursor-default select-none relative p-4 text-sm"
+                                ? 'text-white bg-blue-500'
+                                : 'text-gray-900',
+                              'cursor-default select-none relative p-4 text-sm'
                             )
                           }
                           value={option.title}
@@ -127,7 +117,7 @@ const Doctors = ({ user }) => {
                               <div className="flex justify-between">
                                 <p
                                   className={
-                                    selected ? "font-semibold" : "font-normal"
+                                    selected ? 'font-semibold' : 'font-normal'
                                   }
                                 >
                                   {option.title}
@@ -135,7 +125,7 @@ const Doctors = ({ user }) => {
                                 {selected ? (
                                   <span
                                     className={
-                                      active ? "text-white" : "text-blue-500"
+                                      active ? 'text-white' : 'text-blue-500'
                                     }
                                   >
                                     <CheckIcon
@@ -159,14 +149,16 @@ const Doctors = ({ user }) => {
         </div>
       </div>
 
-      {data?.length > 0 || data !== undefined ? (
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : data?.length > 0 || data !== undefined ? (
         data?.map((doc) => (
           <div
             key={doc._id}
             className={
               doc?._id === user?._id
-                ? "hidden"
-                : "shadow-md bg-white rounded-md mx-8 my-4 p-8"
+                ? 'hidden'
+                : 'shadow-md bg-white rounded-md mx-8 my-4 p-8'
             }
           >
             <div className="flex items-center justify-between flex-wrap">
@@ -184,14 +176,14 @@ const Doctors = ({ user }) => {
 
                   <h4 className="text-gray-500 text-md ">{doc?.speciality}</h4>
                   <p className="text-gray-500 text-md">
-                    Initial Fee:{" "}
+                    Initial Fee:{' '}
                     <span className="text-blue-500"> ₹{doc?.initialFee}</span>
                   </p>
                 </div>
               </div>
               <div className="flex flex-col items-start mt-2 md:items-end">
                 <RatingStar rating={doc?.averageRating} />
-                {user.role === "patient" && (
+                {user.role === 'patient' && (
                   <Link href={`/doctor/${doc?.user?._id}`}>
                     <button className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md my-2">
                       Book Appointment
@@ -210,12 +202,12 @@ const Doctors = ({ user }) => {
 };
 
 export async function getServerSideProps(ctx) {
-  // Get location and speciality from params
   const { location, speciality } = ctx.query;
 
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(["search", location, speciality], () =>
-    getDoctorsFromSearch(location, speciality)
+  await queryClient.prefetchQuery(
+    ['search', location, speciality, 'fees'],
+    () => getDoctorsFromSearch(location, speciality, 'fees')
   );
 
   return {

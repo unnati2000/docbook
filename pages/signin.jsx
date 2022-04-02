@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { login } from "../utils/auth.utils";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
-import Link from "next/link";
+import { useState } from 'react';
+import { login } from '../utils/auth.utils';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import Link from 'next/link';
 
 function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -81,7 +81,7 @@ function SignIn() {
                       Forgot password?
                     </a>
                   </div>
-                  <p className="mx-1 font-medium text-blue-500  cursor:pointer">
+                  <p className="mx-1 text-sm font-medium text-blue-500  cursor:pointer">
                     <Link href="/signup">Signup here</Link>
                   </p>
                 </div>

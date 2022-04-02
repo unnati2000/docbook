@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Select from 'react-select/creatable';
 
 const Header = () => {
-  const [location, setLocation] = useState('');
-  const [speciality, setSpeciality] = useState('');
+  const [location, setLocation] = useState('mumbai');
+  const [speciality, setSpeciality] = useState('dentist');
 
   const locations = [
     { label: 'Mumbai', value: 'mumbai' },
@@ -24,6 +24,8 @@ const Header = () => {
     { label: 'Homoepath', value: 'homoepath' },
     { label: 'Ayurveda', value: 'ayurveda' },
   ];
+
+  const router = useRouter();
 
   return (
     <section className="bg-blue-50 py-12 flex flex-col justify-around items-center">
@@ -52,14 +54,20 @@ const Header = () => {
             className="md:w-48"
           />
         </div>
-
-        <div>
-          <Link href={`/search?location=${location}&speciality=${speciality}`}>
-            <a className="bg-blue-500 rounded-md px-4 py-2 text-white">
-              Search
-            </a>
-          </Link>
-        </div>
+        <a
+          onClick={() =>
+            router.push({
+              pathname: '/search',
+              query: {
+                location,
+                speciality: encodeURIComponent(speciality),
+              },
+            })
+          }
+          className="bg-blue-500 cursor-pointer rounded-md px-4 py-2 text-white"
+        >
+          Search
+        </a>
       </div>
     </section>
   );
